@@ -78,8 +78,15 @@
 			<version>2.2.220</version> <!-- Substitua pela versão desejada -->
 			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- Dependência do Spring Boot DevTools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -96,5 +103,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
