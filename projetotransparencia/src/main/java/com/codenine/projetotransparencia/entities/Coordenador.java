@@ -2,6 +2,7 @@ package com.codenine.projetotransparencia.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Data
@@ -12,10 +13,7 @@ public class Coordenador {
     @Column(name = "coordenador_id")
     private Long coordenadorId;
 
-    @Column(nullable = false)
-    private String coordenadorNome;
-
-    @Column(length = 11, nullable = false)
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
     @Column(nullable = false, unique = true)
@@ -23,4 +21,10 @@ public class Coordenador {
 
     @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
+    private String coordenadorNome;
+
+    @OneToMany(mappedBy = "coordenador", cascade = CascadeType.ALL)
+    private List<Projeto> projetos;
 }
