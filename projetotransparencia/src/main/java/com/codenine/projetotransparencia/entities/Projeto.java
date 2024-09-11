@@ -2,7 +2,6 @@ package com.codenine.projetotransparencia.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.Date;
 
 @Entity
@@ -20,6 +19,9 @@ public class Projeto {
 
     @Column(nullable = false)
     private String nomeEmpresa;
+
+    @Column(nullable = false)
+    private String referenciaProjeto;
 
     @Column(nullable = false)
     private String objeto;
