@@ -9,8 +9,7 @@ public class Administrador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "administrador_id")
-    private Long administradorId;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;
