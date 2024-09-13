@@ -21,16 +21,16 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                    .anyRequest().permitAll() // Permite todas as requisições sem autenticação
+                    .anyRequest().permitAll() 
             )
-            .csrf().disable(); // Desabilita a proteção CSRF
+            .csrf().disable();
 
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Bean para codificação de senha
+        return new BCryptPasswordEncoder(); 
     }
 
     @Bean
