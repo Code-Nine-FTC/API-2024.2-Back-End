@@ -21,4 +21,8 @@ public class AdministradorService {
     public List<Administrador> getAllAdministradores() {
         return administradorRepository.findAll();
     }
+
+    public Administrador findByEmail(String email) {
+        return administradorRepository.findByEmail(email);
+    }
 }
