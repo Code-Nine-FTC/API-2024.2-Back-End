@@ -14,15 +14,15 @@ public class ProjetoService {
     @Autowired
     private ProjetoRepository projetoRepository;
 
-    public Projeto createProjeto(Projeto projeto) {
+    public Projeto cadastrarProjeto(Projeto projeto) {
         return projetoRepository.save(projeto);
     }
 
-    public List<Projeto> getAllProjetos() {
+    public List<Projeto> listarProjetos() {
         return projetoRepository.findAll();
     }
 
-    public Projeto getProjetoById(Long id) {
+    public Projeto visualizarProjeto(Long id) {
         return projetoRepository.findById(id).orElse(null);
     }
 }
