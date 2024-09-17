@@ -2,6 +2,8 @@ package com.codenine.projetotransparencia.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.io.File;
 import java.util.Date;
 
 @Entity
@@ -13,24 +15,23 @@ public class Projeto {
     @Column(name = "projeto_id")
     private Long projetoId;
 
-    @ManyToOne
-    @JoinColumn(name = "coordenador_id", referencedColumnName = "coordenador_id", nullable = false)
-    private Coordenador coordenador;
-
     @Column(nullable = false)
-    private String nomeEmpresa;
+    private String titulo;
 
     @Column(nullable = false)
     private String referenciaProjeto;
 
+    @Column (nullable = false)
+    private String empresa;
+
     @Column(nullable = false)
     private String objeto;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String descricao;
 
     @Column(nullable = false)
-    private String status;
+    private String nomeCoordenador;
 
     @Column(nullable = false)
     private Double valor;
@@ -42,4 +43,29 @@ public class Projeto {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date dataTermino;
+
+    @Lob
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] resumoPdf;
+
+    @Lob
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] resumoExcel;
+
+    public Projeto() {
+    }
+
+    public Projeto(String titulo, String referenciaProjeto, String empresa, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, byte[] resumoPdf, byte[] resumoExcel) {
+        this.titulo = titulo;
+        this.referenciaProjeto = referenciaProjeto;
+        this.empresa = empresa;
+        this.objeto = objeto;
+        this.descricao = descricao;
+        this.nomeCoordenador = nomeCoordenador;
+        this.valor = valor;
+        this.dataInicio = dataInicio;
+        this.dataTermino = dataTermino;
+        this.resumoPdf = resumoPdf;
+        this.resumoExcel = resumoExcel;
+    }
 }
