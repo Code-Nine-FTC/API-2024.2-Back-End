@@ -1,3 +1,4 @@
+/*
 package com.codenine.projetotransparencia.entities;
 
 import jakarta.persistence.*;
@@ -77,3 +78,4 @@ public class Coordenador {
 	}
     
 }
+*/

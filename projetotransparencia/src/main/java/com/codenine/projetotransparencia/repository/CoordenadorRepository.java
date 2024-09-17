@@ -1,3 +1,4 @@
+/*
 package com.codenine.projetotransparencia.repository;
 
 
@@ -9,3 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface CoordenadorRepository extends JpaRepository<Coordenador, Long> {
 }
 
+*/

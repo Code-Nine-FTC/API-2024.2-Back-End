@@ -1,3 +1,4 @@
+/*
 // controllers/CoordenadorController.java
 package com.codenine.projetotransparencia.controllers;
 
@@ -30,3 +31,4 @@ public class CoordenadorController {
         return coordenadorService.getCoordenadorById(id);
     }
 }
+*/

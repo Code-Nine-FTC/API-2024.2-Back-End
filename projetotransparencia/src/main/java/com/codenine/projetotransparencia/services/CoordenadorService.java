@@ -1,3 +1,4 @@
+/*
 // services/CoordenadorService.java
 package com.codenine.projetotransparencia.services;
 
@@ -26,3 +27,4 @@ public class CoordenadorService {
         return coordenadorRepository.findById(id).orElse(null);
     }
 }
+*/
