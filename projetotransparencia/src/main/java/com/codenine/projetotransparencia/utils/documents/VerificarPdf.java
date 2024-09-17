@@ -1,5 +1,8 @@
 package com.codenine.projetotransparencia.utils.documents;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class VerificarPdf extends VerificarArquivos {
     @Override
     public boolean verificar(byte[] pdf) {
