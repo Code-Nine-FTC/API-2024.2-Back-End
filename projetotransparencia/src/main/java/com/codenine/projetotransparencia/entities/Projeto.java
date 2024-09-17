@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@Table(name = "projeto")
 public class Projeto {
 
     @Id

@@ -14,15 +14,16 @@ public class AdministradorService {
     @Autowired
     private AdministradorRepository administradorRepository;
 
-    public Administrador createAdministrador(Administrador administrador) {
-        return administradorRepository.save(administrador);
+    public Administrador findByEmail(String email) {
+        return administradorRepository.findByEmail(email);
+    }
+
+    public void createAdministrador(Administrador administrador) {
+        administradorRepository.save(administrador);
     }
 
     public List<Administrador> getAllAdministradores() {
         return administradorRepository.findAll();
     }
 
-    public Administrador findByEmail(String email) {
-        return administradorRepository.findByEmail(email);
-    }
 }
