@@ -21,12 +21,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/projeto")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Long> cadastrarProjeto(
+    public ResponseEntity<?> cadastrarProjeto(
             @RequestParam String titulo,
             @RequestParam String referenciaProjeto,
             @RequestParam String empresa,
@@ -58,9 +59,11 @@ public class ProjetoController {
             );
 
             var projetoId = projetoService.cadastrarProjeto(cadastrarProjetoDto);
-            return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).build();
+            return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).body("Projeto cadastrado com sucesso");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Datas inváliadas");
         }
     }
 
