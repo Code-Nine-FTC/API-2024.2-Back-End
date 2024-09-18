@@ -3,6 +3,7 @@ package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.entities.Projeto;
+import com.codenine.projetotransparencia.controllers.AtualizarProjetoDto;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
 import com.codenine.projetotransparencia.utils.documents.VerificarPdf;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjetoService {
@@ -70,5 +72,30 @@ public class ProjetoService {
 
     public Projeto visualizarProjeto(Long id) {
         return projetoRepository.findById(id).orElse(null);
+    }
+
+    public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) {
+        Optional<Projeto> projetoOpcional = projetoRepository.findById(atualizarProjetoDto.id());
+
+        if (projetoOpcional.isEmpty()) {
+            throw new IllegalArgumentException("Erro: Projeto com ID " + atualizarProjetoDto.id() + " não encontrado!");
+        }
+
+        Projeto projetoExistente = projetoOpcional.get();
+
+        atualizarProjetoDto.titulo().ifPresent(projetoExistente::setTitulo);
+        atualizarProjetoDto.referenciaProjeto().ifPresent(projetoExistente::setReferenciaProjeto);
+        atualizarProjetoDto.empresa().ifPresent(projetoExistente::setEmpresa);
+        atualizarProjetoDto.objeto().ifPresent(projetoExistente::setObjeto);
+        atualizarProjetoDto.descricao().ifPresent(projetoExistente::setDescricao);
+        atualizarProjetoDto.nomeCoordenador().ifPresent(projetoExistente::setNomeCoordenador);
+        atualizarProjetoDto.valor().ifPresent(projetoExistente::setValor);
+        atualizarProjetoDto.dataInicio().ifPresent(projetoExistente::setDataInicio);
+        atualizarProjetoDto.dataTermino().ifPresent(projetoExistente::setDataTermino);
+        atualizarProjetoDto.resumoPdf().ifPresent(projetoExistente::setResumoPdf);
+        atualizarProjetoDto.resumoExcel().ifPresent(projetoExistente::setResumoExcel);
+
+        projetoRepository.save(projetoExistente);
+        return projetoExistente.getProjetoId();
     }
 }

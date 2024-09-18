@@ -63,22 +63,75 @@ public class ProjetoController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Datas inváliadas");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Datas inválidas");
         }
     }
 
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<String> atualizarProjeto(
+            @PathVariable Long id,
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String referenciaProjeto,
+            @RequestParam(required = false) String empresa,
+            @RequestParam(required = false) String objeto,
+            @RequestParam(required = false) String descricao,
+            @RequestParam(required = false) String nomeCoordenador,
+            @RequestParam(required = false) Double valor,
+            @RequestParam(required = false) String dataInicio,
+            @RequestParam(required = false) String dataTermino,
+            @RequestPart(required = false) MultipartFile resumoPdf,
+            @RequestPart(required = false) MultipartFile resumoExcel) {
+
+        try {
+            Optional<Date> dataInicioDate = Optional.ofNullable(dataInicio != null ? ConversorData.converterIsoParaData(dataInicio) : null);
+            Optional<Date> dataTerminoDate = Optional.ofNullable(dataTermino != null ? ConversorData.converterIsoParaData(dataTermino) : null);
+
+            var atualizarProjetoDto = new AtualizarProjetoDto(
+                    id,  // O ID é passado aqui
+                    Optional.ofNullable(titulo),
+                    Optional.ofNullable(referenciaProjeto),
+                    Optional.ofNullable(empresa),
+                    Optional.ofNullable(objeto),
+                    Optional.ofNullable(descricao),
+                    Optional.ofNullable(nomeCoordenador),
+                    Optional.ofNullable(valor),
+                    dataInicioDate,
+                    dataTerminoDate,
+                    Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
+                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null)
+            );
+
+            Long projetoId = projetoService.atualizarProjeto(atualizarProjetoDto);
+            return ResponseEntity.ok("Projeto atualizado com sucesso! ID: " + projetoId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar arquivos.");
+        }
+    }
+
+    // Listar todos os projetos
     @GetMapping("/listar")
-    public List<Projeto> getAllProjetos() {
-        return projetoService.listarProjetos();
+    public ResponseEntity<List<Projeto>> listarProjetos() {
+        List<Projeto> projetos = projetoService.listarProjetos();
+
+        if (projetos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.ok(projetos);
     }
 
+    // Visualizar um projeto por ID
     @GetMapping("/visualizar/{id}")
-    public Projeto getProjetoById(@PathVariable Long id) {
-        return projetoService.visualizarProjeto(id);
+    public ResponseEntity<Projeto> visualizarProjeto(@PathVariable Long id) {
+        Projeto projeto = projetoService.visualizarProjeto(id);
+
+        if (projeto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(projeto);
     }
 
-    /* @PutMapping("/atualizar/{id}")
-    public Projeto updateProjeto(@PathVariable Long id, @RequestBody Projeto projeto) {
-        return projetoService.updateProjeto(id, projeto);
-    } */
 }

@@ -6,15 +6,15 @@ import java.util.Optional;
 
 public record AtualizarProjetoDto(
         Long id, // Novo campo para o ID do projeto a ser atualizado
-        String titulo,
-        String referenciaProjeto,
-        String empresa,
-        String objeto,
+        Optional<String> titulo,
+        Optional<String> referenciaProjeto,
+        Optional<String> empresa,
+        Optional<String> objeto,
         Optional<String> descricao,
-        String nomeCoordenador,
-        Double valor,
-        Date dataInicio,
-        Date dataTermino,
+        Optional<String> nomeCoordenador,
+        Optional<Double> valor,
+        Optional<Date> dataInicio,
+        Optional<Date> dataTermino,
         Optional<byte[]> resumoPdf,
         Optional<byte[]> resumoExcel
 ) {
