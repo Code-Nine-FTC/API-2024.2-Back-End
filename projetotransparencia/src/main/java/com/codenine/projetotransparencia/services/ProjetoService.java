@@ -24,17 +24,29 @@ public class ProjetoService {
     private VerificarPdf verificarPdf;
 
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) {
+
+        if (cadastrarProjetoDto.titulo().isEmpty() ||
+            cadastrarProjetoDto.referenciaProjeto().isEmpty() ||
+            cadastrarProjetoDto.empresa().isEmpty() ||
+            cadastrarProjetoDto.objeto().isEmpty() ||
+            cadastrarProjetoDto.nomeCoordenador().isEmpty() ||
+            cadastrarProjetoDto.valor() == null ||
+            cadastrarProjetoDto.dataInicio() == null ||
+            cadastrarProjetoDto.dataTermino() == null) {
+            throw new IllegalArgumentException("Algum campo obrigatório não foi preenchido");
+        }
+
         if (cadastrarProjetoDto.resumoPdf().isPresent()) {
             if (!verificarPdf.verificar(cadastrarProjetoDto.resumoPdf().get())) {
                 throw new IllegalArgumentException("O arquivo de resumo deve ser um PDF");
             }
         }
 
-        if (cadastrarProjetoDto.resumoExcel().isPresent()) {
-            if (!verificarExcel.verificar(cadastrarProjetoDto.resumoExcel().get())) {
-                throw new IllegalArgumentException("O arquivo de resumo deve ser um Excel");
-            }
-        }
+//        if (cadastrarProjetoDto.resumoExcel().isPresent()) {
+//            if (!verificarExcel.verificar(cadastrarProjetoDto.resumoExcel().get())) {
+//                throw new IllegalArgumentException("O arquivo de resumo deve ser um Excel");
+//            }
+//        }
 
         var entidade = new Projeto(
                 cadastrarProjetoDto.titulo(),
