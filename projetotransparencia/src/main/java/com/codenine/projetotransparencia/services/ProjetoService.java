@@ -98,4 +98,14 @@ public class ProjetoService {
         projetoRepository.save(projetoExistente);
         return projetoExistente.getProjetoId();
     }
+
+    public void deletarProjeto(Long id) {
+        Optional<Projeto> projetoOpcional = projetoRepository.findById(id);
+
+        if (projetoOpcional.isEmpty()) {
+            throw new IllegalArgumentException("Erro: Projeto com ID " + id + " não encontrado!");
+        }
+
+        projetoRepository.deleteById(id);
+    }
 }

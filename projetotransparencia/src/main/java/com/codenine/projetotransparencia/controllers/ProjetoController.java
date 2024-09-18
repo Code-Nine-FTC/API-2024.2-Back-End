@@ -110,6 +110,17 @@ public class ProjetoController {
         }
     }
 
+    // Deletar projeto pelo ID
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> deletarProjeto(@PathVariable Long id) {
+        try {
+            projetoService.deletarProjeto(id);
+            return ResponseEntity.ok("Projeto com ID " + id + " foi deletado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
     // Listar todos os projetos
     @GetMapping("/listar")
     public ResponseEntity<List<Projeto>> listarProjetos() {
