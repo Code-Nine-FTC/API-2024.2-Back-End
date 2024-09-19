@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -131,6 +132,22 @@ public class ProjetoController {
         }
 
         return ResponseEntity.ok(projetos);
+    }
+
+    @GetMapping("/buscar")
+    public List<Projeto> listarProjetos(
+            @RequestParam(required = false) String referenciaProjeto,
+            @RequestParam(required = false) String nomeCoordenador,
+            @RequestParam(required = false) String dataInicio,
+            @RequestParam(required = false) String dataTermino
+    ) {
+        BuscarProjetoDto filtro = new BuscarProjetoDto(
+                referenciaProjeto,
+                nomeCoordenador,
+                dataInicio,
+                dataTermino
+        );
+        return projetoService.buscarProjetos(filtro);
     }
 
     // Visualizar um projeto por ID

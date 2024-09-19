@@ -1,6 +1,7 @@
 // services/ProjetoService.java
 package com.codenine.projetotransparencia.services;
 
+import com.codenine.projetotransparencia.controllers.BuscarProjetoDto;
 import com.codenine.projetotransparencia.controllers.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.controllers.AtualizarProjetoDto;
@@ -9,6 +10,7 @@ import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
 import com.codenine.projetotransparencia.utils.documents.VerificarPdf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +70,26 @@ public class ProjetoService {
 
     public List<Projeto> listarProjetos() {
         return projetoRepository.findAll();
+    }
+
+    public List<Projeto> buscarProjetos(BuscarProjetoDto filtro) {
+
+        String referenciaProjeto = filtro.referenciaProjeto();
+        String nomeCoordenador = filtro.nomeCoordenador();
+        String dataInicio = filtro.dataInicio();
+        String dataTermino = filtro.dataTermino();
+
+        if (StringUtils.hasText(referenciaProjeto) ||
+                StringUtils.hasText(nomeCoordenador) ||
+                StringUtils.hasText(dataInicio) ||
+                StringUtils.hasText(dataTermino)
+        ) {
+            // Filtra os projetos com base nos parâmetros fornecidos
+            return projetoRepository.findByFiltros(referenciaProjeto, nomeCoordenador, dataInicio, dataTermino);
+        } else {
+            // Se nenhum filtro foi passado, retorna todos os projetos
+            return projetoRepository.findAll();
+        }
     }
 
     public Projeto visualizarProjeto(Long id) {
