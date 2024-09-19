@@ -1,17 +1,20 @@
 // services/ProjetoService.java
 package com.codenine.projetotransparencia.services;
 
-import com.codenine.projetotransparencia.controllers.BuscarProjetoDto;
-import com.codenine.projetotransparencia.controllers.CadastrarProjetoDto;
+import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
+import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
 import com.codenine.projetotransparencia.entities.Projeto;
-import com.codenine.projetotransparencia.controllers.AtualizarProjetoDto;
+import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
 import com.codenine.projetotransparencia.utils.documents.VerificarPdf;
+import com.codenine.projetotransparencia.utils.documents.VerificarTamanho;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,45 +30,72 @@ public class ProjetoService {
     @Autowired
     private VerificarPdf verificarPdf;
 
-    public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) {
+    @Autowired
+    private VerificarTamanho verificarTamanho;
 
-        if (cadastrarProjetoDto.titulo().isEmpty() ||
-            cadastrarProjetoDto.referenciaProjeto().isEmpty() ||
-            cadastrarProjetoDto.empresa().isEmpty() ||
-            cadastrarProjetoDto.objeto().isEmpty() ||
-            cadastrarProjetoDto.nomeCoordenador().isEmpty() ||
-            cadastrarProjetoDto.valor() == null ||
-            cadastrarProjetoDto.dataInicio() == null ||
-            cadastrarProjetoDto.dataTermino() == null) {
-            throw new IllegalArgumentException("Algum campo obrigatório não foi preenchido");
-        }
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
+
+        Projeto projeto = objectMapper.readValue(cadastrarProjetoDto.projeto(), Projeto.class);
 
         if (cadastrarProjetoDto.resumoPdf().isPresent()) {
             if (!verificarPdf.verificar(cadastrarProjetoDto.resumoPdf().get())) {
-                throw new IllegalArgumentException("O arquivo de resumo deve ser um PDF");
+                throw new IllegalArgumentException("O arquivo de resumo deve ser um PDF ou Excel");
+            }
+            else {
+                if (!verificarTamanho.verificar(cadastrarProjetoDto.resumoPdf().get())) {
+                    throw new IllegalArgumentException("O arquivo de resumo deve ter no máximo 5MB");
+                }
+                else {
+                    projeto.setResumoPdf(cadastrarProjetoDto.resumoPdf().get());
+                }
+            }
+        }
+        if (cadastrarProjetoDto.resumoExcel().isPresent()) {
+            if (!verificarExcel.verificar(cadastrarProjetoDto.resumoExcel().get())) {
+                throw new IllegalArgumentException("O arquivo de resumo deve ser um Pdf ou Excel");
+            }
+            else {
+                if (!verificarTamanho.verificar(cadastrarProjetoDto.resumoExcel().get())) {
+                    throw new IllegalArgumentException("O arquivo de resumo deve ter no máximo 5MB");
+                }
+                else {
+                    projeto.setResumoExcel(cadastrarProjetoDto.resumoExcel().get());
+                }
             }
         }
 
-//        if (cadastrarProjetoDto.resumoExcel().isPresent()) {
-//            if (!verificarExcel.verificar(cadastrarProjetoDto.resumoExcel().get())) {
-//                throw new IllegalArgumentException("O arquivo de resumo deve ser um Excel");
-//            }
-//        }
+        if (cadastrarProjetoDto.proposta().isPresent()) {
+            if (!verificarPdf.verificar(cadastrarProjetoDto.proposta().get())) {
+                throw new IllegalArgumentException("O arquivo de proposta deve ser um PDF");
+            }
+            else {
+                if (!verificarTamanho.verificar(cadastrarProjetoDto.proposta().get())) {
+                    throw new IllegalArgumentException("O arquivo de proposta deve ter no máximo 5MB");
+                }
+                else {
+                    projeto.setProposta(cadastrarProjetoDto.proposta().get());
+                }
+            }
+        }
 
-        var entidade = new Projeto(
-                cadastrarProjetoDto.titulo(),
-                cadastrarProjetoDto.referenciaProjeto(),
-                cadastrarProjetoDto.empresa(),
-                cadastrarProjetoDto.objeto(),
-                cadastrarProjetoDto.descricao().orElse(null),
-                cadastrarProjetoDto.nomeCoordenador(),
-                cadastrarProjetoDto.valor(),
-                cadastrarProjetoDto.dataInicio(),
-                cadastrarProjetoDto.dataTermino(),
-                cadastrarProjetoDto.resumoPdf().orElse(null),
-                cadastrarProjetoDto.resumoExcel().orElse(null)
-        );
-        return projetoRepository.save(entidade).getProjetoId();
+        if (cadastrarProjetoDto.contrato().isPresent()) {
+            if (!verificarPdf.verificar(cadastrarProjetoDto.contrato().get())) {
+                throw new IllegalArgumentException("O arquivo de contrato deve ser um PDF");
+            }
+            else {
+                if (!verificarTamanho.verificar(cadastrarProjetoDto.contrato().get())) {
+                    throw new IllegalArgumentException("O arquivo de contrato deve ter no máximo 5MB");
+                }
+                else {
+                    projeto.setContrato(cadastrarProjetoDto.contrato().get());
+                }
+            }
+        }
+
+        return projetoRepository.save(projeto).getProjetoId();
     }
 
     public List<Projeto> listarProjetos() {
@@ -120,6 +150,7 @@ public class ProjetoService {
         projetoRepository.save(projetoExistente);
         return projetoExistente.getProjetoId();
     }
+
 
     public void deletarProjeto(Long id) {
         Optional<Projeto> projetoOpcional = projetoRepository.findById(id);

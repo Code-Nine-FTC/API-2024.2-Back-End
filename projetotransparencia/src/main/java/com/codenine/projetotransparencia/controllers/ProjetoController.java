@@ -1,21 +1,20 @@
 // controllers/ProjetoController.java
 package com.codenine.projetotransparencia.controllers;
 
+import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
+import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
+import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.entities.Projeto;
-import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.services.ProjetoService;
 import com.codenine.projetotransparencia.utils.ConversorData;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,36 +26,21 @@ public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
 
-    @PostMapping("/cadastrar")
+    @PostMapping(value = "/cadastrar",  consumes= "multipart/form-data")
     public ResponseEntity<?> cadastrarProjeto(
-            @RequestParam String titulo,
-            @RequestParam String referenciaProjeto,
-            @RequestParam String empresa,
-            @RequestParam String objeto,
-            @RequestParam(required = false) String descricao,
-            @RequestParam String nomeCoordenador,
-            @RequestParam Double valor,
-            @RequestParam String dataInicio,
-            @RequestParam String dataTermino,
+            @RequestParam("projeto") String projetojson,
             @RequestPart(required = false) MultipartFile resumoPdf,
-            @RequestPart(required = false) MultipartFile resumoExcel) {
+            @RequestPart(required = false) MultipartFile resumoExcel,
+            @RequestPart(required = false) MultipartFile proposta,
+            @RequestPart(required = false) MultipartFile contrato) {
 
         try {
-            Date dataInicioDate = ConversorData.converterIsoParaData(dataInicio);
-            Date dataTerminoDate = ConversorData.converterIsoParaData(dataTermino);
-
-            var cadastrarProjetoDto = new CadastrarProjetoDto(
-                    titulo,
-                    referenciaProjeto,
-                    empresa,
-                    objeto,
-                    Optional.ofNullable(descricao),
-                    nomeCoordenador,
-                    valor,
-                    dataInicioDate,
-                    dataTerminoDate,
+            CadastrarProjetoDto cadastrarProjetoDto = new CadastrarProjetoDto(
+                    projetojson,
                     Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
-                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null)
+                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null),
+                    Optional.ofNullable(proposta != null ? proposta.getBytes() : null),
+                    Optional.ofNullable(contrato != null ? contrato.getBytes() : null)
             );
 
             var projetoId = projetoService.cadastrarProjeto(cadastrarProjetoDto);
