@@ -1,5 +1,5 @@
 // controllers/AtualizarProjetoDto.java
-package com.codenine.projetotransparencia.controllers;
+package com.codenine.projetotransparencia.controllers.dto;
 
 import java.util.Date;
 import java.util.Optional;
