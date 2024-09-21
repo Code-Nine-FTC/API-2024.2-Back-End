@@ -4,7 +4,8 @@ public record BuscarProjetoDto(
         String referenciaProjeto,
         String nomeCoordenador,
         String dataInicio,
-        String dataTermino
+        String dataTermino,
+        Double valor
 ) {
 
 }

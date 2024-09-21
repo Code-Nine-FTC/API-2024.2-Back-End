@@ -106,30 +106,20 @@ public class ProjetoController {
         }
     }
 
-    // Listar todos os projetos
     @GetMapping("/listar")
-    public ResponseEntity<List<Projeto>> listarProjetos() {
-        List<Projeto> projetos = projetoService.listarProjetos();
-
-        if (projetos.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-
-        return ResponseEntity.ok(projetos);
-    }
-
-    @GetMapping("/buscar")
     public List<Projeto> listarProjetos(
             @RequestParam(required = false) String referenciaProjeto,
             @RequestParam(required = false) String nomeCoordenador,
             @RequestParam(required = false) String dataInicio,
-            @RequestParam(required = false) String dataTermino
+            @RequestParam(required = false) String dataTermino,
+            @RequestParam(required = false) Double valor
     ) {
         BuscarProjetoDto filtro = new BuscarProjetoDto(
                 referenciaProjeto,
                 nomeCoordenador,
                 dataInicio,
-                dataTermino
+                dataTermino,
+                valor
         );
         return projetoService.buscarProjetos(filtro);
     }

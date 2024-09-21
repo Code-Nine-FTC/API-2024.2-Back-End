@@ -108,6 +108,7 @@ public class ProjetoService {
         String nomeCoordenador = filtro.nomeCoordenador();
         String dataInicio = filtro.dataInicio();
         String dataTermino = filtro.dataTermino();
+        Double valor = filtro.valor();
 
         if (StringUtils.hasText(referenciaProjeto) ||
                 StringUtils.hasText(nomeCoordenador) ||
@@ -115,7 +116,7 @@ public class ProjetoService {
                 StringUtils.hasText(dataTermino)
         ) {
             // Filtra os projetos com base nos parâmetros fornecidos
-            return projetoRepository.findByFiltros(referenciaProjeto, nomeCoordenador, dataInicio, dataTermino);
+            return projetoRepository.findByFiltros(referenciaProjeto, nomeCoordenador, dataInicio, dataTermino, valor);
         } else {
             // Se nenhum filtro foi passado, retorna todos os projetos
             return projetoRepository.findAll();
