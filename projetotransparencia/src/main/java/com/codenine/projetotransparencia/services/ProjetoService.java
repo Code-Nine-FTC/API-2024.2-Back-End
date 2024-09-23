@@ -95,7 +95,7 @@ public class ProjetoService {
             }
         }
 
-        return projetoRepository.save(projeto).getProjetoId();
+        return projetoRepository.save(projeto).getId();
     }
 
     public List<Projeto> listarProjetos() {
@@ -149,7 +149,7 @@ public class ProjetoService {
         atualizarProjetoDto.resumoExcel().ifPresent(projetoExistente::setResumoExcel);
 
         projetoRepository.save(projetoExistente);
-        return projetoExistente.getProjetoId();
+        return projetoExistente.getId();
     }
 
 
