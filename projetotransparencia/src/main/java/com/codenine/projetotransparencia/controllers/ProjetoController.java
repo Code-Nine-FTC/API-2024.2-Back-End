@@ -29,6 +29,23 @@ public class ProjetoController {
     @PostMapping(value = "/cadastrar",  consumes= "multipart/form-data")
     public ResponseEntity<?> cadastrarProjeto(
             @RequestParam("projeto") String projetojson,
+
+        try {
+            CadastrarProjetoDto cadastrarProjetoDto = new CadastrarProjetoDto(projetojson);
+
+            var projetoId = projetoService.cadastrarProjeto(cadastrarProjetoDto);
+            return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).body("Projeto cadastrado com sucesso");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Datas inválidas");
+        }
+    }
+
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<String> atualizarProjeto(
+            @RequestParam("projeto") String projetojson,
+            @PathVariable Long id,
             @RequestPart(required = false) MultipartFile resumoPdf,
             @RequestPart(required = false) MultipartFile resumoExcel,
             @RequestPart(required = false) MultipartFile proposta,
@@ -50,49 +67,46 @@ public class ProjetoController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Datas inválidas");
         }
-    }
+//            @PathVariable Long id,
+//            @RequestParam(required = false) String titulo,
+//            @RequestParam(required = false) String referenciaProjeto,
+//            @RequestParam(required = false) String empresa,
+//            @RequestParam(required = false) String objeto,
+//            @RequestParam(required = false) String descricao,
+//            @RequestParam(required = false) String nomeCoordenador,
+//            @RequestParam(required = false) Double valor,
+//            @RequestParam(required = false) String dataInicio,
+//            @RequestParam(required = false) String dataTermino,
+//            @RequestPart(required = false) MultipartFile resumoPdf,
+//            @RequestPart(required = false) MultipartFile resumoExcel) {
+//
+//        try {
+//            Optional<Date> dataInicioDate = Optional.ofNullable(dataInicio != null ? ConversorData.converterIsoParaData(dataInicio) : null);
+//            Optional<Date> dataTerminoDate = Optional.ofNullable(dataTermino != null ? ConversorData.converterIsoParaData(dataTermino) : null);
+//
+//            var atualizarProjetoDto = new AtualizarProjetoDto(
+//                    id,  // O ID é passado aqui
+//                    Optional.ofNullable(titulo),
+//                    Optional.ofNullable(referenciaProjeto),
+//                    Optional.ofNullable(empresa),
+//                    Optional.ofNullable(objeto),
+//                    Optional.ofNullable(descricao),
+//                    Optional.ofNullable(nomeCoordenador),
+//                    Optional.ofNullable(valor),
+//                    dataInicioDate,
+//                    dataTerminoDate,
+//                    Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
+//                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null)
+//            );
+//
+//            Long projetoId = projetoService.atualizarProjeto(atualizarProjetoDto);
+//            return ResponseEntity.ok("Projeto atualizado com sucesso! ID: " + projetoId);
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        } catch (IOException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar arquivos.");
+//        }
 
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<String> atualizarProjeto(
-            @PathVariable Long id,
-            @RequestParam(required = false) String titulo,
-            @RequestParam(required = false) String referenciaProjeto,
-            @RequestParam(required = false) String empresa,
-            @RequestParam(required = false) String objeto,
-            @RequestParam(required = false) String descricao,
-            @RequestParam(required = false) String nomeCoordenador,
-            @RequestParam(required = false) Double valor,
-            @RequestParam(required = false) String dataInicio,
-            @RequestParam(required = false) String dataTermino,
-            @RequestPart(required = false) MultipartFile resumoPdf,
-            @RequestPart(required = false) MultipartFile resumoExcel) {
-
-        try {
-            Optional<Date> dataInicioDate = Optional.ofNullable(dataInicio != null ? ConversorData.converterIsoParaData(dataInicio) : null);
-            Optional<Date> dataTerminoDate = Optional.ofNullable(dataTermino != null ? ConversorData.converterIsoParaData(dataTermino) : null);
-
-            var atualizarProjetoDto = new AtualizarProjetoDto(
-                    id,  // O ID é passado aqui
-                    Optional.ofNullable(titulo),
-                    Optional.ofNullable(referenciaProjeto),
-                    Optional.ofNullable(empresa),
-                    Optional.ofNullable(objeto),
-                    Optional.ofNullable(descricao),
-                    Optional.ofNullable(nomeCoordenador),
-                    Optional.ofNullable(valor),
-                    dataInicioDate,
-                    dataTerminoDate,
-                    Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
-                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null)
-            );
-
-            Long projetoId = projetoService.atualizarProjeto(atualizarProjetoDto);
-            return ResponseEntity.ok("Projeto atualizado com sucesso! ID: " + projetoId);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar arquivos.");
-        }
     }
 
     // Deletar projeto pelo ID
