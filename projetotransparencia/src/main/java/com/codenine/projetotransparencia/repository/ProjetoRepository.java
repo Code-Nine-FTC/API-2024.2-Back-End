@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
     @Query("SELECT p FROM Projeto p WHERE " +
-            "(:referenciaProjeto IS NULL OR p.referenciaProjeto LIKE %:referenciaProjeto%) AND " +
+            "(:referencia IS NULL OR p.referencia LIKE %:referencia%) AND " +
             "(:nomeCoordenador IS NULL OR p.nomeCoordenador LIKE %:nomeCoordenador%) AND " +
             "(:dataInicio IS NULL OR p.dataInicio >= :dataInicio) AND " +
             "(:dataTermino IS NULL OR p.dataTermino <= :dataTermino) AND" +
             "(:valor IS NULL OR p.valor = :valor)"
     )
-    List<Projeto> findByFiltros(@Param("referenciaProjeto") String referenciaProjeto,
+    List<Projeto> findByFiltros(@Param("referencia") String referencia,
                                 @Param("nomeCoordenador") String nomeCoordenador,
                                 @Param("dataInicio") String dataInicio,
                                 @Param("dataTermino") String dataTermino,

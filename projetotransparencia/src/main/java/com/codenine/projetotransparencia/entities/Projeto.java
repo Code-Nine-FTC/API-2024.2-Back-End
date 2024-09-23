@@ -3,7 +3,6 @@ package com.codenine.projetotransparencia.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.io.File;
 import java.util.Date;
 
 @Entity
@@ -20,12 +19,12 @@ public class Projeto {
     private String titulo;
 
     @Column(nullable = false)
-    private String referenciaProjeto;
+    private String referencia;
 
-    @Column (nullable = false)
-    private String empresa;
+    @Column (nullable = true)
+    private String contratante;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String objeto;
 
     @Column(nullable = true)
@@ -34,7 +33,7 @@ public class Projeto {
     @Column(nullable = false)
     private String nomeCoordenador;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double valor;
 
     @Temporal(TemporalType.DATE)
@@ -42,7 +41,7 @@ public class Projeto {
     private Date dataInicio;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date dataTermino;
 
     @Lob
@@ -64,10 +63,10 @@ public class Projeto {
     public Projeto() {
     }
 
-    public Projeto(String titulo, String referenciaProjeto, String empresa, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
+    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
         this.titulo = titulo;
-        this.referenciaProjeto = referenciaProjeto;
-        this.empresa = empresa;
+        this.referencia = referencia;
+        this.contratante = contratante;
         this.objeto = objeto;
         this.descricao = descricao;
         this.nomeCoordenador = nomeCoordenador;

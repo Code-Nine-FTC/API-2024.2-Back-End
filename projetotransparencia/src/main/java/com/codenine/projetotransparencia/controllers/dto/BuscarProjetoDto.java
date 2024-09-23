@@ -1,7 +1,7 @@
 package com.codenine.projetotransparencia.controllers.dto;
 
 public record BuscarProjetoDto(
-        String referenciaProjeto,
+        String referencia,
         String nomeCoordenador,
         String dataInicio,
         String dataTermino,

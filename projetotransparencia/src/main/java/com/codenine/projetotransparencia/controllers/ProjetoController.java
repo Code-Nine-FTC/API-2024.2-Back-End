@@ -26,14 +26,10 @@ public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
 
-    @PostMapping(value = "/cadastrar",  consumes= "multipart/form-data")
-    public ResponseEntity<?> cadastrarProjeto(
-            @RequestParam("projeto") String projetojson,
-
+    @PostMapping("/cadastrar")
+    public ResponseEntity<?> cadastrarProjeto(@RequestBody CadastrarProjetoDto projeto) {
         try {
-            CadastrarProjetoDto cadastrarProjetoDto = new CadastrarProjetoDto(projetojson);
-
-            var projetoId = projetoService.cadastrarProjeto(cadastrarProjetoDto);
+            var projetoId = projetoService.cadastrarProjeto(projeto);
             return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).body("Projeto cadastrado com sucesso");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -44,7 +40,7 @@ public class ProjetoController {
 
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<String> atualizarProjeto(
-            @RequestParam("projeto") String projetojson,
+            @RequestParam(required = false, value = "projeto") String projetojson,
             @PathVariable Long id,
             @RequestPart(required = false) MultipartFile resumoPdf,
             @RequestPart(required = false) MultipartFile resumoExcel,
@@ -52,7 +48,8 @@ public class ProjetoController {
             @RequestPart(required = false) MultipartFile contrato) {
 
         try {
-            CadastrarProjetoDto cadastrarProjetoDto = new CadastrarProjetoDto(
+            AtualizarProjetoDto atualizarProjetoDto = new AtualizarProjetoDto (
+                    id,
                     projetojson,
                     Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
                     Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null),
@@ -60,8 +57,9 @@ public class ProjetoController {
                     Optional.ofNullable(contrato != null ? contrato.getBytes() : null)
             );
 
-            var projetoId = projetoService.cadastrarProjeto(cadastrarProjetoDto);
-            return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).body("Projeto cadastrado com sucesso");
+            projetoService.atualizarProjeto(atualizarProjetoDto);
+
+            return ResponseEntity.ok(null);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (IOException e) {
@@ -70,7 +68,7 @@ public class ProjetoController {
 //            @PathVariable Long id,
 //            @RequestParam(required = false) String titulo,
 //            @RequestParam(required = false) String referenciaProjeto,
-//            @RequestParam(required = false) String empresa,
+//            @RequestParam(required = false) String contratante,
 //            @RequestParam(required = false) String objeto,
 //            @RequestParam(required = false) String descricao,
 //            @RequestParam(required = false) String nomeCoordenador,
@@ -88,7 +86,7 @@ public class ProjetoController {
 //                    id,  // O ID é passado aqui
 //                    Optional.ofNullable(titulo),
 //                    Optional.ofNullable(referenciaProjeto),
-//                    Optional.ofNullable(empresa),
+//                    Optional.ofNullable(contratante),
 //                    Optional.ofNullable(objeto),
 //                    Optional.ofNullable(descricao),
 //                    Optional.ofNullable(nomeCoordenador),
