@@ -32,7 +32,7 @@ public class AdministradorV1 implements UserDetails {
 	private AdminRole role;
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if(this.role == AdminRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("USER_ROLE"));
+		if(this.role == AdminRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
 		else return	List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 	@Override
@@ -40,6 +40,18 @@ public class AdministradorV1 implements UserDetails {
 		// TODO Auto-generated method stub
 		return login;
 	}
+	public void setLogin(String login) {
+	    this.login = login;
+	}
+
+	public void setPassword(String password) {
+	    this.password = password;
+	}
+
+	public void setRole(AdminRole role) {
+	    this.role = role;
+	}
+
 	
 
 }
