@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,8 +31,8 @@ public class ProjetoController {
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarProjeto(@RequestBody CadastrarProjetoDto projeto) {
         try {
-            var projetoId = projetoService.cadastrarProjeto(projeto);
-            return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).body("Projeto cadastrado com sucesso");
+            var id = projetoService.cadastrarProjeto(projeto);
+            return ResponseEntity.created(URI.create("/projeto/visualizar/" + id.toString())).body("Projeto cadastrado com sucesso");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (IOException e) {
