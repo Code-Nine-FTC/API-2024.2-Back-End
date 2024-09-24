@@ -31,8 +31,8 @@ public class ProjetoController {
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarProjeto(@RequestBody CadastrarProjetoDto projeto) {
         try {
-            var id = projetoService.cadastrarProjeto(projeto);
-            return ResponseEntity.created(URI.create("/projeto/visualizar/" + id.toString())).body("Projeto cadastrado com sucesso");
+            var projetoId = projetoService.cadastrarProjeto(projeto);
+            return ResponseEntity.created(URI.create("/projeto/visualizar/" + projetoId.toString())).body("Projeto cadastrado com sucesso");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (IOException e) {
