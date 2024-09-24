@@ -17,26 +17,37 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
-	@Autowired
-	SecurityFilter securityFilter;
-	@Bean
-	public SecurityFilterChain securiFIlterChain(HttpSecurity httpSecurity) throws Exception {
-		return httpSecurity
-				.csrf(csrf -> csrf.disable())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(authorize -> authorize 
-						.requestMatchers(HttpMethod.POST, "/projeto/cadastrar").hasRole("ADMIN")
-						.anyRequest().permitAll())
-				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
-		
-	}
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
+    @Autowired
+    SecurityFilter securityFilter;
+
+    @Bean
+    public SecurityFilterChain securiFIlterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                // Permite acesso livre a todos os endpoints GET
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                // Restringe todos os POST para ADMIN
+                .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
+                // Restringe PUT para ADMIN
+                .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+                // Restringe DELETE para ADMIN
+                .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                // Qualquer outra requisição precisa de autenticação
+                .anyRequest().authenticated())
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
