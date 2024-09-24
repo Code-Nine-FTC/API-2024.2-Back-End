@@ -17,8 +17,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "ADMIN")
-@Entity(name = "ADMIN")
+@Table(name = "administrador")
+@Entity(name = "administrador")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
