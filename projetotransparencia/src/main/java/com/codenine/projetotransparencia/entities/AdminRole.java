@@ -1,8 +1,8 @@
 package com.codenine.projetotransparencia.entities;
 
 public enum AdminRole {
-	ADMIN("admin"),
-	USER("user");
+	ADMIN("ROLE_ADMIN"),
+	USER("ROLE_USER");
 	
 	private String role;
 	
