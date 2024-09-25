@@ -34,7 +34,7 @@ public class AdminDataLoader implements CommandLineRunner {
             // salvando no banco de dados
             administradorRepository.save(admin);
 
-            System.out.println("Administrador criado com sucesso: " + adminLogin);
+            System.out.println("Administrador criado com sucesso: ");
         } else {
             System.out.println("Administrador já existe. Nenhuma ação necessária.");
         }

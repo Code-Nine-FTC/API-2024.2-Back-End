@@ -32,8 +32,8 @@ public class SecurityConfigurations {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                    // Permite acesso livre ao endpoint de login
-                    .requestMatchers("/auth/login").permitAll()
+                // Permite acesso livre ao endpoint de login
+                .requestMatchers("/auth/login").permitAll()
                 // Permite acesso livre a todos os endpoints GET
                 .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 // Restringe todos os POST para ADMIN

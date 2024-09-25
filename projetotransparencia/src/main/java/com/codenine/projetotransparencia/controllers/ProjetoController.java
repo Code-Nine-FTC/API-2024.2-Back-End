@@ -6,13 +6,11 @@ import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.services.ProjetoService;
-import com.codenine.projetotransparencia.utils.ConversorData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
