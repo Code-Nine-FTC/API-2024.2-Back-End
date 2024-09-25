@@ -23,7 +23,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/projeto")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
