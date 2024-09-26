@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -44,21 +45,24 @@ public class Projeto {
     @Column(nullable = true)
     private Date dataTermino;
 
-    @Lob
-    @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] resumoPdf;
+//    @Lob
+//    @Column(nullable = true, columnDefinition = "LONGBLOB")
+//    private byte[] resumoPdf;
+//
+//    @Lob
+//    @Column(nullable = true, columnDefinition = "LONGBLOB")
+//    private byte[] resumoExcel;
+//
+//    @Lob
+//    @Column(nullable = true, columnDefinition = "LONGBLOB")
+//    private byte[] proposta;
+//
+//    @Lob
+//    @Column(nullable = true, columnDefinition = "LONGBLOB")
+//    private byte[] contrato;
 
-    @Lob
-    @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] resumoExcel;
-
-    @Lob
-    @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] proposta;
-
-    @Lob
-    @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] contrato;
+    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Documento> documentos;
 
     public Projeto() {
     }
@@ -73,9 +77,9 @@ public class Projeto {
         this.valor = valor;
         this.dataInicio = dataInicio;
         this.dataTermino = dataTermino;
-        this.resumoPdf = resumoPdf;
-        this.resumoExcel = resumoExcel;
-        this.proposta = proposta;
-        this.contrato = contrato;
+//        this.resumoPdf = resumoPdf;
+//        this.resumoExcel = resumoExcel;
+//        this.proposta = proposta;
+//        this.contrato = contrato;
     }
 }
