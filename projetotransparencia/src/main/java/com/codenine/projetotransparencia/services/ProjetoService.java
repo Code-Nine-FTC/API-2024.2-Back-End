@@ -11,10 +11,12 @@ import com.codenine.projetotransparencia.utils.documents.VerificarPdf;
 import com.codenine.projetotransparencia.utils.documents.VerificarTamanho;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +42,8 @@ public class ProjetoService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
 
@@ -70,14 +74,28 @@ public class ProjetoService {
 
         String referencia = filtro.referencia();
         String nomeCoordenador = filtro.nomeCoordenador();
-        String dataInicio = filtro.dataInicio();
-        String dataTermino = filtro.dataTermino();
+        String dataInicioStr = filtro.dataInicio();
+        String dataTerminoStr = filtro.dataTermino();
         Double valor = filtro.valor();
+
+        Date dataInicio = null;
+        Date dataTermino = null;
+
+        try {
+            if (StringUtils.hasText(dataInicioStr)) {
+                dataInicio = dateFormat.parse(dataInicioStr);
+            }
+            if (StringUtils.hasText(dataTerminoStr)) {
+                dataTermino = dateFormat.parse(dataTerminoStr);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Erro ao converter datas", e);
+        }
 
         if (StringUtils.hasText(referencia) ||
                 StringUtils.hasText(nomeCoordenador) ||
-                StringUtils.hasText(dataInicio) ||
-                StringUtils.hasText(dataTermino)
+                dataInicio != null ||
+                dataTermino != null
         ) {
             // Filtra os projetos com base nos parâmetros fornecidos
             return projetoRepository.findByFiltros(referencia, nomeCoordenador, dataInicio, dataTermino, valor);
