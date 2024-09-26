@@ -53,7 +53,7 @@ public class ProjetoService {
                 cadastrarProjetoDto.contratante().orElse(null),
                 null, // objeto
                 null, // descricao
-                cadastrarProjetoDto.coordenador(),
+                cadastrarProjetoDto.nomeCoordenador(),
                 cadastrarProjetoDto.valor().orElse(null),
                 cadastrarProjetoDto.dataInicio(),
                 cadastrarProjetoDto.dataTermino().orElse(null),

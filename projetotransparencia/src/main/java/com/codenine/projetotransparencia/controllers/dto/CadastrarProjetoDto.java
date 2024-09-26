@@ -8,7 +8,7 @@ import java.util.Optional;
 public record CadastrarProjetoDto (
         @NotEmpty String titulo,
         @NotEmpty String referencia,
-        @NotEmpty String coordenador,
+        @NotEmpty String nomeCoordenador,
         @NotEmpty Date dataInicio,
         Optional<Double> valor,
         Optional<Date> dataTermino,
