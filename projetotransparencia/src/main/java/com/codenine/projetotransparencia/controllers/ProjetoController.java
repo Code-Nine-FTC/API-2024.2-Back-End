@@ -50,10 +50,10 @@ public class ProjetoController {
             AtualizarProjetoDto atualizarProjetoDto = new AtualizarProjetoDto (
                     id,
                     projetojson,
-                    Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
-                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null),
-                    Optional.ofNullable(proposta != null ? proposta.getBytes() : null),
-                    Optional.ofNullable(contrato != null ? contrato.getBytes() : null)
+                    Optional.ofNullable(resumoPdf),
+                    Optional.ofNullable(resumoExcel),
+                    Optional.ofNullable(proposta),
+                    Optional.ofNullable(contrato)
             );
 
             projetoService.atualizarProjeto(atualizarProjetoDto);
