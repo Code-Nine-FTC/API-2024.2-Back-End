@@ -27,6 +27,9 @@ public class ProjetoService {
     private ProjetoRepository projetoRepository;
 
     @Autowired
+    private DocumentoService documentoService;
+
+    @Autowired
     private VerificarExcel verificarExcel;
 
     @Autowired
@@ -88,7 +91,7 @@ public class ProjetoService {
         return projetoRepository.findById(id).orElse(null);
     }
 
-    public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) throws JsonProcessingException {
+    public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) throws IOException {
         Optional<Projeto> projetoOpcional = projetoRepository.findById(atualizarProjetoDto.id());
 
         if (projetoOpcional.isEmpty()) {
@@ -136,73 +139,36 @@ public class ProjetoService {
 //        BeanUtils.copyProperties(projetoAtualizado, projeto, getNullPropertyNames(projetoAtualizado));
 
         if (atualizarProjetoDto.resumoPdf().isPresent()) {
-            if (!verificarPdf.verificar(atualizarProjetoDto.resumoPdf().get())) {
-                throw new IllegalArgumentException("O arquivo de resumo deve ser um PDF ou Excel");
-            }
-            else {
-                if (!verificarTamanho.verificar(atualizarProjetoDto.resumoPdf().get())) {
-                    throw new IllegalArgumentException("O arquivo de resumo deve ter no máximo 5MB");
-                }
-                else {
-                    projeto.setResumoPdf(atualizarProjetoDto.resumoPdf().get());
-                }
-            }
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "resumoPdf".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.resumoPdf().get(), projeto, "resumoPdf");
         }
+
         if (atualizarProjetoDto.resumoExcel().isPresent()) {
-            if (!verificarExcel.verificar(atualizarProjetoDto.resumoExcel().get())) {
-                throw new IllegalArgumentException("O arquivo de resumo deve ser um Pdf ou Excel");
-            }
-            else {
-                if (!verificarTamanho.verificar(atualizarProjetoDto.resumoExcel().get())) {
-                    throw new IllegalArgumentException("O arquivo de resumo deve ter no máximo 5MB");
-                }
-                else {
-                    projeto.setResumoExcel(atualizarProjetoDto.resumoExcel().get());
-                }
-            }
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "resumoExcel".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.resumoExcel().get(), projeto, "resumoExcel");
         }
 
         if (atualizarProjetoDto.proposta().isPresent()) {
-            if (!verificarPdf.verificar(atualizarProjetoDto.proposta().get())) {
-                throw new IllegalArgumentException("O arquivo de proposta deve ser um PDF");
-            }
-            else {
-                if (!verificarTamanho.verificar(atualizarProjetoDto.proposta().get())) {
-                    throw new IllegalArgumentException("O arquivo de proposta deve ter no máximo 5MB");
-                }
-                else {
-                    projeto.setProposta(atualizarProjetoDto.proposta().get());
-                }
-            }
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "proposta".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.proposta().get(), projeto, "proposta");
         }
 
         if (atualizarProjetoDto.contrato().isPresent()) {
-            if (!verificarPdf.verificar(atualizarProjetoDto.contrato().get())) {
-                throw new IllegalArgumentException("O arquivo de contrato deve ser um PDF");
-            }
-            else {
-                if (!verificarTamanho.verificar(atualizarProjetoDto.contrato().get())) {
-                    throw new IllegalArgumentException("O arquivo de contrato deve ter no máximo 5MB");
-                }
-                else {
-                    projeto.setContrato(atualizarProjetoDto.contrato().get());
-                }
-            }
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "contrato".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.contrato().get(), projeto, "contrato");
         }
-
-
-
-//        atualizarProjetoDto.titulo().ifPresent(projetoExistente::setTitulo);
-//        atualizarProjetoDto.referenciaProjeto().ifPresent(projetoExistente::setReferenciaProjeto);
-//        atualizarProjetoDto.empresa().ifPresent(projetoExistente::setContratante);
-//        atualizarProjetoDto.objeto().ifPresent(projetoExistente::setObjeto);
-//        atualizarProjetoDto.descricao().ifPresent(projetoExistente::setDescricao);
-//        atualizarProjetoDto.nomeCoordenador().ifPresent(projetoExistente::setNomeCoordenador);
-//        atualizarProjetoDto.valor().ifPresent(projetoExistente::setValor);
-//        atualizarProjetoDto.dataInicio().ifPresent(projetoExistente::setDataInicio);
-//        atualizarProjetoDto.dataTermino().ifPresent(projetoExistente::setDataTermino);
-//        atualizarProjetoDto.resumoPdf().ifPresent(projetoExistente::setResumoPdf);
-//        atualizarProjetoDto.resumoExcel().ifPresent(projetoExistente::setResumoExcel);
 
         projetoRepository.save(projeto);
         return projeto.getId();
