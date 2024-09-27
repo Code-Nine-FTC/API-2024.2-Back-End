@@ -86,6 +86,7 @@ public class ProjetoController {
             @RequestParam(required = false) String dataTermino,
             @RequestParam(required = false) Double valor
     ) {
+
         Date dateStart = conversorData.converterIsoParaData(dataInicio);
         Date dateEnd = conversorData.converterIsoParaData(dataTermino);
 

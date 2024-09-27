@@ -2,15 +2,23 @@ package com.codenine.projetotransparencia.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
 @Component
 public class ConversorData {
+    private static final SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     public static Date converterIsoParaData(String dataIso) {
-        if (dataIso.startsWith("\"") && dataIso.endsWith("\"")) {
-            dataIso = dataIso.substring(1, dataIso.length() - 1);
+        if (dataIso == null || dataIso.isEmpty()) {
+            return null;
         }
-        return Date.from(Instant.parse(dataIso));
+        try {
+            return isoFormat.parse(dataIso);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Erro ao converter data: " + dataIso, e);
+        }
     }
 }
