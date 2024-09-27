@@ -1,4 +1,3 @@
-// services/ProjetoService.java
 package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
@@ -14,10 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +38,6 @@ public class ProjetoService {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
 
@@ -74,23 +68,9 @@ public class ProjetoService {
 
         String referencia = filtro.referencia();
         String nomeCoordenador = filtro.nomeCoordenador();
-        String dataInicioStr = filtro.dataInicio();
-        String dataTerminoStr = filtro.dataTermino();
+        Date dataInicio = filtro.dataInicio();
+        Date dataTermino = filtro.dataTermino();
         Double valor = filtro.valor();
-
-        Date dataInicio = null;
-        Date dataTermino = null;
-
-        try {
-            if (StringUtils.hasText(dataInicioStr)) {
-                dataInicio = dateFormat.parse(dataInicioStr);
-            }
-            if (StringUtils.hasText(dataTerminoStr)) {
-                dataTermino = dateFormat.parse(dataTerminoStr);
-            }
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Erro ao converter datas", e);
-        }
 
         if (StringUtils.hasText(referencia) ||
                 StringUtils.hasText(nomeCoordenador) ||

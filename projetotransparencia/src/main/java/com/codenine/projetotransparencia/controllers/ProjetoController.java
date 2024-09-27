@@ -1,4 +1,3 @@
-// controllers/ProjetoController.java
 package com.codenine.projetotransparencia.controllers;
 
 import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
@@ -12,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.codenine.projetotransparencia.utils.ConversorData;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
@@ -24,6 +23,8 @@ import java.util.Optional;
 public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
+
+    @Autowired ConversorData conversorData;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarProjeto(@RequestBody CadastrarProjetoDto projeto) {
@@ -64,46 +65,6 @@ public class ProjetoController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Datas inválidas");
         }
-//            @PathVariable Long id,
-//            @RequestParam(required = false) String titulo,
-//            @RequestParam(required = false) String referenciaProjeto,
-//            @RequestParam(required = false) String contratante,
-//            @RequestParam(required = false) String objeto,
-//            @RequestParam(required = false) String descricao,
-//            @RequestParam(required = false) String nomeCoordenador,
-//            @RequestParam(required = false) Double valor,
-//            @RequestParam(required = false) String dataInicio,
-//            @RequestParam(required = false) String dataTermino,
-//            @RequestPart(required = false) MultipartFile resumoPdf,
-//            @RequestPart(required = false) MultipartFile resumoExcel) {
-//
-//        try {
-//            Optional<Date> dataInicioDate = Optional.ofNullable(dataInicio != null ? ConversorData.converterIsoParaData(dataInicio) : null);
-//            Optional<Date> dataTerminoDate = Optional.ofNullable(dataTermino != null ? ConversorData.converterIsoParaData(dataTermino) : null);
-//
-//            var atualizarProjetoDto = new AtualizarProjetoDto(
-//                    id,  // O ID é passado aqui
-//                    Optional.ofNullable(titulo),
-//                    Optional.ofNullable(referenciaProjeto),
-//                    Optional.ofNullable(contratante),
-//                    Optional.ofNullable(objeto),
-//                    Optional.ofNullable(descricao),
-//                    Optional.ofNullable(nomeCoordenador),
-//                    Optional.ofNullable(valor),
-//                    dataInicioDate,
-//                    dataTerminoDate,
-//                    Optional.ofNullable(resumoPdf != null ? resumoPdf.getBytes() : null),
-//                    Optional.ofNullable(resumoExcel != null ? resumoExcel.getBytes() : null)
-//            );
-//
-//            Long projetoId = projetoService.atualizarProjeto(atualizarProjetoDto);
-//            return ResponseEntity.ok("Projeto atualizado com sucesso! ID: " + projetoId);
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//        } catch (IOException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar arquivos.");
-//        }
-
     }
 
     // Deletar projeto pelo ID
@@ -125,11 +86,14 @@ public class ProjetoController {
             @RequestParam(required = false) String dataTermino,
             @RequestParam(required = false) Double valor
     ) {
+        Date dateStart = conversorData.converterIsoParaData(dataInicio);
+        Date dateEnd = conversorData.converterIsoParaData(dataTermino);
+
         BuscarProjetoDto filtro = new BuscarProjetoDto(
                 referenciaProjeto,
                 nomeCoordenador,
-                dataInicio,
-                dataTermino,
+                dateStart,
+                dateEnd,
                 valor
         );
         return projetoService.buscarProjetos(filtro);

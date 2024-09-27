@@ -1,10 +1,12 @@
 package com.codenine.projetotransparencia.controllers.dto;
 
+import java.util.Date;
+
 public record BuscarProjetoDto(
         String referencia,
         String nomeCoordenador,
-        String dataInicio,
-        String dataTermino,
+        Date dataInicio,
+        Date dataTermino,
         Double valor
 ) {
 

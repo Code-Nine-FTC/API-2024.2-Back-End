@@ -20,6 +20,5 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
                                 @Param("dataInicio") Date dataInicio,
                                 @Param("dataTermino") Date dataTermino,
                                 @Param("valor") Double valor);
-
 }
 

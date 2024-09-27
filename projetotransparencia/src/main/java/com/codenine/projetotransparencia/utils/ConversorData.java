@@ -1,9 +1,11 @@
 package com.codenine.projetotransparencia.utils;
 
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.Date;
 
+@Component
 public class ConversorData {
     public static Date converterIsoParaData(String dataIso) {
         if (dataIso.startsWith("\"") && dataIso.endsWith("\"")) {
