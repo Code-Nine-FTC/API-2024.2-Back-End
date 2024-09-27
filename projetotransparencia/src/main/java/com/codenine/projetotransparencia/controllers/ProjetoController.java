@@ -57,6 +57,8 @@ public class ProjetoController {
                     Optional.ofNullable(contrato)
             );
 
+            System.out.print("Atualizar Projeto DTO: " + atualizarProjetoDto);
+
             projetoService.atualizarProjeto(atualizarProjetoDto);
 
             return ResponseEntity.ok(null);
