@@ -19,7 +19,6 @@ import com.codenine.projetotransparencia.entities.AdministradorV1;
 @Service
 public class TokenService {
 	@Value("${api.security.token.secret}")
-	//@Value("my-secret-key")
 	private String secret;
 
 	public String generateToken(AdministradorV1 administradorV1) {
