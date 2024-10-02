@@ -24,16 +24,18 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
 */
 public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
-    @Query("SELECT p FROM Projeto p WHERE " +
+         @Query("SELECT p FROM Projeto p WHERE " +
             "(:referencia IS NULL OR p.referencia LIKE %:referencia%) AND " +
             "(:nomeCoordenador IS NULL OR p.nomeCoordenador LIKE %:nomeCoordenador%) AND " +
             "(:dataInicio IS NULL OR p.dataInicio >= :dataInicio) AND " +
             "(:dataTermino IS NULL OR p.dataTermino <= :dataTermino) AND " +
             "(:valor IS NULL OR p.valor = :valor) " +
             "ORDER BY p.dataInicio ASC")
-    List<Projeto> findByFiltros(@Param("referencia") String referencia,
+        List<Projeto> findByFiltros(@Param("referencia") String referencia,
                                 @Param("nomeCoordenador") String nomeCoordenador,
                                 @Param("dataInicio") Date dataInicio,
                                 @Param("dataTermino") Date dataTermino,
                                 @Param("valor") Double valor);
+
+        long countByNomeCoordenador(String nomeCoordenador);
 }
