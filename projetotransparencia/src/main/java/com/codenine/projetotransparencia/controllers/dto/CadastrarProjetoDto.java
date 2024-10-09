@@ -13,7 +13,9 @@ public record CadastrarProjetoDto (
         Optional<Double> valor,
         Optional<Date> dataTermino,
         Optional<String> contratante,
-        Optional<String> status
+        Optional<String> status,
+        Optional<String> integrantes,
+        Optional<String> objetivo
 ) {
 
 }
