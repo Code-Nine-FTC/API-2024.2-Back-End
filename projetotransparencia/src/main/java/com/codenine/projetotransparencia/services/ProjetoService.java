@@ -60,10 +60,12 @@ public class ProjetoService {
                 cadastrarProjetoDto.valor().orElse(null),
                 cadastrarProjetoDto.dataInicio(),
                 cadastrarProjetoDto.dataTermino().orElse(null),
+                cadastrarProjetoDto.status().orElse(null),
                 null, // resumoPdf
                 null, // resumoExcel
                 null, // proposta
                 null  // contrato
+
         );
 
         return projetoRepository.save(projeto).getId();
@@ -205,6 +207,8 @@ public class ProjetoService {
             String dataInicioString = projetoNode.has("Data de início") ? projetoNode.get("Data de início").asText() : "";
             String dataTerminoString = projetoNode.has("Data de término") ? projetoNode.get("Data de término").asText() : "";
 
+            String status = projetoNode.has("Status") ? projetoNode.get("Status").asText() : "Status não informado"; // Extraindo status
+            
             String dataInicioNormalizada = dataInicioString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataInicioString);
             String dataTerminoNormalizada = dataTerminoString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataTerminoString);
 
@@ -227,7 +231,9 @@ public class ProjetoService {
                     dataInicio,
                     valor,
                     Optional.ofNullable(dataTermino),
-                    contratante
+                    contratante,
+                    Optional.ofNullable(status)
+
             );
 
             // Verifica se o projeto já existe
@@ -237,7 +243,7 @@ public class ProjetoService {
                 cadastrarProjeto(dto);
             } else {
                 // Se o projeto existir, atualiza suas informações
-                Projeto projetoExistente = projetosExistentes.get(0); 
+                Projeto projetoExistente = projetosExistentes.get(0);
                 atualizarProjeto(projetoExistente, dto);
             }
         }
