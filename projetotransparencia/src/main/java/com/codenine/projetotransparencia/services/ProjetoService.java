@@ -207,8 +207,8 @@ public class ProjetoService {
             String dataInicioString = projetoNode.has("Data de início") ? projetoNode.get("Data de início").asText() : "";
             String dataTerminoString = projetoNode.has("Data de término") ? projetoNode.get("Data de término").asText() : "";
 
-            String status = projetoNode.has("Status") ? projetoNode.get("Status").asText() : "Status não informado"; // Extraindo status
-            
+            String status = "Concluído";
+
             String dataInicioNormalizada = dataInicioString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataInicioString);
             String dataTerminoNormalizada = dataTerminoString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataTerminoString);
 
