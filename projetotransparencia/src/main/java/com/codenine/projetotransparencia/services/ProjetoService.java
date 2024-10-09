@@ -63,6 +63,7 @@ public class ProjetoService {
                 cadastrarProjetoDto.status().orElse(null),
                 cadastrarProjetoDto.integrantes().orElse(null),
                 cadastrarProjetoDto.objetivo().orElse(null),
+                cadastrarProjetoDto.links().orElse(null),
                 null, // resumoPdf
                 null, // resumoExcel
                 null, // proposta
@@ -212,6 +213,7 @@ public class ProjetoService {
             String status = "Concluído";
             String integrantes = null;
             String objetivo = null;
+            String links = null;
 
             String dataInicioNormalizada = dataInicioString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataInicioString);
             String dataTerminoNormalizada = dataTerminoString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataTerminoString);
@@ -238,7 +240,8 @@ public class ProjetoService {
                     contratante,
                     Optional.ofNullable(status),
                     Optional.ofNullable(integrantes),
-                    Optional.ofNullable(objetivo)
+                    Optional.ofNullable(objetivo),
+                    Optional.ofNullable(links)
 
             );
 
