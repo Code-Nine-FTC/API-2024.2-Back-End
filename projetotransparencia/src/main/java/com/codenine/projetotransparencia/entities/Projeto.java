@@ -53,6 +53,9 @@ public class Projeto {
     @Column(nullable = false)
     private  String objetivo;
 
+    @Column(nullable = false)
+    private String links;
+
 
 
 //    @Lob
@@ -77,7 +80,7 @@ public class Projeto {
     public Projeto() {
     }
 
-    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, String status, String integrantes, String objetivo, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
+    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, String status, String integrantes, String objetivo, String links, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
         this.titulo = titulo;
         this.referencia = referencia;
         this.contratante = contratante;
@@ -90,6 +93,7 @@ public class Projeto {
         this.status = status;
         this.integrantes = integrantes;
         this.objetivo = objetivo;
+        this.links = links;
 //        this.resumoPdf = resumoPdf;
 //        this.resumoExcel = resumoExcel;
 //        this.proposta = proposta;
