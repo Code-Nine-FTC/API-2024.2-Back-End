@@ -12,6 +12,8 @@ public record CadastrarProjetoDto (
         @NotEmpty Date dataInicio,
         Optional<Double> valor,
         Optional<Date> dataTermino,
-        Optional<String> contratante) {
+        Optional<String> contratante,
+        Optional<String> status
+) {
 
 }
