@@ -44,6 +44,11 @@ public class Projeto {
     @Column(nullable = true)
     private Date dataTermino;
 
+    @Column(nullable = true)
+    private String status;
+
+
+
 //    @Lob
 //    @Column(nullable = true, columnDefinition = "LONGBLOB")
 //    private byte[] resumoPdf;
@@ -66,7 +71,7 @@ public class Projeto {
     public Projeto() {
     }
 
-    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
+    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, String status, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
         this.titulo = titulo;
         this.referencia = referencia;
         this.contratante = contratante;
@@ -76,6 +81,7 @@ public class Projeto {
         this.valor = valor;
         this.dataInicio = dataInicio;
         this.dataTermino = dataTermino;
+        this.status = status;
 //        this.resumoPdf = resumoPdf;
 //        this.resumoExcel = resumoExcel;
 //        this.proposta = proposta;
