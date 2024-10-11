@@ -45,7 +45,10 @@ public class ProjetoController {
             @RequestPart(required = false) MultipartFile resumoPdf,
             @RequestPart(required = false) MultipartFile resumoExcel,
             @RequestPart(required = false) MultipartFile proposta,
-            @RequestPart(required = false) MultipartFile contrato) {
+            @RequestPart(required = false) MultipartFile contrato,
+            @RequestPart(required = false) MultipartFile status,
+            @RequestPart(required = false) MultipartFile objetivo,
+            @RequestPart(required = false) MultipartFile links) {
 
         try {
             AtualizarProjetoDto atualizarProjetoDto = new AtualizarProjetoDto (
