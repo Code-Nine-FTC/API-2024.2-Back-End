@@ -142,6 +142,19 @@ public class ProjetoService {
             if (projetoAtualizado.getDataTermino() != null) {
                 projeto.setDataTermino(projetoAtualizado.getDataTermino());
             }
+            if(projetoAtualizado.getStatus() != null) {
+                projeto.setStatus(projetoAtualizado.getStatus());
+            }
+            if(projetoAtualizado.getIntegrantes() != null) {
+                projeto.setIntegrantes(projetoAtualizado.getIntegrantes());
+            }
+            if(projetoAtualizado.getObjetivo() != null) {
+                projeto.setObjetivo(projetoAtualizado.getObjetivo());
+            }
+            if(projetoAtualizado.getLinks() != null) {
+                projeto.setLinks(projetoAtualizado.getLinks());
+            }
+
         }
 
         if (atualizarProjetoDto.resumoPdf().isPresent()) {
