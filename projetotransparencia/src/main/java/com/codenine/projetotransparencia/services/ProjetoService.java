@@ -213,7 +213,10 @@ public class ProjetoService {
     }
 
     public void salvarProjetosDoJson() throws IOException, ParseException {
-        JsonNode projetosNode = objectMapper.readTree(new File("C:\\Users\\Jonas\\Desktop\\API-2024.2-Back-End\\raspagem-dados\\projects_data.json"));
+        String workingDir = System.getProperty("user.dir");
+        String caminho = workingDir + File.separator + "raspagem-dados/projects_data.json";
+        //JsonNode projetosNode = objectMapper.readTree(new File("\\API-2024.2-Back-End\\raspagem-dados\\projects_data.json"));
+            JsonNode projetosNode = objectMapper.readTree(new File(caminho));
 
         for (JsonNode projetoNode : projetosNode) {
             String titulo = projetoNode.has("Referência do projeto") ? projetoNode.get("Referência do projeto").asText() : "Título não fornecido";
