@@ -50,10 +50,10 @@ public class Projeto {
     @Column(nullable = true)
     private String integrantes;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private  String objetivo;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String links;
 
 
