@@ -7,7 +7,8 @@ public record BuscarProjetoDto(
         String nomeCoordenador,
         Date dataInicio,
         Date dataTermino,
-        Double valor
+        Double valor,
+        String status
 ) {
 
 }
