@@ -84,12 +84,13 @@ public class ProjetoService {
         Date dataInicio = filtro.dataInicio();
         Date dataTermino = filtro.dataTermino();
         Double valor = filtro.valor();
+        String status = filtro.status();
 
         if (StringUtils.hasText(referencia) ||
                 StringUtils.hasText(nomeCoordenador) ||
                 dataInicio != null ||
                 dataTermino != null) {
-            return projetoRepository.findByFiltros(referencia, nomeCoordenador, dataInicio, dataTermino, valor);
+            return projetoRepository.findByFiltros(referencia, nomeCoordenador, dataInicio, dataTermino, valor, status);
         } else {
             return projetoRepository.findAll();
         }
