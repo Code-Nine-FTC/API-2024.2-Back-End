@@ -14,13 +14,14 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
             "(:nomeCoordenador IS NULL OR p.nomeCoordenador LIKE %:nomeCoordenador%) AND " +
             "(:dataInicio IS NULL OR p.dataInicio >= :dataInicio) AND " +
             "(:dataTermino IS NULL OR p.dataTermino <= :dataTermino) AND " +
-            "(:valor IS NULL OR p.valor = :valor) " +
+            "(:valor IS NULL OR p.valor = :valor) AND" + "(:status IS NULL OR p.status LIKE %:status%)" +
             "ORDER BY p.dataInicio ASC")
     List<Projeto> findByFiltros(@Param("referencia") String referencia,
                                 @Param("nomeCoordenador") String nomeCoordenador,
                                 @Param("dataInicio") Date dataInicio,
                                 @Param("dataTermino") Date dataTermino,
-                                @Param("valor") Double valor);
+                                @Param("valor") Double valor,
+                                @Param("status") String status);
 
     List<Projeto> findByReferencia(String referencia);
 
