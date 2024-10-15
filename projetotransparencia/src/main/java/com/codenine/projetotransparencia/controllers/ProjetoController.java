@@ -89,7 +89,8 @@ public class ProjetoController {
             @RequestParam(required = false) String nomeCoordenador,
             @RequestParam(required = false) String dataInicio,
             @RequestParam(required = false) String dataTermino,
-            @RequestParam(required = false) Double valor
+            @RequestParam(required = false) Double valor,
+            @RequestParam(required = false) String status
     ) {
 
         Date dateStart = conversorData.converterIsoParaData(dataInicio);
@@ -100,7 +101,8 @@ public class ProjetoController {
                 nomeCoordenador,
                 dateStart,
                 dateEnd,
-                valor
+                valor,
+                status
         );
         return projetoService.buscarProjetos(filtro);
     }
