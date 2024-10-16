@@ -88,6 +88,7 @@ public class ProjetoService {
 
         if (StringUtils.hasText(referencia) ||
                 StringUtils.hasText(nomeCoordenador) ||
+                StringUtils.hasText(status) ||
                 dataInicio != null ||
                 dataTermino != null) {
             return projetoRepository.findByFiltros(referencia, nomeCoordenador, dataInicio, dataTermino, valor, status);
