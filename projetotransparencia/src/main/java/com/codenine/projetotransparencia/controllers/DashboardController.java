@@ -43,5 +43,11 @@ public class DashboardController {
         // Retornando a contagem dos projetos
         return ResponseEntity.ok(resultado);
     }
+    @GetMapping("/projetos/categorias")
+    public ResponseEntity<Map<String, Long>> getProjetosPorCategoria() {
+        Map<String, Long> resultado = dashboardService.contarProjetosPorCategoria();
+        return ResponseEntity.ok(resultado);
+    }
+
 }
 
