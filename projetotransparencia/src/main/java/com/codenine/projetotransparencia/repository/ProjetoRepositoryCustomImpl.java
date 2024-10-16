@@ -70,4 +70,15 @@ public class ProjetoRepositoryCustomImpl {
         // Executar a query e retornar a contagem
         return entityManager.createQuery(query).getSingleResult();
     }
+    public Long contarProjetosPorSituacao(String situacao) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Projeto> root = query.from(Projeto.class);
+
+        query.select(cb.count(root));
+        query.where(cb.equal(root.get("status"), situacao));
+
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
 }
