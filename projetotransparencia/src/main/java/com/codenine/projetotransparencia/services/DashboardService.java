@@ -1,20 +1,28 @@
 package com.codenine.projetotransparencia.services;
 
-import com.codenine.projetotransparencia.repository.ProjetoRepository;
+
+import com.codenine.projetotransparencia.repository.ProjetoRepositoryCustomImpl; // Importando o repositório customizado
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Map;
 import java.util.HashMap;
-
+import java.util.Map;
 
 @Service
 public class DashboardService {
 
-    @Autowired
-    private ProjetoRepository projetoRepository;
 
-    public Map<String, Long> contarProjetosPorCoordenador(String nomeCoordenador) {
-        long quantidade = projetoRepository.countByNomeCoordenador(nomeCoordenador);
+    @Autowired
+    private ProjetoRepositoryCustomImpl projetoRepositoryCustomImpl; // Injetando o repositório customizado
+
+    
+
+    // Novo método para contar projetos dinamicamente
+    public Map<String, Long> contarProjetosDinamicos(String coordenador, String dataInicio, String dataTermino,
+                                                      String valorMaximo, String valorMinimo,
+                                                      String situacaoProjeto, String tipoBusca, String contratante) {
+        Long quantidade = projetoRepositoryCustomImpl.contarProjetosDinamicos(coordenador, dataInicio, dataTermino,
+                                                                            valorMaximo, valorMinimo,
+                                                                            situacaoProjeto, tipoBusca, contratante);
         Map<String, Long> resultado = new HashMap<>();
         resultado.put("quantidade", quantidade);
         return resultado;

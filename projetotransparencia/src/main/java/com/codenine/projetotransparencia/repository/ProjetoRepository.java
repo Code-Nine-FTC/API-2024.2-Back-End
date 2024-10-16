@@ -25,6 +25,5 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
 
     List<Projeto> findByReferencia(String referencia);
 
-    //   contar projetos pelo nome do coordenador
-    long countByNomeCoordenador(String nomeCoordenador);
+
 }
