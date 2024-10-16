@@ -27,4 +27,15 @@ public class DashboardService {
         resultado.put("quantidade", quantidade);
         return resultado;
     }
+    public Map<String, Long> contarProjetosPorCategoria() {
+        Long emAndamento = projetoRepositoryCustomImpl.contarProjetosPorSituacao("Em andamento");
+        Long concluidos = projetoRepositoryCustomImpl.contarProjetosPorSituacao("Concluído");
+
+        Map<String, Long> resultado = new HashMap<>();
+        resultado.put("Em andamento", emAndamento);
+        resultado.put("Concluído", concluidos);
+
+        return resultado;
+    }
+
 }
