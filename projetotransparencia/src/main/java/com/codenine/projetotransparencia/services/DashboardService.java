@@ -23,32 +23,34 @@ public class DashboardService {
     public Map<String, Long> contarProjetosDinamicos(String coordenador, String dataInicio, String dataTermino,
                                                      String valorMaximo, String valorMinimo,
                                                      String situacaoProjeto, String tipoBusca, String contratante) {
-        // Busca os projetos com os filtros dinâmicos
-        List<Projeto> projetosFiltrados = projetoRepositoryCustomImpl.filtrarProjetos(coordenador, dataInicio, dataTermino,
-                valorMaximo, valorMinimo,
-                situacaoProjeto, tipoBusca, contratante);
+        // Chama o método de contagem de projetos dinâmicos com base nos filtros
+        List<Projeto> projetosFiltrados = projetoRepositoryCustomImpl.buscarProjetos(
+                coordenador, dataInicio, dataTermino, valorMaximo, valorMinimo, situacaoProjeto, tipoBusca, contratante);
 
-        // Agrupa os projetos por ano com base no intervalo entre DataInicio e DataTermino
-        return verificarAno(projetosFiltrados);
+        // Agrupa por ano (usando a lógica de intervalo entre dataInicio e dataTermino)
+        return agruparProjetosPorAno(projetosFiltrados);
     }
 
-    private Map<String, Long> verificarAno(List<Projeto> projetos) {
+    // Agrupamento por ano a partir da lista de projetos filtrados
+    private Map<String, Long> agruparProjetosPorAno(List<Projeto> projetos) {
         Map<String, Long> projetosPorAno = new HashMap<>();
 
         for (Projeto projeto : projetos) {
-            LocalDate dataInicio = projeto.getDataInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate dataTermino = projeto.getDataTermino() != null
+            LocalDate dataInicioProjeto = projeto.getDataInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate dataTerminoProjeto = projeto.getDataTermino() != null
                     ? projeto.getDataTermino().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                    : dataInicio;
+                    : dataInicioProjeto;
 
-            int anoInicio = dataInicio.getYear();
-            int anoTermino = dataTermino.getYear();
+            int anoInicio = dataInicioProjeto.getYear();
+            int anoTermino = dataTerminoProjeto.getYear();
 
             for (int ano = anoInicio; ano <= anoTermino; ano++) {
                 String chaveAno = String.valueOf(ano);
                 projetosPorAno.put(chaveAno, projetosPorAno.getOrDefault(chaveAno, 0L) + 1);
             }
         }
+
         return projetosPorAno;
     }
+
 }
