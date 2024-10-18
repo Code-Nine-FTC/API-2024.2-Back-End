@@ -35,7 +35,7 @@ public class ProjetoRepositoryCustomImpl {
 
         // Verificar e adicionar cada condição dinamicamente
         if (coordenador != null && !coordenador.isEmpty()) {
-            predicates.add(cb.equal(root.get("nomeCoordenador"), "%" + coordenador + "%"));
+            predicates.add(cb.like(root.get("nomeCoordenador"), "%" + coordenador + "%"));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
