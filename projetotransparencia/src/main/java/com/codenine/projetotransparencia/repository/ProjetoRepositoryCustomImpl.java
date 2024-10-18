@@ -1,13 +1,10 @@
 package com.codenine.projetotransparencia.repository;
 
 import org.springframework.stereotype.Repository;
-
 import com.codenine.projetotransparencia.entities.Projeto;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,56 +17,64 @@ public class ProjetoRepositoryCustomImpl {
     private EntityManager entityManager;
 
     public List<Projeto> buscarProjetos(String coordenador, String dataInicio, String dataTermino,
-                                        String valorMaximo, String valorMinimo, 
+                                        String valorMaximo, String valorMinimo,
                                         String situacaoProjeto, String tipoBusca, String contratante) {
 
-        // Criando o CriteriaBuilder e o CriteriaQuery para count
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Projeto> query = cb.createQuery(Projeto.class);
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Projeto> query = cb.createQuery(Projeto.class);
+            Root<Projeto> root = query.from(Projeto.class);
+            List<Predicate> predicates = new ArrayList<>();
 
-        // Define o "root" da consulta (a entidade Projeto)
-        Root<Projeto> root = query.from(Projeto.class);
+            if (coordenador != null && !coordenador.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("nomeCoordenador")), "%" + coordenador.toLowerCase() + "%"));
+            }
 
-        // Lista para as condições
-        List<Predicate> predicates = new ArrayList<>();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // Verificar e adicionar cada condição dinamicamente
-        if (coordenador != null && !coordenador.isEmpty()) {
-            predicates.add(cb.like(root.get("nomeCoordenador"), "%" + coordenador + "%"));
-        }
+            if (dataInicio != null && !dataInicio.isEmpty()) {
+                LocalDate inicio = LocalDate.parse(dataInicio, formatter);
+                predicates.add(cb.greaterThanOrEqualTo(root.get("dataInicio"), java.sql.Date.valueOf(inicio)));
+            }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            if (dataTermino != null && !dataTermino.isEmpty()) {
+                LocalDate termino = LocalDate.parse(dataTermino, formatter);
+                predicates.add(cb.lessThanOrEqualTo(root.get("dataTermino"), java.sql.Date.valueOf(termino)));
+            }
 
-       if (dataInicio != null && !dataInicio.isEmpty()) {
-            LocalDate inicio = LocalDate.parse(dataInicio, formatter); // Certifique-se de que a string esteja em um formato adequado
-            predicates.add(cb.greaterThanOrEqualTo(root.get("dataInicio"), java.sql.Date.valueOf(inicio)));
-        }
+            if (valorMaximo != null && !valorMaximo.isEmpty()) {
+                try {
+                    predicates.add(cb.lessThanOrEqualTo(root.get("valor"), Double.parseDouble(valorMaximo)));
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Valor máximo inválido: " + valorMaximo);
+                }
+            }
 
-        if (dataTermino != null && !dataTermino.isEmpty()) {
-            LocalDate termino = LocalDate.parse(dataTermino, formatter); // Certifique-se de que a string esteja em um formato adequado
-            predicates.add(cb.lessThanOrEqualTo(root.get("dataTermino"), java.sql.Date.valueOf(termino)));
-        }
-        if (valorMaximo != null && !valorMaximo.isEmpty()) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("valor"), Double.parseDouble(valorMaximo)));
-        }
-        if (valorMinimo != null && !valorMinimo.isEmpty()) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("valor"), Double.parseDouble(valorMinimo)));
-        }
-        if (situacaoProjeto != null && !situacaoProjeto.isEmpty()) {
-            predicates.add(cb.equal(root.get("status"), situacaoProjeto));
-        }
-        if (tipoBusca != null && !tipoBusca.isEmpty()) {
-            predicates.add(cb.equal(root.get("tipoBusca"), tipoBusca));
-        }
-        if (contratante != null && !contratante.isEmpty()) {
-            predicates.add(cb.equal(root.get("contratante"), contratante));
-        }
+            if (valorMinimo != null && !valorMinimo.isEmpty()) {
+                try {
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("valor"), Double.parseDouble(valorMinimo)));
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Valor mínimo inválido: " + valorMinimo);
+                }
+            }
 
-        // Adiciona os predicados na query
-        query.where(predicates.toArray(new Predicate[0]));
+            if (situacaoProjeto != null && !situacaoProjeto.isEmpty()) {
+                predicates.add(cb.equal(root.get("status"), situacaoProjeto));
+            }
 
-        // Executar a query e retornar a contagem
-        return entityManager.createQuery(query).getResultList();
+            if (tipoBusca != null && !tipoBusca.isEmpty()) {
+                predicates.add(cb.equal(root.get("tipoBusca"), tipoBusca));
+            }
+
+            if (contratante != null && !contratante.isEmpty()) {
+                predicates.add(cb.equal(root.get("contratante"), contratante));
+            }
+
+            query.where(predicates.toArray(new Predicate[0]));
+            return entityManager.createQuery(query).getResultList();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar projetos: " + e.getMessage(), e);
+        }
     }
-
 }
