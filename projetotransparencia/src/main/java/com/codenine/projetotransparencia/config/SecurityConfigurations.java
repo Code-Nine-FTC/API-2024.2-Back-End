@@ -34,6 +34,8 @@ public class SecurityConfigurations {
             .authorizeHttpRequests(authorize -> authorize
                 // Permite acesso livre ao endpoint de login
                 .requestMatchers("/auth/login").permitAll()
+                    // Restringe acesso ao dashboard para ADMIN
+                    .requestMatchers("/dashboard/**").hasRole("ADMIN")
                 // Permite acesso livre a todos os endpoints GET
                 .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 // Restringe todos os POST para ADMIN
