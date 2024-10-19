@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,13 +26,35 @@ public class DashboardController {
             @RequestParam(required = false) String situacaoProjeto,
             @RequestParam(required = false) String tipoBusca,
             @RequestParam(required = false) String contratante
-
     ) {
-        Map<String, Long> resultados = dashboardService.contarProjetosDinamicos(
-                dataInicio, dataTermino, coordenador, valorMaximo, valorMinimo,
-                situacaoProjeto, tipoBusca, contratante
-        );
+        // Logging inicial da busca
+        System.out.println("Iniciando busca de projetos com os seguintes parâmetros:");
+        System.out.println("Coordenador: " + coordenador);
+        System.out.println("Data Início: " + dataInicio);
+        System.out.println("Data Término: " + dataTermino);
+        System.out.println("Valor Máximo: " + valorMaximo);
+        System.out.println("Valor Mínimo: " + valorMinimo);
+        System.out.println("Situação do Projeto: " + situacaoProjeto);
+        System.out.println("Tipo de Busca: " + tipoBusca);
+        System.out.println("Contratante: " + contratante);
 
-        return ResponseEntity.ok(resultados);
+        try {
+            Map<String, Long> resultados = dashboardService.contarProjetosDinamicos(
+                    dataInicio, dataTermino, coordenador, valorMaximo, valorMinimo,
+                    situacaoProjeto, tipoBusca, contratante
+            );
+            System.out.println("Resultados obtidos: " + resultados);
+            return ResponseEntity.ok(resultados);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erro de argumento inválido: " + e.getMessage());
+            Map<String, Long> errorResponse = new HashMap<>();
+            errorResponse.put("error", 0L);
+            return ResponseEntity.badRequest().body(errorResponse);
+        } catch (Exception e) {
+            System.err.println("Erro inesperado: " + e.getMessage());
+            Map<String, Long> errorResponse = new HashMap<>();
+            errorResponse.put("error", 0L);
+            return ResponseEntity.status(500).body(errorResponse);
+        }
     }
 }
