@@ -19,28 +19,36 @@ public class DashboardService {
     public Map<String, Long> contarProjetosDinamicos(String dataInicio, String dataTermino, String coordenador,
                                                      String valorMaximo, String valorMinimo,
                                                      String situacaoProjeto, String tipoBusca, String contratante) {
-
-        List<Projeto> projetosFiltrados = projetoRepositoryCustomImpl.buscarProjetos(
-                coordenador, dataInicio, dataTermino, valorMaximo, valorMinimo, situacaoProjeto, tipoBusca, contratante);
-
-        if (dataInicio != null && dataTermino != null && !projetosFiltrados.isEmpty()) {
-            // Converter as datas para verificar o intervalo
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate inicio = LocalDate.parse(dataInicio, formatter);
-            LocalDate termino = LocalDate.parse(dataTermino, formatter);
-
-            // Verificar se o intervalo é maior que um ano
-            if (inicio.getYear() == termino.getYear()) {
-                // Se o intervalo estiver no mesmo ano, agrupar por meses
-                return agruparProjetosPorMesPorAno(projetosFiltrados, dataInicio, dataTermino);
-            } else {
-                // Se o intervalo abranger mais de um ano, agrupar por anos
-                return agruparProjetosPorAno(projetosFiltrados);
+        try {
+            // Verificar se o valor 'situacaoProjeto' é 'Todos' e substituir por null para não filtrar
+            if ("Todos".equals(situacaoProjeto)) {
+                situacaoProjeto = null;  // Remove o filtro de status
             }
-        }
 
-        // Caso não seja fornecida uma data específica, agrupar por ano
-        return agruparProjetosPorAno(projetosFiltrados);
+            List<Projeto> projetosFiltrados = projetoRepositoryCustomImpl.buscarProjetos(
+                    coordenador, dataInicio, dataTermino, valorMaximo, valorMinimo, situacaoProjeto, tipoBusca, contratante);
+
+            if (dataInicio != null && dataTermino != null && !projetosFiltrados.isEmpty()) {
+                // Converter as datas para verificar o intervalo
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate inicio = LocalDate.parse(dataInicio, formatter);
+                LocalDate termino = LocalDate.parse(dataTermino, formatter);
+
+                // Verificar se o intervalo é maior que um ano
+                if (inicio.getYear() == termino.getYear()) {
+                    // Se o intervalo estiver no mesmo ano, agrupar por meses
+                    return agruparProjetosPorMesPorAno(projetosFiltrados, dataInicio, dataTermino);
+                } else {
+                    // Se o intervalo abranger mais de um ano, agrupar por anos
+                    return agruparProjetosPorAno(projetosFiltrados);
+                }
+            }
+
+            // Caso não seja fornecida uma data específica, agrupar por ano
+            return agruparProjetosPorAno(projetosFiltrados);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao contar projetos: " + e.getMessage(), e);
+        }
     }
 
     private Map<String, Long> agruparProjetosPorAno(List<Projeto> projetos) {
