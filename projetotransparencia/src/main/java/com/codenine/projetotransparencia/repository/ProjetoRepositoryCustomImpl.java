@@ -58,9 +58,10 @@ public class ProjetoRepositoryCustomImpl {
                 }
             }
 
-            if (situacaoProjeto != null && !situacaoProjeto.isEmpty()) {
+            if (situacaoProjeto != null && !situacaoProjeto.isEmpty() && !"Todos".equals(situacaoProjeto)) {
                 predicates.add(cb.equal(root.get("status"), situacaoProjeto));
             }
+
 
             if (tipoBusca != null && !tipoBusca.isEmpty()) {
                 predicates.add(cb.equal(root.get("tipoBusca"), tipoBusca));
