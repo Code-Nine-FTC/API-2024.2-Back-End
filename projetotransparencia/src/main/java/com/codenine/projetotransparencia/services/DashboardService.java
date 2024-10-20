@@ -91,13 +91,23 @@ public class DashboardService {
                 int mesTermino = (ano == anoTerminoProjeto) ? mesTerminoProjeto : 12;
 
                 for (int mes = mesInicio; mes <= mesTermino; mes++) {
-                    String chaveMes = getMesNome(mes);
+                    String chaveMes = ano + "-" + String.format("%02d", mes); // Usando ano e mês como chave
                     projetosPorMes.put(chaveMes, projetosPorMes.getOrDefault(chaveMes, 0L) + 1);
                 }
             }
         }
 
-        return projetosPorMes;
+        // Transformar a chave no formato "Mês de Ano"
+        Map<String, Long> resultadosOrdenados = new LinkedHashMap<>();
+        for (String chave : projetosPorMes.keySet()) {
+            String[] partes = chave.split("-");
+            int mes = Integer.parseInt(partes[1]);
+            String mesNome = getMesNome(mes);
+            String resultadoChave = mesNome + " de " + partes[0];
+            resultadosOrdenados.put(resultadoChave, projetosPorMes.get(chave));
+        }
+
+        return resultadosOrdenados;
     }
 
     private int getYearFromDate(Date date) {
