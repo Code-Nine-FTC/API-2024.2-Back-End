@@ -3,6 +3,7 @@ package com.codenine.projetotransparencia.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -19,41 +20,128 @@ public class Auditoria {
     private Projeto projeto;
 
     @Column(nullable = false)
-    private String nomeCoordenador;  // Nome do coordenador que fez a alteração
+    private String nomeCoordenador;
 
+
+    @Column(nullable = true)
+    private String titulo_antigo;
+
+    @Column(nullable = true)
+    private String referencia_antiga;
+
+    @Column(nullable = true)
+    private String contratante_antigo;
+
+    @Column(nullable = true)
+    private String descricao_antiga;
+
+    @Column(nullable = true)
+    private Double valor_antigo;
+
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private String campoAlterado;  // Nome do campo alterado
+    private Date dataInicio_antiga;
 
-    @Column(columnDefinition = "TEXT")
-    private String valorAntigo;  // Valor antigo do campo
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = true)
+    private Date dataTermino_antiga;
 
-    @Column(columnDefinition = "TEXT")
-    private String valorNovo;  // Valor novo do campo
+    @Column(nullable = true)
+    private String status_antigo;
 
-    private String tipoAcao;  // Tipo de ação: 'EDITAR', 'EXCLUIR'
+    @Column(nullable = true)
+    private String integrantes_antigos;
 
-    private String nomeArquivoOriginal;  // Nome do arquivo original 
+    @Column(nullable = true)
+    private  String objetivo_antigo;
+
+    @Column(nullable = true)
+    private String links_antigos;
+
+
+    @Column(nullable = true)
+    private String titulo_novo;
+
+    @Column(nullable = true)
+    private String referencia_novo;
+
+    @Column(nullable = true)
+    private String contratante_novo;
+
+    @Column(nullable = true)
+    private String descricao_novo;
+
+    @Column(nullable = true)
+    private Double valor_novo;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private Date dataInicio_novo;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = true)
+    private Date dataTermino_novo;
+
+    @Column(nullable = true)
+    private String status_novo;
+
+    @Column(nullable = true)
+    private String integrantes_novo;
+
+    @Column(nullable = true)
+    private  String objetivo_novo;
+
+    @Column(nullable = true)
+    private String links_novo;
+
 
     @Lob
     @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] arquivoOriginal;  // Versão original do arquivo em caso de modificação/exclusão
+    private byte[] arquivoOriginal1;
+
+    @Lob
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] arquivoOriginal2;
 
     @Column(nullable = false)
-    private LocalDateTime dataAlteracao;  // Data e hora da alteração
+    private LocalDateTime dataAlteracao;
 
     public Auditoria() {}
 
-    public Auditoria(Projeto projeto, String nomeCoordenador, String campoAlterado,
-                     String valorAntigo, String valorNovo, String tipoAcao,
-                     String nomeArquivoOriginal, byte[] arquivoOriginal, LocalDateTime dataAlteracao) {
+    public Auditoria(Projeto projeto, String nomeCoordenador, String titulo_antigo,
+                     String referencia_antiga, String contratante_antigo, String descricao_antiga,
+                     Double valor_antigo, Date dataInicio_antiga, Date dataTermino_antiga,
+                     String status_antigo,String integrantes_antigos, String objetivo_antigo,
+                     String links_antigos,String titulo_novo,
+                     String referencia_novo, String contratante_novo, String descricao_novo,
+                     Double valor_novo, Date dataInicio_novo, Date dataTermino_novo,
+                     String status_novo,String integrantes_novo, String objetivo_novo,
+                     String links_novo, byte[] arquivoOriginal1, byte[] arquivoOriginal2, LocalDateTime dataAlteracao) {
         this.projeto = projeto;
         this.nomeCoordenador = nomeCoordenador;
-        this.campoAlterado = campoAlterado;
-        this.valorAntigo = valorAntigo;
-        this.valorNovo = valorNovo;
-        this.tipoAcao = tipoAcao;
-        this.nomeArquivoOriginal = nomeArquivoOriginal;
-        this.arquivoOriginal = arquivoOriginal;
+        this.titulo_antigo = titulo_antigo;
+        this.referencia_antiga = referencia_antiga;
+        this.contratante_antigo = contratante_antigo;
+        this.descricao_antiga = descricao_antiga;
+        this.valor_antigo = valor_antigo;
+        this.dataInicio_antiga = dataInicio_antiga;
+        this.dataTermino_antiga = dataTermino_antiga;
+        this.status_antigo = status_antigo;
+        this.integrantes_antigos = integrantes_antigos;
+        this.objetivo_antigo = objetivo_antigo;
+        this.links_antigos = links_antigos;
+        this.referencia_novo = referencia_novo;
+        this.contratante_novo = contratante_novo;
+        this.descricao_novo = descricao_novo;
+        this.valor_novo = valor_novo;
+        this.dataInicio_novo = dataInicio_novo;
+        this.dataTermino_novo = dataTermino_novo;
+        this.status_novo = status_novo;
+        this.integrantes_novo = integrantes_novo;
+        this.objetivo_novo = objetivo_novo;
+        this.links_novo = links_novo;
+        this.arquivoOriginal1 = arquivoOriginal1;
+        this.arquivoOriginal2 = arquivoOriginal2;
         this.dataAlteracao = dataAlteracao;
     }
 
