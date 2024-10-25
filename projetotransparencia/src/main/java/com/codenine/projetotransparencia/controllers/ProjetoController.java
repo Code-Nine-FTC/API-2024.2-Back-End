@@ -46,6 +46,7 @@ public class ProjetoController {
             @RequestPart(required = false) MultipartFile resumoExcel,
             @RequestPart(required = false) MultipartFile proposta,
             @RequestPart(required = false) MultipartFile contrato,
+            @RequestParam(required = false) String camposOcultos,
             @RequestPart(required = false) MultipartFile status,
             @RequestPart(required = false) MultipartFile objetivo,
             @RequestPart(required = false) MultipartFile links) {
@@ -57,7 +58,8 @@ public class ProjetoController {
                     Optional.ofNullable(resumoPdf),
                     Optional.ofNullable(resumoExcel),
                     Optional.ofNullable(proposta),
-                    Optional.ofNullable(contrato)
+                    Optional.ofNullable(contrato),
+                    Optional.ofNullable(camposOcultos)
             );
 
             System.out.print("Atualizar Projeto DTO: " + atualizarProjetoDto);
