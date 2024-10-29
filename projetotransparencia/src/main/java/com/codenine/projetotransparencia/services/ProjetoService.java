@@ -1,3 +1,4 @@
+
 package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
@@ -24,8 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjetoService {
@@ -51,7 +50,6 @@ public class ProjetoService {
     @Autowired
     private NormalizacaoService normalizacaoService; // Nova dependência
 
-    // Cadastro de um novo projeto
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
         Projeto projeto = new Projeto(
                 cadastrarProjetoDto.titulo(),
@@ -67,23 +65,20 @@ public class ProjetoService {
                 cadastrarProjetoDto.integrantes().orElse(null),
                 cadastrarProjetoDto.objetivo().orElse(null),
                 cadastrarProjetoDto.links().orElse(null),
-                cadastrarProjetoDto.camposOcultos().orElse(null),
-                null,
-                null,
-                null,
-                null// Define os campos ocultos
+                null, // resumoPdf
+                null, // resumoExcel
+                null, // proposta
+                null  // contrato
+
         );
+
         return projetoRepository.save(projeto).getId();
     }
 
-    // Listagem de todos os projetos, aplicando ocultação de campos
     public List<Projeto> listarProjetos() {
-        List<Projeto> projetos = projetoRepository.findAll();
-        projetos.forEach(this::removerCamposOcultos);
-        return projetos;
+        return projetoRepository.findAll();
     }
 
-    // Busca de projetos com base em filtros, aplicando ocultação de campos
     public List<Projeto> buscarProjetos(BuscarProjetoDto filtro) {
         String referencia = filtro.referencia();
         String nomeCoordenador = filtro.nomeCoordenador();
@@ -92,28 +87,21 @@ public class ProjetoService {
         Double valor = filtro.valor();
         String status = filtro.status();
 
-        List<Projeto> projetos = StringUtils.hasText(referencia) ||
+        if (StringUtils.hasText(referencia) ||
                 StringUtils.hasText(nomeCoordenador) ||
                 StringUtils.hasText(status) ||
                 dataInicio != null ||
-                dataTermino != null
-                ? projetoRepository.findByFiltros(referencia, nomeCoordenador, dataInicio, dataTermino, valor, status)
-                : projetoRepository.findAll();
-
-        projetos.forEach(this::removerCamposOcultos);
-        return projetos;
-    }
-
-    // Visualização de um projeto específico, aplicando ocultação de campos
-    public Projeto visualizarProjeto(Long id) {
-        Projeto projeto = projetoRepository.findById(id).orElse(null);
-        if (projeto != null) {
-            removerCamposOcultos(projeto);
+                dataTermino != null) {
+            return projetoRepository.findByFiltros(referencia, nomeCoordenador, dataInicio, dataTermino, valor, status);
+        } else {
+            return projetoRepository.findAll();
         }
-        return projeto;
     }
 
-    // Atualização de projeto sem ocultação, permitindo edição completa
+    public Projeto visualizarProjeto(Long id) {
+        return projetoRepository.findById(id).orElse(null);
+    }
+
     public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) throws IOException {
         Optional<Projeto> projetoOpcional = projetoRepository.findById(atualizarProjetoDto.id());
 
@@ -129,28 +117,95 @@ public class ProjetoService {
             } catch (JsonProcessingException e) {
                 throw new IllegalArgumentException("Erro ao processar o JSON do projeto: " + e.getMessage(), e);
             }
-            atualizarCamposProjeto(projeto, projetoAtualizado);
+
+            if (projetoAtualizado.getTitulo() != null) {
+                projeto.setTitulo(projetoAtualizado.getTitulo());
+            }
+            if (projetoAtualizado.getReferencia() != null) {
+                projeto.setReferencia(projetoAtualizado.getReferencia());
+            }
+            if (projetoAtualizado.getContratante() != null) {
+                projeto.setContratante(projetoAtualizado.getContratante());
+            }
+            if (projetoAtualizado.getObjeto() != null) {
+                projeto.setObjeto(projetoAtualizado.getObjeto());
+            }
+            if (projetoAtualizado.getDescricao() != null) {
+                projeto.setDescricao(projetoAtualizado.getDescricao());
+            }
+            if (projetoAtualizado.getNomeCoordenador() != null) {
+                projeto.setNomeCoordenador(projetoAtualizado.getNomeCoordenador());
+            }
+            if (projetoAtualizado.getValor() != null) {
+                projeto.setValor(projetoAtualizado.getValor());
+            }
+            if (projetoAtualizado.getDataInicio() != null) {
+                projeto.setDataInicio(projetoAtualizado.getDataInicio());
+            }
+            if (projetoAtualizado.getDataTermino() != null) {
+                projeto.setDataTermino(projetoAtualizado.getDataTermino());
+            }
+            if(projetoAtualizado.getStatus() != null) {
+                projeto.setStatus(projetoAtualizado.getStatus());
+            }
+            if(projetoAtualizado.getIntegrantes() != null) {
+                projeto.setIntegrantes(projetoAtualizado.getIntegrantes());
+            }
+            if(projetoAtualizado.getObjetivo() != null) {
+                projeto.setObjetivo(projetoAtualizado.getObjetivo());
+            }
+            if(projetoAtualizado.getLinks() != null) {
+                projeto.setLinks(projetoAtualizado.getLinks());
+            }
+
         }
 
-        // Atualiza campos ocultos, se presente no DTO
-        if (atualizarProjetoDto.camposOcultos().isPresent()) {
-            projeto.setCamposOcultos(atualizarCamposOcultos(projeto.getCamposOcultos(), atualizarProjetoDto.camposOcultos().get()));
+        if (atualizarProjetoDto.resumoPdf().isPresent()) {
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "resumoPdf".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.resumoPdf().get(), projeto, "resumoPdf");
+        }
+
+        if (atualizarProjetoDto.resumoExcel().isPresent()) {
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "resumoExcel".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.resumoExcel().get(), projeto, "resumoExcel");
+        }
+
+        if (atualizarProjetoDto.proposta().isPresent()) {
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "proposta".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.proposta().get(), projeto, "proposta");
+        }
+
+        if (atualizarProjetoDto.contrato().isPresent()) {
+            projeto.getDocumentos().stream()
+                    .filter(doc -> "contrato".equals(doc.getTipo()))
+                    .findFirst()
+                    .ifPresent(doc -> documentoService.excluirDocumento(doc.getId()));
+            documentoService.uploadDocumento(atualizarProjetoDto.contrato().get(), projeto, "contrato");
         }
 
         projetoRepository.save(projeto);
         return projeto.getId();
     }
 
-    // Exclusão de um projeto
     public void deletarProjeto(Long id) {
         Optional<Projeto> projetoOpcional = projetoRepository.findById(id);
+
         if (projetoOpcional.isEmpty()) {
             throw new IllegalArgumentException("Erro: Projeto com ID " + id + " não encontrado!");
         }
+
         projetoRepository.deleteById(id);
     }
 
-    // Inicialização de projetos a partir de um JSON, aplicando atualização
     @EventListener(ContextRefreshedEvent.class)
     public void init() {
         try {
@@ -160,20 +215,28 @@ public class ProjetoService {
         }
     }
 
-    // Carregamento de projetos do JSON e atualização, incluindo campos ocultos
     public void salvarProjetosDoJson() throws IOException, ParseException {
         String workingDir = System.getProperty("user.dir");
         String caminho = workingDir + File.separator + "raspagem-dados/projects_data.json";
+        //JsonNode projetosNode = objectMapper.readTree(new File("\\API-2024.2-Back-End\\raspagem-dados\\projects_data.json"));
         JsonNode projetosNode = objectMapper.readTree(new File(caminho));
 
         for (JsonNode projetoNode : projetosNode) {
             String titulo = projetoNode.has("Referência do projeto") ? projetoNode.get("Referência do projeto").asText() : "Título não fornecido";
             String referencia = titulo;
             String nomeCoordenador = projetoNode.has("Coordenador") ? projetoNode.get("Coordenador").asText() : "Coordenador não informado";
+
             String dataInicioString = projetoNode.has("Data de início") ? projetoNode.get("Data de início").asText() : "";
             String dataTerminoString = projetoNode.has("Data de término") ? projetoNode.get("Data de término").asText() : "";
+
+            String status = "Concluído";
+            String integrantes = null;
+            String objetivo = null;
+            String links = null;
+
             String dataInicioNormalizada = dataInicioString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataInicioString);
             String dataTerminoNormalizada = dataTerminoString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataTerminoString);
+
             Date dataInicio = new SimpleDateFormat("dd/MM/yyyy").parse(dataInicioNormalizada);
             Date dataTermino = new SimpleDateFormat("dd/MM/yyyy").parse(dataTerminoNormalizada);
 
@@ -194,107 +257,34 @@ public class ProjetoService {
                     valor,
                     Optional.ofNullable(dataTermino),
                     contratante,
-                    Optional.of("Concluído"),
-                    Optional.ofNullable(null),
-                    Optional.ofNullable(null),
-                    Optional.ofNullable(null),
-                    Optional.ofNullable(null)  // Nenhum campo oculto inicial
+                    Optional.ofNullable(status),
+                    Optional.ofNullable(integrantes),
+                    Optional.ofNullable(objetivo),
+                    Optional.ofNullable(links)
+
             );
 
+            // Verifica se o projeto já existe
             List<Projeto> projetosExistentes = projetoRepository.findByReferencia(referencia);
             if (projetosExistentes.isEmpty()) {
+                // Nenhum projeto encontrado, cria novo
                 cadastrarProjeto(dto);
             } else {
-                atualizarProjeto(projetosExistentes.get(0), dto);
+                // Se o projeto existir, atualiza suas informações
+                Projeto projetoExistente = projetosExistentes.get(0);
+                atualizarProjeto(projetoExistente, dto);
             }
         }
     }
 
-    // Atualiza o projeto com campos ocultos, se aplicável
+    // atualiza o projeto no bd
     private void atualizarProjeto(Projeto projetoExistente, CadastrarProjetoDto dto) {
         projetoExistente.setNomeCoordenador(dto.nomeCoordenador());
         projetoExistente.setDataInicio(dto.dataInicio());
         projetoExistente.setDataTermino(dto.dataTermino().orElse(null));
         projetoExistente.setValor(dto.valor().orElse(null));
         projetoExistente.setContratante(dto.contratante().orElse(null));
+
         projetoRepository.save(projetoExistente);
-    }
-
-    // Função auxiliar para remover campos ocultos
-    private void removerCamposOcultos(Projeto projeto) {
-        if (projeto.getCamposOcultos() != null) {
-            String[] camposOcultos = projeto.getCamposOcultos().split(", ");
-            for (String campo : camposOcultos) {
-                switch (campo.trim().toLowerCase()) {
-                    case "titulo" -> projeto.setTitulo(null);
-                    case "contratante" -> projeto.setContratante(null);
-                    case "status" -> projeto.setStatus(null);
-                    case "nomecoordenador" -> projeto.setNomeCoordenador(null);
-                    case "valor" -> projeto.setValor(null);
-                    case "objetivo" -> projeto.setObjetivo(null);
-                    case "integrantes" -> projeto.setIntegrantes(null);
-                    case "links" -> projeto.setLinks(null);
-                    case "descricao" -> projeto.setDescricao(null);
-                    case "objeto" -> projeto.setObjeto(null);
-                }
-            }
-        }
-    }
-
-    // Função auxiliar para atualizar os campos de um projeto
-    private void atualizarCamposProjeto(Projeto projeto, Projeto projetoAtualizado) {
-        if (projetoAtualizado.getTitulo() != null) {
-            projeto.setTitulo(projetoAtualizado.getTitulo());
-        }
-        if (projetoAtualizado.getReferencia() != null) {
-            projeto.setReferencia(projetoAtualizado.getReferencia());
-        }
-        if (projetoAtualizado.getContratante() != null) {
-            projeto.setContratante(projetoAtualizado.getContratante());
-        }
-        if (projetoAtualizado.getObjeto() != null) {
-            projeto.setObjeto(projetoAtualizado.getObjeto());
-        }
-        if (projetoAtualizado.getDescricao() != null) {
-            projeto.setDescricao(projetoAtualizado.getDescricao());
-        }
-        if (projetoAtualizado.getNomeCoordenador() != null) {
-            projeto.setNomeCoordenador(projetoAtualizado.getNomeCoordenador());
-        }
-        if (projetoAtualizado.getValor() != null) {
-            projeto.setValor(projetoAtualizado.getValor());
-        }
-        if (projetoAtualizado.getDataInicio() != null) {
-            projeto.setDataInicio(projetoAtualizado.getDataInicio());
-        }
-        if (projetoAtualizado.getDataTermino() != null) {
-            projeto.setDataTermino(projetoAtualizado.getDataTermino());
-        }
-        if (projetoAtualizado.getStatus() != null) {
-            projeto.setStatus(projetoAtualizado.getStatus());
-        }
-        if (projetoAtualizado.getIntegrantes() != null) {
-            projeto.setIntegrantes(projetoAtualizado.getIntegrantes());
-        }
-        if (projetoAtualizado.getObjetivo() != null) {
-            projeto.setObjetivo(projetoAtualizado.getObjetivo());
-        }
-        if (projetoAtualizado.getLinks() != null) {
-            projeto.setLinks(projetoAtualizado.getLinks());
-        }
-    }
-
-    // Função auxiliar para atualizar lista de campos ocultos
-    private String atualizarCamposOcultos(String camposOcultosExistente, String novosCamposOcultos) {
-        List<String> camposExistentes = camposOcultosExistente != null && !camposOcultosExistente.isBlank()
-                ? Arrays.asList(camposOcultosExistente.split(",\\s*")) : List.of();
-        List<String> novosCampos = Arrays.asList(novosCamposOcultos.split(",\\s*"));
-        List<String> camposAtualizados = camposExistentes.stream()
-                .filter(campo -> !novosCampos.contains(campo))
-                .collect(Collectors.toList());
-        novosCampos.stream()
-                .filter(campo -> !camposAtualizados.contains(campo))
-                .forEach(camposAtualizados::add);
-        return String.join(", ", camposAtualizados);
     }
 }
