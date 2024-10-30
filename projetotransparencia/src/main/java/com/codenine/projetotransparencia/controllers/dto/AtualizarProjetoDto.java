@@ -15,5 +15,6 @@ public record AtualizarProjetoDto(
         Optional<MultipartFile> resumoExcel,
         Optional<MultipartFile> proposta,
         Optional<MultipartFile> contrato,
-        Optional<String> camposOcultos){
+        Optional<String> camposOcultos
+        ){
 }
