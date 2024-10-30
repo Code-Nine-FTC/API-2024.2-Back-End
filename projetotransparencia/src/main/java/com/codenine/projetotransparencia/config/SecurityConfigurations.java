@@ -32,7 +32,6 @@ public class SecurityConfigurations {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/auditorias").hasRole("ADMIN")
                     .requestMatchers("/auditorias/**").hasRole("ADMIN")
                 // Permite acesso livre ao endpoint de login
                 .requestMatchers("/auth/login").permitAll()
