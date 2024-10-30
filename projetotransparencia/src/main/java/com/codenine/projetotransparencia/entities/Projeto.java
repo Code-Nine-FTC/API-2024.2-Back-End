@@ -50,13 +50,14 @@ public class Projeto {
     @Column(nullable = true)
     private String integrantes;
 
-    @Column(nullable = true)
-    private  String objetivo;
+    //@Column(nullable = true)
+    //private  String objetivo;
 
     @Column(nullable = true)
     private String links;
 
-
+    @Column(nullable = true)
+    private String camposOcultos;
 
 //    @Lob
 //    @Column(nullable = true, columnDefinition = "LONGBLOB")
@@ -74,16 +75,13 @@ public class Projeto {
 //    @Column(nullable = true, columnDefinition = "LONGBLOB")
 //    private byte[] contrato;
 
-    @Column(name = "campos_ocultos", nullable = true)
-    private String camposOcultos;
-
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Documento> documentos;
 
     public Projeto() {
     }
 
-    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, String status, String integrantes, String objetivo, String links, String camposOcultos, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
+    public Projeto(String titulo, String referencia, String contratante, String objeto, String descricao, String nomeCoordenador, Double valor, Date dataInicio, Date dataTermino, String status, String integrantes, String links, String camposOcultos, byte[] resumoPdf, byte[] resumoExcel, byte[] proposta, byte[] contrato) {
         this.titulo = titulo;
         this.referencia = referencia;
         this.contratante = contratante;
@@ -95,7 +93,7 @@ public class Projeto {
         this.dataTermino = dataTermino;
         this.status = status;
         this.integrantes = integrantes;
-        this.objetivo = objetivo;
+        //this.objetivo = objetivo;
         this.links = links;
         this.camposOcultos = camposOcultos;
 //        this.resumoPdf = resumoPdf;
