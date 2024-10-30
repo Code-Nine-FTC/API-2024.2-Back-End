@@ -63,8 +63,9 @@ public class ProjetoService {
                 cadastrarProjetoDto.dataTermino().orElse(null),
                 cadastrarProjetoDto.status().orElse(null),
                 cadastrarProjetoDto.integrantes().orElse(null),
-                cadastrarProjetoDto.objetivo().orElse(null),
+                //cadastrarProjetoDto.objetivo().orElse(null),
                 cadastrarProjetoDto.links().orElse(null),
+                cadastrarProjetoDto.camposOcultos().orElse(null),
                 null, // resumoPdf
                 null, // resumoExcel
                 null, // proposta
@@ -121,9 +122,9 @@ public class ProjetoService {
             if (projetoAtualizado.getTitulo() != null) {
                 projeto.setTitulo(projetoAtualizado.getTitulo());
             }
-            if (projetoAtualizado.getReferencia() != null) {
-                projeto.setReferencia(projetoAtualizado.getReferencia());
-            }
+            //if (projetoAtualizado.getReferencia() != null) {
+              //  projeto.setReferencia(projetoAtualizado.getReferencia());
+            //}
             if (projetoAtualizado.getContratante() != null) {
                 projeto.setContratante(projetoAtualizado.getContratante());
             }
@@ -151,13 +152,15 @@ public class ProjetoService {
             if(projetoAtualizado.getIntegrantes() != null) {
                 projeto.setIntegrantes(projetoAtualizado.getIntegrantes());
             }
-            if(projetoAtualizado.getObjetivo() != null) {
-                projeto.setObjetivo(projetoAtualizado.getObjetivo());
-            }
+            //if(projetoAtualizado.getObjetivo() != null) {
+              //  projeto.setObjetivo(projetoAtualizado.getObjetivo());
+            //}
             if(projetoAtualizado.getLinks() != null) {
                 projeto.setLinks(projetoAtualizado.getLinks());
             }
-
+            if(projetoAtualizado.getCamposOcultos() != null) {
+                projeto.setCamposOcultos(projetoAtualizado.getCamposOcultos());
+            }
         }
 
         if (atualizarProjetoDto.resumoPdf().isPresent()) {
@@ -249,6 +252,7 @@ public class ProjetoService {
 
             Optional<String> contratante = Optional.of(projetoNode.has("Empresa") ? projetoNode.get("Empresa").asText() : "");
 
+            Optional<String> camposOcultos = Optional.ofNullable(projetoNode.has("Campos ocultos") ? projetoNode.get("Campos ocultos").asText() : "");
             CadastrarProjetoDto dto = new CadastrarProjetoDto(
                     titulo,
                     referencia,
@@ -260,8 +264,8 @@ public class ProjetoService {
                     Optional.ofNullable(status),
                     Optional.ofNullable(integrantes),
                     Optional.ofNullable(objetivo),
-                    Optional.ofNullable(links)
-
+                    Optional.ofNullable(links),
+                    camposOcultos
             );
 
             // Verifica se o projeto já existe

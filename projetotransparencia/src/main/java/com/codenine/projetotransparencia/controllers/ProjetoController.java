@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.RestController;
 import com.codenine.projetotransparencia.utils.ConversorData;
 import java.io.IOException;
 import java.net.URI;
@@ -24,7 +23,8 @@ public class ProjetoController {
     @Autowired
     private ProjetoService projetoService;
 
-    @Autowired ConversorData conversorData;
+    @Autowired
+    private ConversorData conversorData;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarProjeto(@RequestBody CadastrarProjetoDto projeto) {
@@ -46,13 +46,13 @@ public class ProjetoController {
             @RequestPart(required = false) MultipartFile resumoExcel,
             @RequestPart(required = false) MultipartFile proposta,
             @RequestPart(required = false) MultipartFile contrato,
-            @RequestParam(required = false) String camposOcultos,
             @RequestPart(required = false) MultipartFile status,
             @RequestPart(required = false) MultipartFile objetivo,
-            @RequestPart(required = false) MultipartFile links) {
+            @RequestParam(required = false) MultipartFile links,
+            @RequestParam(required = false) String camposOcultos) {
 
         try {
-            AtualizarProjetoDto atualizarProjetoDto = new AtualizarProjetoDto (
+            AtualizarProjetoDto atualizarProjetoDto = new AtualizarProjetoDto(
                     id,
                     projetojson,
                     Optional.ofNullable(resumoPdf),
@@ -74,7 +74,6 @@ public class ProjetoController {
         }
     }
 
-    // Deletar projeto pelo ID
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletarProjeto(@PathVariable Long id) {
         try {
@@ -92,8 +91,7 @@ public class ProjetoController {
             @RequestParam(required = false) String dataInicio,
             @RequestParam(required = false) String dataTermino,
             @RequestParam(required = false) Double valor,
-            @RequestParam(required = false) String status
-    ) {
+            @RequestParam(required = false) String status) {
 
         Date dateStart = conversorData.converterIsoParaData(dataInicio);
         Date dateEnd = conversorData.converterIsoParaData(dataTermino);
@@ -109,7 +107,6 @@ public class ProjetoController {
         return projetoService.buscarProjetos(filtro);
     }
 
-    // Visualizar um projeto por ID
     @GetMapping("/visualizar/{id}")
     public ResponseEntity<Projeto> visualizarProjeto(@PathVariable Long id) {
         Projeto projeto = projetoService.visualizarProjeto(id);
@@ -120,5 +117,4 @@ public class ProjetoController {
 
         return ResponseEntity.ok(projeto);
     }
-
 }
