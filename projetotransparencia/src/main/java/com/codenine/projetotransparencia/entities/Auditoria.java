@@ -20,14 +20,14 @@ public class Auditoria {
     private Projeto projeto;
 
     @Column(nullable = false)
+    private String tipoAuditoria;
+
+    @Column(nullable = false)
     private String nomeCoordenador;
 
 
     @Column(nullable = true)
     private String titulo_antigo;
-
-    @Column(nullable = true)
-    private String referencia_antiga;
 
     @Column(nullable = true)
     private String contratante_antigo;
@@ -62,8 +62,8 @@ public class Auditoria {
     @Column(nullable = true)
     private String titulo_novo;
 
-    @Column(nullable = true)
-    private String referencia_novo;
+    @Column(nullable = false)
+    private String referenciaProjeto;
 
     @Column(nullable = true)
     private String contratante_novo;
@@ -94,7 +94,6 @@ public class Auditoria {
     @Column(nullable = true)
     private String links_novo;
 
-
     @Lob
     @Column(nullable = true, columnDefinition = "LONGBLOB")
     private byte[] arquivoOriginal1;
@@ -108,19 +107,18 @@ public class Auditoria {
 
     public Auditoria() {}
 
-    public Auditoria(Projeto projeto, String nomeCoordenador, String titulo_antigo,
-                     String referencia_antiga, String contratante_antigo, String descricao_antiga,
+    public Auditoria(Projeto projeto, String tipoAuditoria, String nomeCoordenador, String titulo_antigo, String contratante_antigo, String descricao_antiga,
                      Double valor_antigo, Date dataInicio_antiga, Date dataTermino_antiga,
                      String status_antigo,String integrantes_antigos, String objetivo_antigo,
                      String links_antigos,String titulo_novo,
-                     String referencia_novo, String contratante_novo, String descricao_novo,
+                     String referenciaProjeto, String contratante_novo, String descricao_novo,
                      Double valor_novo, Date dataInicio_novo, Date dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
                      String links_novo, byte[] arquivoOriginal1, byte[] arquivoOriginal2, LocalDateTime dataAlteracao) {
         this.projeto = projeto;
+        this.tipoAuditoria = tipoAuditoria;
         this.nomeCoordenador = nomeCoordenador;
         this.titulo_antigo = titulo_antigo;
-        this.referencia_antiga = referencia_antiga;
         this.contratante_antigo = contratante_antigo;
         this.descricao_antiga = descricao_antiga;
         this.valor_antigo = valor_antigo;
@@ -130,7 +128,7 @@ public class Auditoria {
         this.integrantes_antigos = integrantes_antigos;
         this.objetivo_antigo = objetivo_antigo;
         this.links_antigos = links_antigos;
-        this.referencia_novo = referencia_novo;
+        this.referenciaProjeto = referenciaProjeto;
         this.contratante_novo = contratante_novo;
         this.descricao_novo = descricao_novo;
         this.valor_novo = valor_novo;
