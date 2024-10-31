@@ -8,7 +8,8 @@ public record BuscarProjetoDto(
         Date dataInicio,
         Date dataTermino,
         Double valor,
-        String status
+        String status,
+        String keyword
 ) {
 
 }
