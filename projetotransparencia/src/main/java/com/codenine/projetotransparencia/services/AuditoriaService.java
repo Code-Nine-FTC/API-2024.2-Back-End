@@ -38,4 +38,8 @@ public class AuditoriaService {
     public List<Auditoria> buscarPorTipoEReferencia(String tipoAuditoria, String referenciaProjeto) {
         return auditoriaRepository.findByTipoAuditoriaAndReferenciaProjeto(tipoAuditoria, referenciaProjeto);
     }
+
+    public List<Auditoria> buscarAuditoriasPorProjetoId(Long projetoId) {
+        return auditoriaRepository.findByProjetoId(projetoId);
+    }
 }
