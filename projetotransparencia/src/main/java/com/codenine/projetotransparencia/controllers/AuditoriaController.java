@@ -22,15 +22,15 @@ public class AuditoriaController {
     }
 
     // Endpoint para buscar auditoria por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Auditoria> buscarAuditoriaPorId(@PathVariable Long id) {
-        Optional<Auditoria> auditoria = auditoriaService.buscarAuditoriaPorId(id);
-        if (auditoria.isPresent()) {
-            return ResponseEntity.ok(auditoria.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Auditoria> buscarAuditoriaPorId(@PathVariable Long id) {
+//        Optional<Auditoria> auditoria = auditoriaService.buscarAuditoriaPorId(id);
+//        if (auditoria.isPresent()) {
+//            return ResponseEntity.ok(auditoria.get());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
 
     @GetMapping("/auditoria/search")
@@ -54,6 +54,15 @@ public class AuditoriaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
 
+        return ResponseEntity.ok(auditorias);
+    }
+
+    @GetMapping("/{projetoId}")
+    public ResponseEntity<List<Auditoria>> buscarAuditoriasPorProjetoId(@PathVariable Long projetoId) {
+        List<Auditoria> auditorias = auditoriaService.buscarAuditoriasPorProjetoId(projetoId);
+        if (auditorias.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
         return ResponseEntity.ok(auditorias);
     }
 }
