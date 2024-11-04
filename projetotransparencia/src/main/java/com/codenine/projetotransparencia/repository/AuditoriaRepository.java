@@ -16,4 +16,6 @@ public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
     List<Auditoria> findByReferenciaProjeto(String referenciaProjeto);
 
     List<Auditoria> findByTipoAuditoriaAndReferenciaProjeto(String tipoAuditoria, String referenciaProjeto);
+
+    List<Auditoria> findByProjetoId(Long projetoId);
 }
