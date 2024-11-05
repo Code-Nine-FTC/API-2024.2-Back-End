@@ -18,13 +18,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class ProjetoService {
@@ -222,9 +225,14 @@ public class ProjetoService {
 
     public void salvarProjetosDoJson() throws IOException, ParseException {
         String workingDir = System.getProperty("user.dir");
-        String caminho = workingDir + File.separator + "raspagem-dados/projects_data.json";
+        Path caminho = Paths.get(workingDir, "..", "raspagem-dados", "projects_data.json").normalize();
         //JsonNode projetosNode = objectMapper.readTree(new File("\\API-2024.2-Back-End\\raspagem-dados\\projects_data.json"));
-        JsonNode projetosNode = objectMapper.readTree(new File(caminho));
+
+        if (!Files.exists(caminho)) {
+            throw new FileNotFoundException("O arquivo 'projects_data.json' não foi encontrado no caminho: " + caminho.toString());
+        }
+
+        JsonNode projetosNode = objectMapper.readTree(caminho.toFile());
 
         for (JsonNode projetoNode : projetosNode) {
             String titulo = projetoNode.has("Referência do projeto") ? projetoNode.get("Referência do projeto").asText() : "Título não fornecido";
