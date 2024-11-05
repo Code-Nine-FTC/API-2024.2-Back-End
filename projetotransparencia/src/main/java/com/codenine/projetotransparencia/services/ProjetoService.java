@@ -225,23 +225,30 @@ public class ProjetoService {
     }
 
     public void salvarProjetosDoJson() throws IOException, ParseException {
-        Path caminhoBase = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
-        while (caminhoBase != null && !caminhoBase.getFileName().toString().equals("API-2024.2")) {
-            caminhoBase = caminhoBase.getParent();
+        // Diretório inicial do projeto (assumido como 'projetotransparencia' ou onde o JAR está executando)
+        Path currentDir = Paths.get(System.getProperty("user.dir"));
+        Path caminhoArquivo = null;
+
+        // Lógica para procurar `raspagem-dados/projects_data.json` de dentro para fora
+        while (currentDir != null) {
+            Path potentialPath = currentDir.resolve("raspagem-dados").resolve("projects_data.json");
+
+            if (Files.exists(potentialPath)) {
+                caminhoArquivo = potentialPath;
+                break;
+            }
+
+            // Sobe um diretório na hierarquia
+            currentDir = currentDir.getParent();
         }
-        //JsonNode projetosNode = objectMapper.readTree(new File("\\API-2024.2-Back-End\\raspagem-dados\\projects_data.json"));
-        if (caminhoBase == null) {
-            throw new FileNotFoundException("Diretório 'API-2024.2' não encontrado");
+
+        // Verifica se o caminho foi encontrado
+        if (caminhoArquivo == null) {
+            throw new FileNotFoundException("O arquivo 'projects_data.json' não foi encontrado em nenhum diretório pai do projeto.");
         }
 
-        Path caminho = caminhoBase.resolve("API-2024.2-Back-End").resolve("raspagem-dados").resolve("projects_data.json");
-
-
-        if (!Files.exists(caminho)) {
-            throw new FileNotFoundException("O arquivo 'projects_data.json' não foi encontrado no caminho: " + caminho.toAbsolutePath().toString());
-        }
-
-        JsonNode projetosNode = objectMapper.readTree(caminho.toFile());
+        // Carrega o JSON dos projetos
+        JsonNode projetosNode = objectMapper.readTree(caminhoArquivo.toFile());
 
         for (JsonNode projetoNode : projetosNode) {
             String titulo = projetoNode.has("Referência do projeto") ? projetoNode.get("Referência do projeto").asText() : "Título não fornecido";
