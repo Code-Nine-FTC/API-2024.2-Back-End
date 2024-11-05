@@ -20,6 +20,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -224,12 +225,20 @@ public class ProjetoService {
     }
 
     public void salvarProjetosDoJson() throws IOException, ParseException {
-        String workingDir = System.getProperty("user.dir");
-        Path caminho = Paths.get(workingDir, "..", "raspagem-dados", "projects_data.json").normalize();
+        Path caminhoBase = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+        while (caminhoBase != null && !caminhoBase.getFileName().toString().equals("API-2024.2")) {
+            caminhoBase = caminhoBase.getParent();
+        }
         //JsonNode projetosNode = objectMapper.readTree(new File("\\API-2024.2-Back-End\\raspagem-dados\\projects_data.json"));
+        if (caminhoBase == null) {
+            throw new FileNotFoundException("Diretório 'API-2024.2' não encontrado");
+        }
+
+        Path caminho = caminhoBase.resolve("API-2024.2-Back-End").resolve("raspagem-dados").resolve("projects_data.json");
+
 
         if (!Files.exists(caminho)) {
-            throw new FileNotFoundException("O arquivo 'projects_data.json' não foi encontrado no caminho: " + caminho.toString());
+            throw new FileNotFoundException("O arquivo 'projects_data.json' não foi encontrado no caminho: " + caminho.toAbsolutePath().toString());
         }
 
         JsonNode projetosNode = objectMapper.readTree(caminho.toFile());
