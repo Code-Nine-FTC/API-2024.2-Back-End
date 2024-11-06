@@ -53,6 +53,8 @@ public class ProjetoService {
 
     @Autowired
     private NormalizacaoService normalizacaoService; // Nova dependência
+    @Autowired
+    private AuditoriaService auditoriaService;
 
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
         Projeto projeto = new Projeto(
@@ -117,6 +119,8 @@ public class ProjetoService {
         }
 
         Projeto projeto = projetoOpcional.get();
+        Projeto projetoAntesDaAtualizacao = new Projeto(projeto); // Cópia do projeto antes da atualização
+
         if (atualizarProjetoDto.projeto() != null && !atualizarProjetoDto.projeto().isEmpty()) {
             Projeto projetoAtualizado;
             try {
@@ -128,9 +132,6 @@ public class ProjetoService {
             if (projetoAtualizado.getTitulo() != null) {
                 projeto.setTitulo(projetoAtualizado.getTitulo());
             }
-            //if (projetoAtualizado.getReferencia() != null) {
-              //  projeto.setReferencia(projetoAtualizado.getReferencia());
-            //}
             if (projetoAtualizado.getContratante() != null) {
                 projeto.setContratante(projetoAtualizado.getContratante());
             }
@@ -152,23 +153,24 @@ public class ProjetoService {
             if (projetoAtualizado.getDataTermino() != null) {
                 projeto.setDataTermino(projetoAtualizado.getDataTermino());
             }
-            if(projetoAtualizado.getStatus() != null) {
+            if (projetoAtualizado.getStatus() != null) {
                 projeto.setStatus(projetoAtualizado.getStatus());
             }
-            if(projetoAtualizado.getIntegrantes() != null) {
+            if (projetoAtualizado.getIntegrantes() != null) {
                 projeto.setIntegrantes(projetoAtualizado.getIntegrantes());
             }
-            //if(projetoAtualizado.getObjetivo() != null) {
-              //  projeto.setObjetivo(projetoAtualizado.getObjetivo());
-            //}
-            if(projetoAtualizado.getLinks() != null) {
+            if (projetoAtualizado.getLinks() != null) {
                 projeto.setLinks(projetoAtualizado.getLinks());
             }
-            if(projetoAtualizado.getCamposOcultos() != null) {
+            if (projetoAtualizado.getCamposOcultos() != null) {
                 projeto.setCamposOcultos(projetoAtualizado.getCamposOcultos());
             }
         }
 
+        // Lógica para auditoria
+        auditoriaService.registrarAuditoria(projeto, projetoAntesDaAtualizacao);
+
+        // Lógica para documentos
         if (atualizarProjetoDto.resumoPdf().isPresent()) {
             projeto.getDocumentos().stream()
                     .filter(doc -> "resumoPdf".equals(doc.getTipo()))
@@ -204,6 +206,7 @@ public class ProjetoService {
         projetoRepository.save(projeto);
         return projeto.getId();
     }
+
 
     public void deletarProjeto(Long id) {
         Optional<Projeto> projetoOpcional = projetoRepository.findById(id);
