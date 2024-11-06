@@ -163,7 +163,12 @@ public class ProjetoService {
                 projeto.setLinks(projetoAtualizado.getLinks());
             }
             if (projetoAtualizado.getCamposOcultos() != null) {
-                projeto.setCamposOcultos(projetoAtualizado.getCamposOcultos());
+                if (projetoAtualizado.getCamposOcultos()=="nenhum") {
+                    projeto.setCamposOcultos("");
+                }
+                else {
+                    projeto.setCamposOcultos(projetoAtualizado.getCamposOcultos());
+                }
             }
         }
 
