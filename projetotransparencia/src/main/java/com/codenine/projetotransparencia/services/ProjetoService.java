@@ -270,9 +270,7 @@ public class ProjetoService {
             Date dataTermino = new SimpleDateFormat("dd/MM/yyyy").parse(dataTerminoNormalizada);
 
             Optional<Double> valor = Optional.ofNullable(projetoNode.get("Valor do projeto").asText())
-                    .map(v -> v.replace(",", ".")
-                            .replaceAll("\\.(?=.*\\.)", "")
-                            .replaceAll("[^0-9.-]", ""))
+                    .map(normalizacaoService::normalizarValorMonetario)
                     .filter(val -> !val.isEmpty())
                     .map(Double::parseDouble);
 
