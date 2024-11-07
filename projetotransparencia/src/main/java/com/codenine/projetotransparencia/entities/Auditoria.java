@@ -1,9 +1,11 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,6 +17,7 @@ public class Auditoria {
     @Column(name = "auditoria_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "projeto_id", nullable = false)
     private Projeto projeto;
@@ -39,7 +42,7 @@ public class Auditoria {
     private Double valor_antigo;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date dataInicio_antiga;
 
     @Temporal(TemporalType.DATE)
@@ -75,7 +78,7 @@ public class Auditoria {
     private Double valor_novo;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date dataInicio_novo;
 
     @Temporal(TemporalType.DATE)
@@ -94,16 +97,12 @@ public class Auditoria {
     @Column(nullable = true)
     private String links_novo;
 
-    @Lob
-    @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] arquivoOriginal1;
-
-    @Lob
-    @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] arquivoOriginal2;
+    @OneToMany(mappedBy = "auditoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Documento> documentos_novo;
 
     @Column(nullable = false)
     private LocalDateTime dataAlteracao;
+
 
     public Auditoria() {}
 
@@ -114,7 +113,7 @@ public class Auditoria {
                      String referenciaProjeto, String contratante_novo, String descricao_novo,
                      Double valor_novo, Date dataInicio_novo, Date dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
-                     String links_novo, byte[] arquivoOriginal1, byte[] arquivoOriginal2, LocalDateTime dataAlteracao) {
+                     String links_novo,LocalDateTime dataAlteracao) {
         this.projeto = projeto;
         this.tipoAuditoria = tipoAuditoria;
         this.nomeCoordenador = nomeCoordenador;
@@ -138,8 +137,6 @@ public class Auditoria {
         this.integrantes_novo = integrantes_novo;
         this.objetivo_novo = objetivo_novo;
         this.links_novo = links_novo;
-        this.arquivoOriginal1 = arquivoOriginal1;
-        this.arquivoOriginal2 = arquivoOriginal2;
         this.dataAlteracao = dataAlteracao;
     }
 

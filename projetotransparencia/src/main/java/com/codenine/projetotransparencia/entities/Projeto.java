@@ -8,6 +8,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -67,6 +68,8 @@ public class Projeto {
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Documento> documentos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Auditoria> auditorias = new ArrayList<>();
 
     public Projeto() {
     }
@@ -109,6 +112,29 @@ public class Projeto {
         this.integrantes = projeto.integrantes;
         this.links = projeto.links;
         this.camposOcultos = projeto.camposOcultos;
-        this.documentos = projeto.documentos; 
+        this.documentos = projeto.documentos.stream()
+                .map(Documento::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "Projeto{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", referencia='" + referencia + '\'' +
+                ", contratante='" + contratante + '\'' +
+                ", objeto='" + objeto + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", nomeCoordenador='" + nomeCoordenador + '\'' +
+                ", valor=" + valor +
+                ", dataInicio=" + dataInicio +
+                ", dataTermino=" + dataTermino +
+                ", status='" + status + '\'' +
+                ", integrantes='" + integrantes + '\'' +
+                ", links='" + links + '\'' +
+                ", camposOcultos='" + camposOcultos + '\'' +
+                '}';
     }
 }
+

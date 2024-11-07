@@ -4,6 +4,7 @@ import com.codenine.projetotransparencia.controllers.dto.BaixarDocumentoDto;
 import com.codenine.projetotransparencia.entities.Documento;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.repository.DocumentoRepository;
+import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.SalvarDocumento;
 
 import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
@@ -41,6 +42,12 @@ public class DocumentoService {
     @Autowired
     private SalvarDocumento salvarDocumento;
 
+    @Autowired
+    private ProjetoRepository projetoRepository;
+
+    @Autowired
+    private AuditoriaService auditoriaService;
+
     private final String relativePath = "projetotransparencia/src/main/java/com/codenine/projetotransparencia/uploads";
 
     public void uploadDocumento(MultipartFile documento, Projeto projeto, String tipoDocumento) throws IOException {
@@ -54,8 +61,7 @@ public class DocumentoService {
         if ("resumoExcel".equals(tipoDocumento)) {
             if (!verificarExcel.verificar(documento.getBytes())) {
                 throw new IllegalArgumentException("O arquivo de resumo deve ser um Pdf ou Excel");
-            }
-            else {
+            } else {
                 if (!documento.isEmpty()) {
                     String caminhoArquivo = salvarDocumento.salvar(documento, caminho);
                     Documento documentoSalvar = new Documento();
@@ -65,14 +71,13 @@ public class DocumentoService {
                     documentoSalvar.setTamanho(documento.getSize());
                     documentoSalvar.setProjeto(projeto);
                     documentoRepository.save(documentoSalvar);
+                    projeto.getDocumentos().add(documentoSalvar);
                 }
             }
-        }
-        else {
+        } else {
             if (!verificarPdf.verificar(documento.getBytes())) {
                 throw new IllegalArgumentException("O arquivo de resumo deve ser um PDF ou Excel");
-            }
-            else {
+            } else {
                 if (!documento.isEmpty()) {
                     String uniqueNomeArquivo = salvarDocumento.salvar(documento, caminho);
                     Documento documentoSalvar = new Documento();
@@ -82,6 +87,7 @@ public class DocumentoService {
                     documentoSalvar.setTamanho(documento.getSize());
                     documentoSalvar.setProjeto(projeto);
                     documentoRepository.save(documentoSalvar);
+                    projeto.getDocumentos().add(documentoSalvar);
                 }
             }
         }
@@ -112,14 +118,25 @@ public class DocumentoService {
     }
 
     public void excluirDocumento(Long documentoId) {
-        Optional<Documento> documentoOptional = documentoRepository.findById(documentoId);
-        if (documentoOptional.isPresent()) {
-            Documento documento = documentoOptional.get();
-            File file = new File(documento.getCaminho());
-            if (file.exists()) {
-                file.delete();
+        try {
+            Optional<Documento> documentoOptional = documentoRepository.findById(documentoId);
+            if (documentoOptional.isPresent()) {
+                Documento documento = documentoOptional.get();
+                Projeto projeto = projetoRepository.findById(documento.getProjeto().getId()).orElse(null);
+                if (projeto != null) {
+                    //                projeto.getDocumentos().remove(documento);
+                    //                projetoRepository.save(projeto);
+                    documento.setProjeto(null); // Remove the relation with the projeto
+                    documentoRepository.save(documento); // Save the updated documento
+                    auditoriaService.registrarExclusaoArquivo(projeto.getId(), documento.getId());
+                } else {
+                    throw new IllegalArgumentException("Projeto não encontrado para o documento com ID " + documentoId);
+                }
+            } else {
+                throw new IllegalArgumentException("Documento com ID " + documentoId + " não encontrado!");
             }
-            documentoRepository.delete(documento);
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

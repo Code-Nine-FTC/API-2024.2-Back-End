@@ -3,6 +3,7 @@ package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
+import com.codenine.projetotransparencia.entities.Documento;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
@@ -12,9 +13,11 @@ import com.codenine.projetotransparencia.utils.documents.VerificarTamanho;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -111,6 +114,7 @@ public class ProjetoService {
         return projetoRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) throws IOException {
         Optional<Projeto> projetoOpcional = projetoRepository.findById(atualizarProjetoDto.id());
 
@@ -119,7 +123,7 @@ public class ProjetoService {
         }
 
         Projeto projeto = projetoOpcional.get();
-        Projeto projetoAntesDaAtualizacao = new Projeto(projeto); // Cópia do projeto antes da atualização
+        Projeto projetoAntesDaAtualizacao = new Projeto(projeto);
 
         if (atualizarProjetoDto.projeto() != null && !atualizarProjetoDto.projeto().isEmpty()) {
             Projeto projetoAtualizado;
@@ -162,8 +166,8 @@ public class ProjetoService {
             if (projetoAtualizado.getLinks() != null) {
                 projeto.setLinks(projetoAtualizado.getLinks());
             }
-            if (projetoAtualizado.getCamposOcultos() != null) {
-                if (projetoAtualizado.getCamposOcultos()=="nenhum") {
+            if(projetoAtualizado.getCamposOcultos() != null) {
+                if (projetoAtualizado.getCamposOcultos() == "nenhum"){
                     projeto.setCamposOcultos("");
                 }
                 else {
@@ -171,9 +175,6 @@ public class ProjetoService {
                 }
             }
         }
-
-        // Lógica para auditoria
-        auditoriaService.registrarAuditoria(projeto, projetoAntesDaAtualizacao);
 
         // Lógica para documentos
         if (atualizarProjetoDto.resumoPdf().isPresent()) {
@@ -209,6 +210,8 @@ public class ProjetoService {
         }
 
         projetoRepository.save(projeto);
+
+        auditoriaService.registrarAuditoria(projeto.getId(), projetoAntesDaAtualizacao, "Atualização");
         return projeto.getId();
     }
 

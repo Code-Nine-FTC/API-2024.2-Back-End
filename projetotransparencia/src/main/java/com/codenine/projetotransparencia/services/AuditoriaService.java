@@ -1,13 +1,17 @@
 package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.entities.Auditoria;
+import com.codenine.projetotransparencia.entities.Documento;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.repository.AuditoriaRepository;
 import com.codenine.projetotransparencia.repository.AuditoriaRepositoryCustomImpl;
+import com.codenine.projetotransparencia.repository.DocumentoRepository;
+import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,6 +24,12 @@ public class AuditoriaService {
 
     @Autowired
     private AuditoriaRepositoryCustomImpl auditoriaRepositoryCustom;
+
+    @Autowired
+    private DocumentoRepository documentoRepository;
+
+    @Autowired
+    private ProjetoRepository projetoRepository;
 
     public List<Auditoria> listarAuditorias() {
         return auditoriaRepository.findAll();
@@ -43,10 +53,11 @@ public class AuditoriaService {
     }
 
     // Método para registrar auditoria
-    public void registrarAuditoria(Projeto projetoAtual, Projeto projetoAntesDaAtualizacao) {
+    public void registrarAuditoria(Long id, Projeto projetoAntesDaAtualizacao, String tipoAuditoria) {
+        Projeto projetoAtual = projetoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado."));
         Auditoria auditoria = new Auditoria();
         auditoria.setProjeto(projetoAtual);
-        auditoria.setTipoAuditoria("Atualização");
+        auditoria.setTipoAuditoria(tipoAuditoria);
         auditoria.setNomeCoordenador(projetoAtual.getNomeCoordenador());
         auditoria.setReferenciaProjeto(projetoAtual.getReferencia());
 
@@ -59,30 +70,82 @@ public class AuditoriaService {
         auditoria.setDataTermino_antiga(projetoAntesDaAtualizacao.getDataTermino());
         auditoria.setStatus_antigo(projetoAntesDaAtualizacao.getStatus());
         auditoria.setIntegrantes_antigos(projetoAntesDaAtualizacao.getIntegrantes());
-        //auditoria.setObjetivo_antigo(projetoAntesDaAtualizacao.getObjetivo());
+        auditoria.setObjetivo_antigo(projetoAntesDaAtualizacao.getObjeto());
         auditoria.setLinks_antigos(projetoAntesDaAtualizacao.getLinks());
 
-        // Captura todos os campos novos
-        auditoria.setTitulo_novo(projetoAtual.getTitulo());
-        auditoria.setContratante_novo(projetoAtual.getContratante());
-        auditoria.setDescricao_novo(projetoAtual.getDescricao());
-        auditoria.setValor_novo(projetoAtual.getValor());
-        auditoria.setDataInicio_novo(projetoAtual.getDataInicio());
-        auditoria.setDataTermino_novo(projetoAtual.getDataTermino());
-        auditoria.setStatus_novo(projetoAtual.getStatus());
-        auditoria.setIntegrantes_novo(projetoAtual.getIntegrantes());
-        //auditoria.setObjetivo_novo(projetoAtual.getObjetivo());
-        auditoria.setLinks_novo(projetoAtual.getLinks());
-        auditoria.setDataAlteracao(LocalDateTime.now());
-
-        // Adicione verificações para os campos que não podem ser nulos
-        if (auditoria.getDataInicio_antiga() == null || auditoria.getDataInicio_novo() == null) {
-            throw new IllegalArgumentException("Os campos de data de início não podem ser nulos.");
+        // Captura todos os campos novos apenas se forem diferentes dos antigos
+        if (!Objects.equals(projetoAtual.getTitulo(), projetoAntesDaAtualizacao.getTitulo())) {
+            auditoria.setTitulo_novo(projetoAtual.getTitulo());
         }
+        if (!Objects.equals(projetoAtual.getContratante(), projetoAntesDaAtualizacao.getContratante())) {
+            auditoria.setContratante_novo(projetoAtual.getContratante());
+        }
+        if (!Objects.equals(projetoAtual.getDescricao(), projetoAntesDaAtualizacao.getDescricao())) {
+            auditoria.setDescricao_novo(projetoAtual.getDescricao());
+        }
+        if (!Objects.equals(projetoAtual.getValor(), projetoAntesDaAtualizacao.getValor())) {
+            auditoria.setValor_novo(projetoAtual.getValor());
+        }
+        if (!Objects.equals(projetoAtual.getDataInicio(), projetoAntesDaAtualizacao.getDataInicio())) {
+            auditoria.setDataInicio_novo(projetoAtual.getDataInicio());
+        }
+        if (!Objects.equals(projetoAtual.getDataTermino(), projetoAntesDaAtualizacao.getDataTermino())) {
+            auditoria.setDataTermino_novo(projetoAtual.getDataTermino());
+        }
+        if (!Objects.equals(projetoAtual.getStatus(), projetoAntesDaAtualizacao.getStatus())) {
+            auditoria.setStatus_novo(projetoAtual.getStatus());
+        }
+        if (!Objects.equals(projetoAtual.getIntegrantes(), projetoAntesDaAtualizacao.getIntegrantes())) {
+            auditoria.setIntegrantes_novo(projetoAtual.getIntegrantes());
+        }
+        if (!Objects.equals(projetoAtual.getObjeto(), projetoAntesDaAtualizacao.getObjeto())) {
+            auditoria.setObjetivo_novo(projetoAtual.getObjeto());
+        }
+        if (!Objects.equals(projetoAtual.getLinks(), projetoAntesDaAtualizacao.getLinks())) {
+            auditoria.setLinks_novo(projetoAtual.getLinks());
+        }
+
+        List<Documento> documentosAntigos = projetoAntesDaAtualizacao.getDocumentos();
+        System.out.println("Documentos antigos: " + documentosAntigos);
+        List<Documento> documentosNovos = new ArrayList<>(projetoAtual.getDocumentos());
+        System.out.println("Documentos novos: " + documentosNovos);
+        documentosNovos.removeAll(documentosAntigos);
+        System.out.println("Documentos novos após remoção: " + documentosNovos);
+        documentosNovos.forEach(documento -> {
+                documento.setAuditoria(auditoria);
+                System.out.println("Documento: " + documento);
+                documentoRepository.save(documento);
+        });
+
+        auditoria.setDocumentos_novo(documentosNovos);
+
+        auditoria.setDataAlteracao(LocalDateTime.now());
 
         auditoriaRepository.save(auditoria);
     }
 
+    public void registrarExclusaoArquivo (Long projetoId, Long documentoId) {
+        Projeto projeto = projetoRepository.findById(projetoId).orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado."));
+        Documento documento = documentoRepository.findById(documentoId).orElseThrow(() -> new IllegalArgumentException("Documento não encontrado."));;
+        List<Documento> listaDocumentos = new ArrayList<>();
+        listaDocumentos.add(documento);
+        Auditoria auditoria = new Auditoria();
+        auditoria.setProjeto(projeto);
+        auditoria.setTipoAuditoria("Exclusão de arquivo");
+        auditoria.setTitulo_antigo(projeto.getTitulo());
+        auditoria.setNomeCoordenador(projeto.getNomeCoordenador());
+        auditoria.setReferenciaProjeto(projeto.getReferencia());
+        auditoria.setDataAlteracao(LocalDateTime.now());
+
+        auditoriaRepository.save(auditoria);
+
+        documento.setAuditoria(auditoria);
+        documentoRepository.save(documento);
+
+        auditoria.setDocumentos_novo(listaDocumentos);
+
+        auditoriaRepository.save(auditoria);
+    }
 
     public List<Auditoria> buscarAuditoriasPorProjetoId(Long projetoId) {
         return auditoriaRepository.findByProjetoId(projetoId);

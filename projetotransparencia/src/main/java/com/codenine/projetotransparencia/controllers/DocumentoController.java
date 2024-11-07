@@ -6,6 +6,7 @@ import com.codenine.projetotransparencia.services.DocumentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +48,15 @@ public class DocumentoController {
     }
 
     @DeleteMapping("/excluir/{id}")
-    public void excluirDocumento(@PathVariable Long id) {
-        documentoService.excluirDocumento(id);
+    public ResponseEntity<?> excluirDocumento(@PathVariable Long id) {
+        try {
+            documentoService.excluirDocumento(id);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir o documento. Tente novamente mais tarde."+ e.getMessage());
+        }
     }
 }
 
