@@ -72,18 +72,23 @@ public class ProjetoService {
                 cadastrarProjetoDto.dataTermino().orElse(null),
                 cadastrarProjetoDto.status().orElse(null),
                 cadastrarProjetoDto.integrantes().orElse(null),
-                //cadastrarProjetoDto.objetivo().orElse(null),
                 cadastrarProjetoDto.links().orElse(null),
                 cadastrarProjetoDto.camposOcultos().orElse(null),
                 null, // resumoPdf
                 null, // resumoExcel
                 null, // proposta
                 null  // contrato
-
         );
 
-        return projetoRepository.save(projeto).getId();
+        // Salvar o projeto
+        Projeto projetoSalvo = projetoRepository.save(projeto);
+
+        // Registrar auditoria para o cadastro do projeto
+        auditoriaService.registrarAuditoriaDeCadastro(projetoSalvo);
+
+        return projetoSalvo.getId();
     }
+
 
     public List<Projeto> listarProjetos() {
         return projetoRepository.findAll();
