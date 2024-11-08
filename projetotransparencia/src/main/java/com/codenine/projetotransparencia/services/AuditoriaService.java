@@ -150,4 +150,37 @@ public class AuditoriaService {
     public List<Auditoria> buscarAuditoriasPorProjetoId(Long projetoId) {
         return auditoriaRepository.findByProjetoId(projetoId);
     }
+    public void registrarAuditoriaDeCadastro(Projeto projeto) {
+        // Verifique que os campos obrigatórios (não-nulos) sejam preenchidos corretamente
+        Auditoria auditoria = new Auditoria(
+                projeto, // Relacionamento com o projeto
+                "Cadastro", // Tipo de auditoria
+                projeto.getNomeCoordenador(), // Nome do coordenador (obrigatório)
+                null, // Títulos antigos são nulos, pois é um novo projeto
+                null, // Contratante antigo
+                null, // Descrição antiga
+                null, // Valor antigo
+                null, // Data início antiga
+                null, // Data término antiga
+                null, // Status antigo
+                null, // Integrantes antigos
+                null, // Objetivo antigo
+                null, // Links antigos
+                projeto.getTitulo(), // Título novo diretamente do cadastro
+                projeto.getReferencia(), // Referência nova
+                projeto.getContratante(), // Contratante novo
+                projeto.getDescricao(), // Descrição nova
+                projeto.getValor(), // Valor novo
+                projeto.getDataInicio(), // Data início nova
+                projeto.getDataTermino(), // Data término nova
+                projeto.getStatus(), // Status novo
+                projeto.getIntegrantes(), // Integrantes novos
+                null, // Objetivo novo (não implementado no cadastro)
+                projeto.getLinks(), // Links novos
+                LocalDateTime.now() // Data da alteração
+        );
+
+        // Salvar a auditoria no banco de dados
+        auditoriaRepository.save(auditoria);
+    }
 }
