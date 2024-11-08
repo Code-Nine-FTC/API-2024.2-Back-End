@@ -183,4 +183,38 @@ public class AuditoriaService {
         // Salvar a auditoria no banco de dados
         auditoriaRepository.save(auditoria);
     }
+    public void registrarAuditoriaDeAlteracao(Projeto projetoAntesDaAlteracao, Projeto projetoAtual, String tipoAuditoria) {
+        // Criar um objeto de auditoria
+        Auditoria auditoria = new Auditoria();
+
+        auditoria.setProjeto(projetoAtual);
+        auditoria.setTipoAuditoria(tipoAuditoria); // "Exclusão" ou algo similar
+        auditoria.setNomeCoordenador(projetoAtual.getNomeCoordenador());
+        auditoria.setReferenciaProjeto(projetoAtual.getReferencia());
+
+        // Guardar os dados antigos (do projeto antes da alteração)
+        auditoria.setTitulo_antigo(projetoAntesDaAlteracao.getTitulo());
+        auditoria.setContratante_antigo(projetoAntesDaAlteracao.getContratante());
+        auditoria.setDescricao_antiga(projetoAntesDaAlteracao.getDescricao());
+        auditoria.setValor_antigo(projetoAntesDaAlteracao.getValor());
+        auditoria.setDataInicio_antiga(projetoAntesDaAlteracao.getDataInicio());
+        auditoria.setDataTermino_antiga(projetoAntesDaAlteracao.getDataTermino());
+        auditoria.setStatus_antigo(projetoAntesDaAlteracao.getStatus());
+        auditoria.setIntegrantes_antigos(projetoAntesDaAlteracao.getIntegrantes());
+        auditoria.setObjetivo_antigo(projetoAntesDaAlteracao.getObjeto());
+        auditoria.setLinks_antigos(projetoAntesDaAlteracao.getLinks());
+
+        // Caso o projeto tenha sido marcado como inativo, registrar como exclusão
+        if (!projetoAntesDaAlteracao.getAtivo() && projetoAtual.getAtivo() == false) {
+            // Pode adicionar algo como 'exclusão' ou 'desativado' no campo de descrição
+            auditoria.setTipoAuditoria("Exclusão do Projeto");
+        }
+
+        // Registrar a data de alteração
+        auditoria.setDataAlteracao(LocalDateTime.now());
+
+        // Salvar a auditoria no banco de dados
+        auditoriaRepository.save(auditoria);
+    }
+
 }
