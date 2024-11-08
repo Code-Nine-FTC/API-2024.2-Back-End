@@ -150,35 +150,50 @@ public class AuditoriaService {
     public List<Auditoria> buscarAuditoriasPorProjetoId(Long projetoId) {
         return auditoriaRepository.findByProjetoId(projetoId);
     }
-    public void registrarAuditoriaDeCadastro(Projeto projeto) {
+    public void registrarAuditoriaDeCadastro(Projeto projetoAntesDaAlteracao, Projeto projetoAtual) {
         // Verifique que os campos obrigatórios (não-nulos) sejam preenchidos corretamente
-        Auditoria auditoria = new Auditoria(
-                projeto, // Relacionamento com o projeto
-                "Cadastro", // Tipo de auditoria
-                projeto.getNomeCoordenador(), // Nome do coordenador (obrigatório)
-                null, // Títulos antigos são nulos, pois é um novo projeto
-                null, // Contratante antigo
-                null, // Descrição antiga
-                null, // Valor antigo
-                null, // Data início antiga
-                null, // Data término antiga
-                null, // Status antigo
-                null, // Integrantes antigos
-                null, // Objetivo antigo
-                null, // Links antigos
-                projeto.getTitulo(), // Título novo diretamente do cadastro
-                projeto.getReferencia(), // Referência nova
-                projeto.getContratante(), // Contratante novo
-                projeto.getDescricao(), // Descrição nova
-                projeto.getValor(), // Valor novo
-                projeto.getDataInicio(), // Data início nova
-                projeto.getDataTermino(), // Data término nova
-                projeto.getStatus(), // Status novo
-                projeto.getIntegrantes(), // Integrantes novos
-                null, // Objetivo novo (não implementado no cadastro)
-                projeto.getLinks(), // Links novos
-                LocalDateTime.now() // Data da alteração
-        );
+//        Auditoria auditoria = new Auditoria(
+//                projetoAtual, // Relacionamento com o projeto
+//                "Cadastro", // Tipo de auditoria
+//                projetoAntesDaAlteracao.getNomeCoordenador(), // Nome do coordenador (obrigatório)
+//                null, // Títulos antigos são nulos, pois é um novo projeto
+//                null, // Contratante antigo
+//                null, // Descrição antiga
+//                null, // Valor antigo
+//                null, // Data início antiga
+//                null, // Data término antiga
+//                null, // Status antigo
+//                null, // Integrantes antigos
+//                null, // Objetivo antigo
+//                null, // Links antigos
+//                projetoAntesDaAlteracao.getTitulo(), // Título novo diretamente do cadastro
+//                projetoAntesDaAlteracao.getReferencia(), // Referência nova
+//                projetoAntesDaAlteracao.getContratante(), // Contratante novo
+//                projetoAntesDaAlteracao.getDescricao(), // Descrição nova
+//                projetoAntesDaAlteracao.getValor(), // Valor novo
+//                projetoAntesDaAlteracao.getDataInicio(), // Data início nova
+//                projetoAntesDaAlteracao.getDataTermino(), // Data término nova
+//                projetoAntesDaAlteracao.getStatus(), // Status novo
+//                projetoAntesDaAlteracao.getIntegrantes(), // Integrantes novos
+//                null, // Objetivo novo (não implementado no cadastro)
+//                projetoAntesDaAlteracao.getLinks(), // Links novos
+//                LocalDateTime.now() // Data da alteração
+//        );
+        Auditoria auditoria = new Auditoria();
+        auditoria.setProjeto(projetoAtual);
+        auditoria.setTipoAuditoria("Cadastro");
+        auditoria.setNomeCoordenador(projetoAtual.getNomeCoordenador());
+        auditoria.setReferenciaProjeto(projetoAtual.getReferencia());
+        auditoria.setTitulo_novo(projetoAtual.getTitulo());
+        auditoria.setContratante_novo(projetoAtual.getContratante());
+        auditoria.setDescricao_novo(projetoAtual.getDescricao());
+        auditoria.setValor_novo(projetoAtual.getValor());
+        auditoria.setDataInicio_novo(projetoAtual.getDataInicio());
+        auditoria.setDataTermino_novo(projetoAtual.getDataTermino());
+        auditoria.setStatus_novo(projetoAtual.getStatus());
+        auditoria.setIntegrantes_novo(projetoAtual.getIntegrantes());
+        auditoria.setLinks_novo(projetoAtual.getLinks());
+        auditoria.setDataAlteracao(LocalDateTime.now());
 
         // Salvar a auditoria no banco de dados
         auditoriaRepository.save(auditoria);
@@ -204,14 +219,24 @@ public class AuditoriaService {
         auditoria.setObjetivo_antigo(projetoAntesDaAlteracao.getObjeto());
         auditoria.setLinks_antigos(projetoAntesDaAlteracao.getLinks());
 
+        // Registrar a data de alteração
+        auditoria.setDataAlteracao(LocalDateTime.now());
+
+        auditoriaRepository.save(auditoria);
+
+        projetoAntesDaAlteracao.getDocumentos().forEach(documento -> {
+            documento.setAuditoria(auditoria);
+            System.out.println("Documento: " + documento);
+            documentoRepository.save(documento);
+        });
+
+        auditoria.setDocumentos_novo(projetoAntesDaAlteracao.getDocumentos());
+
         // Caso o projeto tenha sido marcado como inativo, registrar como exclusão
         if (!projetoAntesDaAlteracao.getAtivo() && projetoAtual.getAtivo() == false) {
             // Pode adicionar algo como 'exclusão' ou 'desativado' no campo de descrição
-            auditoria.setTipoAuditoria("Exclusão do Projeto");
+            auditoria.setTipoAuditoria("Exclusão");
         }
-
-        // Registrar a data de alteração
-        auditoria.setDataAlteracao(LocalDateTime.now());
 
         // Salvar a auditoria no banco de dados
         auditoriaRepository.save(auditoria);

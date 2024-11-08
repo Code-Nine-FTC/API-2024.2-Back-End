@@ -84,7 +84,8 @@ public class ProjetoService {
         Projeto projetoSalvo = projetoRepository.save(projeto);
 
         // Registrar auditoria para o cadastro do projeto
-        auditoriaService.registrarAuditoriaDeCadastro(projetoSalvo);
+        Projeto copiaProjeto = new Projeto(projetoSalvo);
+        auditoriaService.registrarAuditoriaDeCadastro(copiaProjeto, projetoSalvo);
 
         return projetoSalvo.getId();
     }
@@ -245,7 +246,7 @@ public class ProjetoService {
         projetoRepository.save(projeto);
 
         // Registrar a auditoria da alteração (mudança do campo ativo)
-        auditoriaService.registrarAuditoriaDeAlteracao(projetoAntesDaAlteracao, projeto, "Desativação do Projeto");
+        auditoriaService.registrarAuditoriaDeAlteracao(projetoAntesDaAlteracao, projeto, "Exclusão");
     }
 
 
