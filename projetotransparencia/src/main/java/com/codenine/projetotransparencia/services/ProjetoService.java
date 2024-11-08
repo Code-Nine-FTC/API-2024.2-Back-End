@@ -116,12 +116,16 @@ public class ProjetoService {
     }
 
     public Projeto visualizarProjeto(Long id) {
-        return projetoRepository.findById(id).orElse(null);
+        Optional<Projeto> projetoOptional = projetoRepository.findActiveById(id);
+        if (projetoOptional.isEmpty()) {
+            return null;
+        }
+        return projetoOptional.get();
     }
 
     @Transactional
     public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) throws IOException {
-        Optional<Projeto> projetoOpcional = projetoRepository.findById(atualizarProjetoDto.id());
+        Optional<Projeto> projetoOpcional = projetoRepository.findActiveById(atualizarProjetoDto.id());
 
         if (projetoOpcional.isEmpty()) {
             throw new IllegalArgumentException("Erro: Projeto com ID " + atualizarProjetoDto.id() + " não encontrado!");

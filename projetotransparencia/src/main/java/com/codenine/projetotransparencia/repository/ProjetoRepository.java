@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.codenine.projetotransparencia.entities.Projeto;
 
-public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
+public interface ProjetoRepository extends JpaRepository<Projeto, Long>, ProjetoRepositoryCustom {
     @Query("SELECT p FROM Projeto p WHERE " +
             "(:referencia IS NULL OR LOWER(p.referencia) LIKE LOWER(CONCAT('%', :referencia, '%'))) AND " +
             "((:keyword IS NOT NULL AND (" +
@@ -26,7 +26,8 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
             "(:dataInicio IS NULL OR p.dataInicio >= :dataInicio) AND " +
             "(:dataTermino IS NULL OR p.dataTermino <= :dataTermino) AND " +
             "(:valor IS NULL OR p.valor = :valor) AND " +
-            "(:status IS NULL OR LOWER(p.status) LIKE LOWER(CONCAT('%', :status, '%'))) " +
+            "(:status IS NULL OR LOWER(p.status) LIKE LOWER(CONCAT('%', :status, '%'))) AND " +
+            "p.ativo = true " +
             "ORDER BY p.dataInicio ASC")
     List<Projeto> findByFiltros(@Param("referencia") String referencia,
                                 @Param("nomeCoordenador") String nomeCoordenador,
@@ -37,6 +38,6 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long> {
                                 @Param("keyword") String keyword);
     
     List<Projeto> findByReferencia(String referencia);
-    
+
     long countByNomeCoordenador(String nomeCoordenador);
 }

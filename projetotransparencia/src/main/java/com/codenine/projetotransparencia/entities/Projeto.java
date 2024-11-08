@@ -65,6 +65,9 @@ public class Projeto {
     @Column(nullable = true)
     private String camposOcultos;
 
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Documento> documentos = new ArrayList<>();
 

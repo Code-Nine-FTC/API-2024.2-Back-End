@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.repository;
 
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import com.codenine.projetotransparencia.entities.Projeto;
 import jakarta.persistence.EntityManager;
@@ -9,9 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Repository
-public class ProjetoRepositoryCustomImpl {
+public class ProjetoRepositoryCustomImpl implements ProjetoRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -71,11 +73,31 @@ public class ProjetoRepositoryCustomImpl {
                 predicates.add(cb.equal(root.get("contratante"), contratante));
             }
 
+            predicates.add(cb.isTrue(root.get("ativo")));
+
             query.where(predicates.toArray(new Predicate[0]));
             return entityManager.createQuery(query).getResultList();
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao buscar projetos: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Projeto> findAll() {
+        String queryStr = "SELECT p FROM Projeto p WHERE p.ativo = true";
+        TypedQuery<Projeto> query = entityManager.createQuery(queryStr, Projeto.class);
+        return query.getResultList();
+    }
+    @Override
+    public Optional<Projeto> findActiveById(Long id) {
+        String queryStr = "SELECT p FROM Projeto p WHERE p.ativo = true AND p.id = :id";
+        TypedQuery<Projeto> query = entityManager.createQuery(queryStr, Projeto.class);
+        try {
+            Projeto projeto = query.setParameter("id", id).getSingleResult();
+            return Optional.of(projeto);
+        } catch (Exception e) {
+            return Optional.empty();
         }
     }
 }
