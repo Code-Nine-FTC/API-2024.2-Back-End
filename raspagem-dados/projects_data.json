@@ -1374,10 +1374,10 @@
         "Empresa": "Companhia Brasileira de Metalurgia e Mineração - CBMM",
         "Objeto": "1.1. Constitui objeto do presente ACORDO a cooperação entre a PARCEIRA e a FAPG, para promover e desenvolver a cooperação técnico-científica e educacional, visando à troca de experiências, conhecimentos, cursos, consultorias e o desenvolvimento de projetos de pesquisa e desenvolvimento, por meio de Programas de Trabalho previamente aprovados pelas Partes, doravante denominados \"PROJETOS\". 1.2. O presente ACORDO será implementado por meio de Planos de Trabalho (Anexo I), que após assinados serão parte integrante deste Acordo, e definirão os Projetos de forma específica, neles se estabelecendo, de maneira pormenorizada e clara, os objetivos a serem atingidos, bem como o planejamento completo dos trabalhos que serão realizados e o seu orçamento, incluindo, mas não se limitando, a descrição detalhada das atividades, bem como suas etapas, cronograma e/ou fases de execução, especificações técnicas das atividades, materiais e recursos humanos e financeiros a serem disponibilizadas, obrigações e responsabilidades atribuíveis a cada uma das Partes, bem como penalidades por inadimplemento de obrigações neles estabelecidas, quando for o caso. 1.3. Com a conclusão dos Projetos, será entregue, pela FAPG à PARCEIRA, um relatório resumindo conclusões e recomendações.",
         "Descrição": "3.1 O objeto deste contrato consiste em serviços de realização de testes em algumas ferramentas de corte de carboneto de nióbio a serem fornecidas pela CBMM (“Ferramentas”), com o objetivo de avaliar o desempenho de tais Ferramentas no processo de usinagem (“Testes”). Os serviços objeto deste Contrato são, doravante, designados apenas “Serviços”. Ainda que os serviços objeto deste Contrato sejam executados por intermédio do Centro de Competências em Manufatura-CCM, a FAPG será integral e exclusivamente responsável por todas as atividades relacionadas à execução dos serviços, incluindo, mas não se limitando, pelo andamento das atividades, cronograma, resultados, relatórios e entregáveis. 3.2 Os Serviços serão realizados em 4 (quatro) fases, que consistem em: (a) Fase 1: ensaios preliminares para avaliação qualitativa das Ferramentas, levando em consideração os principais parâmetros de usinagem, tais como velocidade de corte, avanço e profundidade de corte; (b) Fase 2: análise da “usinabilidade” das Ferramentas sem fluído de corte; (c) Fase 3: análise da “usinabilidade” das Ferramentas com fluído de corte; e (d) Fase 4: apresentação dos resultados dos Testes e entrega do relatório final à CBMM (as Fases 1 à 4 são, doravante, designadas “Fases”). 3.3 Os Testes de desempenho das Ferramentas serão realizados (i) em materiais a serem usinados, que serão escolhidos e adquiridos pela FAPG diretamente (“Materiais Usinados”), mas cujos custos serão reembolsados pela CBMM, desde que mediante prévia e expressa aprovação da CBMM da correspondente proposta comercial a ser apresentada pela FAPG para a aludida aquisição, e (ii) mediante o uso de equipamentos do Centro de Competências em Manufatura-CCM. 3.4 Os Serviços deverão ser prestados de acordo com o cronograma constante do item 5 da Proposta, sendo que ao final de cada uma das Fases deverá ser apresentado um relatório com a apresentação completa do andamento e resultado de cada Fase, e ao final da Fase 4 deverá ser apresentado um relatório final com a conclusão de todos os Testes realizados (“Relatórios”). 3.5 O Relatório da Fase 4 será o produto final dos Serviços. Todos os Relatórios deverão relatar de maneira detalhada todas as Fases dos Testes, andamentos, verificações, constatações sobre o desempenho das Ferramentas e seu resultado final. 3.6 Os Testes deverão ser finalizados de acordo com os prazos intermediários de execução constante da Proposta, e o Relatório da Fase 4 deverá ser devidamente entregue pela FAPG, no prazo de até 10 (dez) meses contados da data de entrada em vigor do presente instrumento. 3.7 A CBMM poderá, a seu exclusivo critério, destacar um gestor técnico de sua confiança para acompanhar e assistir à execução dos Serviços, devendo a FAPG permitir o acesso de tal técnico ao local dos Serviços, bem como a sua participação em reuniões para tratar sobre o andamento dos Serviços. As Partes ajustam, desde já, que a eventual indicação de gestor pela CBMM não atenuará a responsabilidade da FAPG pela fiel e perfeita execução dos Serviços nos termos aqui previstos.",
-        "Coordenador": "07/12/2015",
-        "Valor do projeto": "07/12/2016",
-        "Data de início": "",
-        "Data de término": ""
+        "Coordenador": "FAPG",
+        "Valor do projeto": "",
+        "Data de início": "07/12/2015",
+        "Data de término": "07/12/2016"
     },
     {
         "Referência do projeto": "015/2015 - SEGURAÇA DE VOO E TOMADA DE DECISÃO AUTÔNOMA EM OPERAÇÕES DE BALÃO CATIVO",
@@ -1385,9 +1385,9 @@
         "Objeto": "O objetivo do presente projeto é estudar ps aspectos de segurança de voo em uma operação de balão cativo com foco no dispositivo de deflação de emergência e a tomada de decisão autônoma.",
         "Descrição": "",
         "Coordenador": "BRUNO AVENA AZEVEDO",
-        "Valor do projeto": "01/12/2015",
-        "Data de início": "31/08/2016",
-        "Data de término": ""
+        "Valor do projeto": "",
+        "Data de início": "01/12/2015",
+        "Data de término": "31/08/2016"
     },
     {
         "Referência do projeto": "027/2015-Sistema para captura e pré-análise de incidentes e perigos em ambiente hospitalar",
@@ -1554,10 +1554,10 @@
         "Empresa": "INDÚSTRIAS ROMI S.A.",
         "Objeto": "1.1. O presente Acordo de Cooperação tem o objetivo principal estabelecer as bases para a cessão em COMODATO, através de instrumento próprio a ser assinado pelas PARTES, de uma (1) máquina Romi DCM 620-5X, doravante designado EQUIPAMENTO – DCM, de projeto e fabricação ROMI, para (i) uso em pesquisas próprias e/ou na prestação de serviços a terceiros relacionados às pesquisas desenvolvidas pelo Centro de Competência em Manufatura do Instituto Tecnológico de Aeronáutica (CCM/ITA) aqui representada pela Fundação de Apoio à Pesquisa de Pós-Graduação (FAPG) e (ii) realização de pesquisas para a ROMI. 1.2. Incorpora-se ao presente “Acordo de Cooperação”, o comodato dos equipamentos objeto do Convênio de Cooperação Técnico Científica celebrado em 01/10/2007 e seus Aditivos celebrados em 01/10/2007, 29/06/2009 e 16/04/2014, entre a Romi e a APG-ITA, quais sejam um centro de torneamento Romi E280 e um centro de fresamento D800, ficando este encerrado a partir da presente data, sem ônus às partes, para todos os fins de direito, observando-se que a APG-ITA, pelo presente Acordo de Cooperação, anui à cessão dos mesmos à FAPG, sem que disso decorra qualquer direito ou obrigação (ANEXO I).",
         "Descrição": "1.1. O presente Acordo de Cooperação tem o objetivo principal estabelecer as bases para a cessão em COMODATO, através de instrumento próprio a ser assinado pelas PARTES, de uma (1) máquina Romi DCM 620-5X, doravante designado EQUIPAMENTO – DCM, de projeto e fabricação ROMI, para (i) uso em pesquisas próprias e/ou na prestação de serviços a terceiros relacionados às pesquisas desenvolvidas pelo Centro de Competência em Manufatura do Instituto Tecnológico de Aeronáutica (CCM/ITA) aqui representada pela Fundação de Apoio à Pesquisa de Pós-Graduação (FAPG) e (ii) realização de pesquisas para a ROMI. 1.2. Incorpora-se ao presente “Acordo de Cooperação”, o comodato dos equipamentos objeto do Convênio de Cooperação Técnico Científica celebrado em 01/10/2007 e seus Aditivos celebrados em 01/10/2007, 29/06/2009 e 16/04/2014, entre a Romi e a APG-ITA, quais sejam um centro de torneamento Romi E280 e um centro de fresamento D800, ficando este encerrado a partir da presente data, sem ônus às partes, para todos os fins de direito, observando-se que a APG-ITA, pelo presente Acordo de Cooperação, anui à cessão dos mesmos à FAPG, sem que disso decorra qualquer direito ou obrigação (ANEXO I).",
-        "Coordenador": "",
-        "Valor do projeto": "18/03/2015",
-        "Data de início": "17/03/2018",
-        "Data de término": ""
+        "Coordenador": "FAPG",
+        "Valor do projeto": "",
+        "Data de início": "18/03/2015",
+        "Data de término": "17/03/2018"
     },
     {
         "Referência do projeto": "009/2015-Conversão de linguagem do programa SGM de DBase para Oracle",
@@ -1584,10 +1584,10 @@
         "Empresa": "RIMA INDUSTRIAL S.A.",
         "Objeto": "O objetivo do projeto é construir um modelo em elementos finitos do forno de carbonização, possivelmente utilizando elementos sólidos, para executar análises numéricas que forneçam os resultados em termos de distribuição de temperatura, deslocamentos, deformações e tensões. De posse desses resultados é possível avaliar melhorias a serem implementadas no equipamento com redução de material em áreas superdimensionadas e eventualmente adição de reforços em áreas subdimensionadas.",
         "Descrição": "O desafio proposto pela Rima envolve o estudo das resposta estruturais do forno durante as diferentes etapas do processo de carbonização e quando sujeito à pressão interna de 1,6 bar. O forno é um equipamento complexo com um grande número de detalhes. Para que as análises necessárias possam ser realizadas é preciso gerar um modelo numérico do equipamento e que seja ao mesmo tempo simples o suficiente para viabilizar as análises mas também detalhada o suficiente para fornecer resultados numéricos precisos e confiáveis. A elevada temperatura de carbonização acarreta em carregamentos termomecânicos de grande magnitude que devem ser levadas em conta no projeto do forno. Para determinação dos carregamentos termomecânicos é preciso conhecer a distribuição de temperaturas no forno que levam ao aparecimento de tensões.",
-        "Coordenador": "02/02/2015",
-        "Valor do projeto": "30/06/2015",
-        "Data de início": "",
-        "Data de término": ""
+        "Coordenador": "FAPG",
+        "Valor do projeto": "",
+        "Data de início": "02/02/2015",
+        "Data de término": "30/06/2015"
     },
     {
         "Referência do projeto": "021/2014-ESTUDO DO TRINCAMENTO DA AMPLIAÇÃO DO PÁTIO DE AERONAVES DO AEROPORTO DE CONFINS - MG",
@@ -1614,10 +1614,10 @@
         "Empresa": "KONATUS SOLUÇÕES INTELIGENTES LTDA",
         "Objeto": "O objetivo do presente projeto consiste no desenvolvimento de um Sistema para Análise de Dados Gravados para monitoramento da saúde de equipamentos críticos, composto por um módulo de aquisição, pré-processamento de sinais e diagnóstico rápido, um módulo de reporte de perigos e evidências observadas e um módulo de análise de dados históricos. O sistema a ser desenvolvido será realizado por meio de modificações nos pacotes computacionais DART, SIGEPLAN e Oraculus, previamente desenvolvidos pela Konatus.",
         "Descrição": "Um sistema de análises de dados gravados permite a avaliação da saúde equipamentos críticos beneficiando atividades de manutenção e consequentemente aumentando a disponibilidade do equipamento.",
-        "Coordenador": "02/01/2015",
-        "Valor do projeto": "31/12/2015",
-        "Data de início": "",
-        "Data de término": ""
+        "Coordenador": "FAPG",
+        "Valor do projeto": "",
+        "Data de início": "02/01/2015",
+        "Data de término": "31/12/2015"
     },
     {
         "Referência do projeto": "003/2015-APOIO AO DESENVOLVIMENTO DE FUNCIONALIDADES PARA PACOTES COMPUTACIONAIS DE ANÁLISE DE DADOS",
@@ -1705,9 +1705,9 @@
         "Objeto": "O presente projeto contempla atividades de pesquisa, documentação e utilização de ferramenta computacional para integração de software de leis de controle FBW em hardware eletrônico com finalidade de teste dinâmico do código. A seguir encontra-se detalhada a lista de atividades do presente projeto: 1. Estudo dos hardwares de kits de desenvolvimento (SDK) utilizados para processamento das leis de controle; 2. Elaboração de estratégia de integração SW/HW para teste dinâmico; 3. Configuração e implantação da estratégia de testes com uso da ferramenta computacional LDRA TbRun; 4. Execução dos testes e documentação dos resultados.",
         "Descrição": "A realização de testes de softwares embarcados em seu ambiente real (hardware) permite a análise e verificação de várias medidas de sua qualidade e aspectos de integração, que devem ser validados e atender requisitos pelas agências reguladoras.",
         "Coordenador": "Guilherme Conceição Rocha",
-        "Valor do projeto": "01/10/2014",
-        "Data de início": "31/12/2014",
-        "Data de término": ""
+        "Valor do projeto": "",
+        "Data de início": "01/10/2014",
+        "Data de término": "31/12/2014"
     },
     {
         "Referência do projeto": "017/2014-Análises Geotécnicas e Ambientais Avançadas",
@@ -1904,10 +1904,10 @@
         "Empresa": "PROTENSÃO IMPACTO LTDA.",
         "Objeto": "O presente instrumento tem como objetivo a parceria de natureza técnica e financeira: Serviços técnicos de apoio a projeto e simulação em software CAE/CAD, referente ao projeto de inovação de título SISTEMA CONSTRUTIVO PARA EDIFICAÇÕES EM CONCRETO ATRAVÉS DE FORMAS DE PLÁSTICO RECICLADO, publicado sob o contrato de subvenção 03.12.0413.00/FINEP, de 09/11/2012.",
         "Descrição": "Faz-se necessário o projeto e a análise estrutural do SISTEMA CONSTRUTIVO PARA EDIFICAÇÕES EM CONCRETO ATRAVÉS DE FORMAS DE PLÁSTICO RECICLADO para a validação do produto.",
-        "Coordenador": "01/02/2014",
-        "Valor do projeto": "01/04/2014",
-        "Data de início": "",
-        "Data de término": ""
+        "Coordenador": "FAPG",
+        "Valor do projeto": "",
+        "Data de início": "01/02/2014",
+        "Data de término": "01/04/2014"
     },
     {
         "Referência do projeto": "017/2013 - PROTENSÃO IMPACTO LTDA",
