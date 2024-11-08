@@ -232,8 +232,23 @@ public class ProjetoService {
             throw new IllegalArgumentException("Erro: Projeto com ID " + id + " não encontrado!");
         }
 
-        projetoRepository.deleteById(id);
+        // Recuperar o projeto
+        Projeto projeto = projetoOpcional.get();
+
+        // Guardar o estado do projeto antes da alteração para auditoria
+        Projeto projetoAntesDaAlteracao = new Projeto(projeto);
+
+        // Marcar o projeto como inativo (ativo = false)
+        projeto.setAtivo(false);
+
+        // Salvar o projeto atualizado no banco de dados
+        projetoRepository.save(projeto);
+
+        // Registrar a auditoria da alteração (mudança do campo ativo)
+        auditoriaService.registrarAuditoriaDeAlteracao(projetoAntesDaAlteracao, projeto, "Desativação do Projeto");
     }
+
+
 
     @EventListener(ContextRefreshedEvent.class)
     public void init() {
