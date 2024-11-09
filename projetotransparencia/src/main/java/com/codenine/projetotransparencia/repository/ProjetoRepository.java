@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +32,8 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long>, Projeto
             "ORDER BY p.dataInicio ASC")
     List<Projeto> findByFiltros(@Param("referencia") String referencia,
                                 @Param("nomeCoordenador") String nomeCoordenador,
-                                @Param("dataInicio") Date dataInicio,
-                                @Param("dataTermino") Date dataTermino,
+                                @Param("dataInicio") LocalDate dataInicio,
+                                @Param("dataTermino") LocalDate dataTermino,
                                 @Param("valor") Double valor,
                                 @Param("status") String status,
                                 @Param("keyword") String keyword);
