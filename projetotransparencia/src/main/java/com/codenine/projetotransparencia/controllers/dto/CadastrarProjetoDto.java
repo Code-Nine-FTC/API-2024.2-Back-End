@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.controllers.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -9,9 +10,9 @@ public record CadastrarProjetoDto (
         @NotEmpty String titulo,
         @NotEmpty String referencia,
         @NotEmpty String nomeCoordenador,
-        @NotEmpty Date dataInicio,
+        @NotEmpty LocalDate dataInicio,
         Optional<Double> valor,
-        Optional<Date> dataTermino,
+        Optional<LocalDate> dataTermino,
         Optional<String> contratante,
         Optional<String> status,
         Optional<String> integrantes,
