@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -98,8 +100,8 @@ public class ProjetoService {
     public List<Projeto> buscarProjetos(BuscarProjetoDto filtro) {
         String referencia = filtro.referencia();
         String nomeCoordenador = filtro.nomeCoordenador();
-        Date dataInicio = filtro.dataInicio();
-        Date dataTermino = filtro.dataTermino();
+        LocalDate dataInicio = filtro.dataInicio() != null ? filtro.dataInicio().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
+        LocalDate dataTermino = filtro.dataTermino() != null ? filtro.dataTermino().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
         Double valor = filtro.valor();
         String status = filtro.status();
         String keyword = filtro.keyword();
@@ -302,8 +304,10 @@ public class ProjetoService {
             String dataInicioNormalizada = dataInicioString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataInicioString);
             String dataTerminoNormalizada = dataTerminoString.isEmpty() ? "01/01/1900" : normalizacaoService.normalizarData(dataTerminoString);
 
-            Date dataInicio = new SimpleDateFormat("dd/MM/yyyy").parse(dataInicioNormalizada);
-            Date dataTermino = new SimpleDateFormat("dd/MM/yyyy").parse(dataTerminoNormalizada);
+            Date dataInicioTeste = new SimpleDateFormat("dd/MM/yyyy").parse(dataInicioNormalizada);
+            Date dataTerminoTeste = new SimpleDateFormat("dd/MM/yyyy").parse(dataTerminoNormalizada);
+            LocalDate dataInicio = dataInicioTeste.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            LocalDate dataTermino = dataTerminoTeste.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
             Optional<Double> valor = Optional.ofNullable(projetoNode.get("Valor do projeto").asText())
                     .map(normalizacaoService::normalizarValorMonetario)
