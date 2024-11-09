@@ -37,7 +37,7 @@ public class DashboardService {
                 // Verificar se o intervalo é maior que um ano
                 if (inicio.getYear() == termino.getYear()) {
                     // Se o intervalo estiver no mesmo ano, agrupar por meses
-                    return agruparProjetosPorMesPorAno(projetosFiltrados, dataInicio, dataTermino);
+                    return agruparProjetosPorMesPorAno(projetosFiltrados, inicio, termino);
                 } else {
                     // Se o intervalo abranger mais de um ano, agrupar por anos
                     return agruparProjetosPorAno(projetosFiltrados);
@@ -55,13 +55,13 @@ public class DashboardService {
         Map<String, Long> projetosPorAno = new HashMap<>();
 
         for (Projeto projeto : projetos) {
-            Date dataInicioProjeto = projeto.getDataInicio();
-            Date dataTerminoProjeto = projeto.getDataTermino() != null
+            LocalDate dataInicioProjeto = projeto.getDataInicio();
+            LocalDate dataTerminoProjeto = projeto.getDataTermino() != null
                     ? projeto.getDataTermino()
                     : dataInicioProjeto;
 
-            int anoInicio = getYearFromDate(dataInicioProjeto);
-            int anoTermino = getYearFromDate(dataTerminoProjeto);
+            int anoInicio = dataInicioProjeto.getYear();
+            int anoTermino = dataTerminoProjeto.getYear();
 
             for (int ano = anoInicio; ano <= anoTermino; ano++) {
                 String chaveAno = String.valueOf(ano);
@@ -72,19 +72,19 @@ public class DashboardService {
         return projetosPorAno;
     }
 
-    private Map<String, Long> agruparProjetosPorMesPorAno(List<Projeto> projetos, String dataInicio, String dataTermino) {
+    private Map<String, Long> agruparProjetosPorMesPorAno(List<Projeto> projetos, LocalDate dataInicio, LocalDate dataTermino) {
         Map<String, Long> projetosPorMes = new TreeMap<>();  // TreeMap para garantir a ordenação
 
         for (Projeto projeto : projetos) {
-            Date dataInicioProjeto = projeto.getDataInicio();
-            Date dataTerminoProjeto = projeto.getDataTermino() != null
+            LocalDate dataInicioProjeto = projeto.getDataInicio();
+            LocalDate dataTerminoProjeto = projeto.getDataTermino() != null
                     ? projeto.getDataTermino()
                     : dataInicioProjeto;
 
-            int anoInicioProjeto = getYearFromDate(dataInicioProjeto);
-            int mesInicioProjeto = getMonthFromDate(dataInicioProjeto);
-            int anoTerminoProjeto = getYearFromDate(dataTerminoProjeto);
-            int mesTerminoProjeto = getMonthFromDate(dataTerminoProjeto);
+            int anoInicioProjeto = dataInicioProjeto.getYear();
+            int mesInicioProjeto = dataInicioProjeto.getMonthValue();
+            int anoTerminoProjeto = dataTerminoProjeto.getYear();
+            int mesTerminoProjeto = dataTerminoProjeto.getMonthValue();
 
             for (int ano = anoInicioProjeto; ano <= anoTerminoProjeto; ano++) {
                 int mesInicio = (ano == anoInicioProjeto) ? mesInicioProjeto : 1;
@@ -110,17 +110,17 @@ public class DashboardService {
         return resultadosOrdenados;
     }
 
-    private int getYearFromDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.YEAR);
-    }
-
-    private int getMonthFromDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(Calendar.MONTH) + 1;
-    }
+//    private int getYearFromLocalDate(Date date) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        return calendar.get(Calendar.YEAR);
+//    }
+//
+//    private int getMonthFromDate(Date date) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        return calendar.get(Calendar.MONTH) + 1;
+//    }
 
     private String getMesNome(int mes) {
         String[] meses = {
@@ -130,7 +130,7 @@ public class DashboardService {
         return meses[mes - 1];
     }
 
-    private LocalDate convertToLocalDate(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
+//    private LocalDate convertToLocalDate(Date date) {
+//        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//    }
 }
