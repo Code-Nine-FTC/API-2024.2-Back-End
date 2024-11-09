@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,11 +48,11 @@ public class Projeto {
     @Temporal(TemporalType.DATE)
     @NotNull
     @Column(nullable = false)
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date dataTermino;
+    private LocalDate dataTermino;
 
     @Column(nullable = true)
     private String status;
@@ -81,7 +82,7 @@ public class Projeto {
     // Adicionando um construtor com 16 parâmetros (não recomendado)
     public Projeto(String titulo, String referencia, String contratante, String objeto,
                    String descricao, String nomeCoordenador, Double valor,
-                   Date dataInicio, Date dataTermino, String status, String integrantes,
+                   LocalDate dataInicio, LocalDate dataTermino, String status, String integrantes,
                    String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4) {
         this.titulo = titulo;
         this.referencia = referencia;

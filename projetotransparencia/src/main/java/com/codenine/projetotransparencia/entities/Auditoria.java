@@ -3,6 +3,8 @@ package com.codenine.projetotransparencia.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -43,11 +45,11 @@ public class Auditoria {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date dataInicio_antiga;
+    private LocalDate dataInicio_antiga;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date dataTermino_antiga;
+    private LocalDate dataTermino_antiga;
 
     @Column(nullable = true)
     private String status_antigo;
@@ -79,11 +81,11 @@ public class Auditoria {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date dataInicio_novo;
+    private LocalDate dataInicio_novo;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private Date dataTermino_novo;
+    private LocalDate dataTermino_novo;
 
     @Column(nullable = true)
     private String status_novo;
@@ -107,11 +109,11 @@ public class Auditoria {
     public Auditoria() {}
 
     public Auditoria(Projeto projeto, String tipoAuditoria, String nomeCoordenador, String titulo_antigo, String contratante_antigo, String descricao_antiga,
-                     Double valor_antigo, Date dataInicio_antiga, Date dataTermino_antiga,
+                     Double valor_antigo, LocalDate dataInicio_antiga, LocalDate dataTermino_antiga,
                      String status_antigo,String integrantes_antigos, String objetivo_antigo,
                      String links_antigos,String titulo_novo,
                      String referenciaProjeto, String contratante_novo, String descricao_novo,
-                     Double valor_novo, Date dataInicio_novo, Date dataTermino_novo,
+                     Double valor_novo, LocalDate dataInicio_novo, LocalDate dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
                      String links_novo,LocalDateTime dataAlteracao) {
         this.projeto = projeto;
