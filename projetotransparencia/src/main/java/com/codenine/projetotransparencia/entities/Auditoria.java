@@ -63,7 +63,6 @@ public class Auditoria {
     @Column(nullable = true)
     private String links_antigos;
 
-
     @Column(nullable = true)
     private String titulo_novo;
 
@@ -86,6 +85,12 @@ public class Auditoria {
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
     private LocalDate dataTermino_novo;
+
+    @Column(nullable = true)
+    private String camposOcultos_novo;
+
+    @Column(nullable = true)
+    private String camposOcultos_antigo;
 
     @Column(nullable = true)
     private String status_novo;
@@ -115,7 +120,7 @@ public class Auditoria {
                      String referenciaProjeto, String contratante_novo, String descricao_novo,
                      Double valor_novo, LocalDate dataInicio_novo, LocalDate dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
-                     String links_novo,LocalDateTime dataAlteracao) {
+                     String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo) {
         this.projeto = projeto;
         this.tipoAuditoria = tipoAuditoria;
         this.nomeCoordenador = nomeCoordenador;
@@ -140,6 +145,8 @@ public class Auditoria {
         this.objetivo_novo = objetivo_novo;
         this.links_novo = links_novo;
         this.dataAlteracao = dataAlteracao;
+        this.camposOcultos_novo = camposOcultos_novo;
+        this.camposOcultos_antigo = camposOcultos_antigo;
     }
 
 
