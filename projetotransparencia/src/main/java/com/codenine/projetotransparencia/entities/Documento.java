@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Documentos")
+@Table(name = "Documentos")
 public class Documento {
 
     @Id
@@ -27,14 +27,23 @@ public class Documento {
     private Long tamanho;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "projeto_id")
+    @JoinColumn(name = "projeto_id")  // Chave estrangeira para Projeto
     private Projeto projeto;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "auditoria_id")
+    @JsonIgnore
+    @JoinColumn(name = "auditoria_id") // Chave estrangeira para Auditoria
     private Auditoria auditoria;
+
+    @ManyToOne
+    @JoinColumn(name = "gasto_id")  // Adicionando o relacionamento ManyToOne com Gasto
+    private Gasto gasto;
+
+    // Adicionando a propriedade 'receita' para fazer o relacionamento bidirecional
+    @ManyToOne
+    @JoinColumn(name = "receita_id") // Chave estrangeira para Receita
+    private Receita receita;
+
 
     public Documento () {}
 
