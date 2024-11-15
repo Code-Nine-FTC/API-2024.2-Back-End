@@ -14,9 +14,9 @@ public class Bolsista {
     private Long id;
 
     // Relacionamento ManyToOne com Projeto
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projeto_id", nullable = false)
-    private Projeto projeto;
+    @ManyToOne
+    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
 
     // Campos do bolsista
     @Column(nullable = false)
@@ -44,9 +44,8 @@ public class Bolsista {
     public Bolsista() {
     }
 
-    public Bolsista(Projeto projeto, String nome, String documento, String rg, String tipoBolsa,
+    public Bolsista( String nome, String documento, String rg, String tipoBolsa,
                     String duracao, String areaAtuacao, String referenciaProjeto) {
-        this.projeto = projeto;
         this.nome = nome;
         this.documento = documento;
         this.rg = rg;
