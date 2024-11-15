@@ -33,7 +33,10 @@ public class SecurityConfigurations {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/auditorias/**").hasRole("ADMIN")
-                // Permite acesso livre ao endpoint de login
+                    .requestMatchers("/bolsista/**").hasRole("ADMIN")
+                    .requestMatchers("/classificacao-demanda/**").hasRole("ADMIN")
+                    .requestMatchers("/material/**").hasRole("ADMIN")
+                    .requestMatchers("/receita/**").hasRole("ADMIN")
                 .requestMatchers("/auth/login").permitAll()
                     // Restringe acesso ao dashboard para ADMIN
                     .requestMatchers("/dashboard/**").hasRole("ADMIN")
