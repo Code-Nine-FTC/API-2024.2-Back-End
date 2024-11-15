@@ -18,13 +18,9 @@ public class Gasto {
     private Long id;
 
     // Relacionamento com o Projeto (ManyToOne)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projeto_id", nullable = false)
-    private Projeto projeto;
-
-    // Relacionamento com Material (OneToMany)
-    @OneToMany(mappedBy = "gasto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Material> materiais = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
 
     // Campos
     @Column(nullable = false)
@@ -47,8 +43,7 @@ public class Gasto {
     public Gasto() {
     }
 
-    public Gasto(Projeto projeto, String documento, LocalDate data, Double valor, String statusMaterial) {
-        this.projeto = projeto;
+    public Gasto( String documento, LocalDate data, Double valor, String statusMaterial) {
         this.documento = documento;
         this.data = data;
         this.valor = valor;
