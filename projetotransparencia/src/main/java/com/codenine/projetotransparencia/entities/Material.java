@@ -32,9 +32,9 @@ public class Material {
     private String statusUtilizacao;
 
     // Relacionamento ManyToOne com Gasto
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gasto_id", nullable = false) // Garante que a chave estrangeira esteja presente
-    private Gasto gasto;
+    @ManyToOne
+    @JoinColumn(name = "gasto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+    private Gasto gasto;  // Relacionamento ManyToOne com Projeto
 
     // Construtores
     public Material() {
