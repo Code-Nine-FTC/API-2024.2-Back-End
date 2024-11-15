@@ -18,9 +18,9 @@ public class Receita {
     private Long id;
 
     // Relacionamento ManyToOne com Projeto
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projeto_id", nullable = false)
-    private Projeto projeto;
+    @ManyToOne
+    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
 
     // Campos da receita
     @Column(nullable = false)
@@ -46,8 +46,7 @@ public class Receita {
     public Receita() {
     }
 
-    public Receita(Projeto projeto, String nome, String documento, String parceiro, LocalDate data, Double valor) {
-        this.projeto = projeto;
+    public Receita( String nome, String documento, String parceiro, LocalDate data, Double valor) {
         this.nome = nome;
         this.documento = documento;
         this.parceiro = parceiro;
