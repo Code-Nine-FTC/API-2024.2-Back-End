@@ -27,6 +27,7 @@ public class Documento {
     private Long tamanho;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "projeto_id")  // Chave estrangeira para Projeto
     private Projeto projeto;
 
@@ -37,10 +38,12 @@ public class Documento {
 
     @ManyToOne
     @JoinColumn(name = "gasto_id")  // Adicionando o relacionamento ManyToOne com Gasto
+    @JsonIgnore
     private Gasto gasto;
 
     // Adicionando a propriedade 'receita' para fazer o relacionamento bidirecional
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "receita_id") // Chave estrangeira para Receita
     private Receita receita;
 
