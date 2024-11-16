@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,14 +18,20 @@ public class Gasto {
     @Column(name = "gasto_id")
     private Long id;
 
-    // Relacionamento com o Projeto (ManyToOne)
-    @ManyToOne
-    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
-    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
+//    // Relacionamento com o Projeto (ManyToOne)
+//    @ManyToOne
+//    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+//    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
 
     // Campos
     @Column(nullable = false)
     private String documento; // CPF ou CNPJ
+
+    @Column(nullable = false)
+    private String tipoDocumento;
+
+    @Column(nullable = false)
+    private String fornecedor;
 
     @Column(nullable = false)
     private LocalDate data;
@@ -32,21 +39,27 @@ public class Gasto {
     @Column(nullable = false)
     private Double valor;
 
-    @Column(nullable = false)
-    private String statusMaterial;
+    @OneToOne
+    @JoinColumn(name = "material_id", nullable = false)
+    private Material material;
 
     // Relacionamento com Documento (OneToMany)
     @OneToMany(mappedBy = "gasto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Documento> notaFiscal = new ArrayList<>();
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "projeto_id", nullable = false)
+    private Projeto projeto;
+
     // Construtores
     public Gasto() {
     }
 
-    public Gasto( String documento, LocalDate data, Double valor, String statusMaterial) {
+    public Gasto( String documento, LocalDate data, Double valor, Material material) {
         this.documento = documento;
         this.data = data;
         this.valor = valor;
-        this.statusMaterial = statusMaterial;
+        this.material = material;
     }
 }
