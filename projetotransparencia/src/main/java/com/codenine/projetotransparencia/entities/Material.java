@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,7 +34,8 @@ public class Material {
 
     // Relacionamento ManyToOne com Gasto
     @ManyToOne
-    @JoinColumn(name = "gasto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+    @JsonIgnore
+    @JoinColumn(name = "gasto_id", nullable = true)  // Associa a chave estrangeira para o Projeto
     private Gasto gasto;  // Relacionamento ManyToOne com Projeto
 
     // Construtores
