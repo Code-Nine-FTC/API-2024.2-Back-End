@@ -2,7 +2,9 @@ package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.dto.BaixarDocumentoDto;
 import com.codenine.projetotransparencia.entities.Documento;
+import com.codenine.projetotransparencia.entities.Gasto;
 import com.codenine.projetotransparencia.entities.Projeto;
+import com.codenine.projetotransparencia.entities.Receita;
 import com.codenine.projetotransparencia.repository.DocumentoRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.SalvarDocumento;
@@ -50,7 +52,7 @@ public class DocumentoService {
 
     private final String relativePath = "projetotransparencia/src/main/java/com/codenine/projetotransparencia/uploads";
 
-    public void uploadDocumento(MultipartFile documento, Projeto projeto, String tipoDocumento) throws IOException {
+    public void uploadDocumento(MultipartFile documento, Object entidade, String tipoDocumento) throws IOException {
         String workingDir = System.getProperty("user.dir");
         String caminho = workingDir + File.separator + relativePath;
 
@@ -61,36 +63,33 @@ public class DocumentoService {
         if ("resumoExcel".equals(tipoDocumento)) {
             if (!verificarExcel.verificar(documento.getBytes())) {
                 throw new IllegalArgumentException("O arquivo de resumo deve ser um Pdf ou Excel");
-            } else {
-                if (!documento.isEmpty()) {
-                    String caminhoArquivo = salvarDocumento.salvar(documento, caminho);
-                    Documento documentoSalvar = new Documento();
-                    documentoSalvar.setNome(documento.getOriginalFilename());
-                    documentoSalvar.setCaminho(caminhoArquivo);
-                    documentoSalvar.setTipo(tipoDocumento);
-                    documentoSalvar.setTamanho(documento.getSize());
-                    documentoSalvar.setProjeto(projeto);
-                    documentoRepository.save(documentoSalvar);
-                    projeto.getDocumentos().add(documentoSalvar);
-                }
             }
         } else {
             if (!verificarPdf.verificar(documento.getBytes())) {
                 throw new IllegalArgumentException("O arquivo de resumo deve ser um PDF ou Excel");
-            } else {
-                if (!documento.isEmpty()) {
-                    String uniqueNomeArquivo = salvarDocumento.salvar(documento, caminho);
-                    Documento documentoSalvar = new Documento();
-                    documentoSalvar.setNome(documento.getOriginalFilename());
-                    documentoSalvar.setCaminho(uniqueNomeArquivo);
-                    documentoSalvar.setTipo(tipoDocumento);
-                    documentoSalvar.setTamanho(documento.getSize());
-                    documentoSalvar.setProjeto(projeto);
-                    documentoRepository.save(documentoSalvar);
-                    projeto.getDocumentos().add(documentoSalvar);
-                }
             }
         }
+        if (!documento.isEmpty()) {
+            String caminhoArquivo = salvarDocumento.salvar(documento, caminho);
+            Documento documentoSalvar = new Documento();
+            documentoSalvar.setNome(documento.getOriginalFilename());
+            documentoSalvar.setCaminho(caminhoArquivo);
+            documentoSalvar.setTipo(tipoDocumento);
+            documentoSalvar.setTamanho(documento.getSize());
+
+            if (entidade instanceof Projeto) {
+                documentoSalvar.setProjeto((Projeto) entidade);
+                ((Projeto) entidade).getDocumentos().add(documentoSalvar);
+            } else if (entidade instanceof Gasto) {
+                documentoSalvar.setGasto((Gasto) entidade);
+                ((Gasto) entidade).getNotaFiscal().add(documentoSalvar);
+            } else if (entidade instanceof Receita) {
+                documentoSalvar.setReceita((Receita) entidade);
+                ((Receita) entidade).getRubrica().add(documentoSalvar);
+            }
+
+            documentoRepository.save(documentoSalvar);
+        };
     }
 
     public List<Documento> listarDocumentos() {
