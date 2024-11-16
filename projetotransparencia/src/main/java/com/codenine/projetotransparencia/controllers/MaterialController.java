@@ -20,12 +20,12 @@ public class MaterialController {
     @Autowired
     private MaterialService materialService;
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Material> listarMaterial() {
         return materialService.listarMaterial();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/visualizar/{id}")
     public ResponseEntity<Material> buscarMaterialPorId(@PathVariable Long id) {
         Optional<Material> material = materialService.buscarMaterialPorId(id);
         if (material.isPresent()) {
