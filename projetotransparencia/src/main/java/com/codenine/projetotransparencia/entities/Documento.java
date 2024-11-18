@@ -47,6 +47,11 @@ public class Documento {
     @JoinColumn(name = "receita_id") // Chave estrangeira para Receita
     private Receita receita;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "prestacao_id")
+    private PrestacaoContas prestacaoContas;
+
 
     public Documento () {}
 
