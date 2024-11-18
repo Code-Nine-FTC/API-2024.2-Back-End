@@ -3,8 +3,13 @@ package com.codenine.projetotransparencia.controllers;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
+import com.codenine.projetotransparencia.controllers.dto.SumarioProjetoDto;
+import com.codenine.projetotransparencia.entities.Gasto;
 import com.codenine.projetotransparencia.entities.Projeto;
+import com.codenine.projetotransparencia.entities.Receita;
+import com.codenine.projetotransparencia.services.GastoService;
 import com.codenine.projetotransparencia.services.ProjetoService;
+import com.codenine.projetotransparencia.services.ReceitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +30,12 @@ public class ProjetoController {
 
     @Autowired
     private ConversorData conversorData;
+
+    @Autowired
+    private GastoService gastoService;
+
+    @Autowired
+    private ReceitaService receitaService;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarProjeto(@RequestBody CadastrarProjetoDto projeto) {
@@ -118,5 +129,15 @@ public class ProjetoController {
         }
 
         return ResponseEntity.ok(projeto);
+    }
+
+    @GetMapping("/sumario")
+    public ResponseEntity<SumarioProjetoDto> sumarioProjeto(){
+        List<Gasto> gastos = gastoService.listarGastos();
+        List<Receita> receitas = receitaService.listarReceitas();
+
+        SumarioProjetoDto sumario = new SumarioProjetoDto(gastos, receitas);
+        return ResponseEntity.ok(sumario);
+
     }
 }

@@ -22,7 +22,7 @@ public class ReceitaController {
 
     @GetMapping
     public List<Receita> listarReceita() {
-        return receitaService.listarReceita();
+        return receitaService.listarReceitas();
     }
 
     @GetMapping("/{id}")

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class GastoService {
@@ -29,6 +30,10 @@ public class GastoService {
 
     @Autowired
     private DocumentoService documentoService;
+
+    public List<Gasto> listarGastos(){
+        return gastoRepository.findAll();
+    }
 
     public void cadastrarGasto(CadastrarGastoDto cadastrarGastoDto) throws IllegalArgumentException, IOException {
         Gasto gasto;

@@ -15,7 +15,7 @@ public class ReceitaService {
     @Autowired
     private ReceitasRepository receitasRepository;
 
-    public List<Receita> listarReceita() {
+    public List<Receita> listarReceitas() {
         return receitasRepository.findAll();
     }
 
