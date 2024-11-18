@@ -1,18 +1,21 @@
 package com.codenine.projetotransparencia.controllers;
 
-import com.codenine.projetotransparencia.entities.Auditoria;
-import com.codenine.projetotransparencia.entities.Bolsista;
-import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
-import com.codenine.projetotransparencia.services.BolsistaService;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
+import com.codenine.projetotransparencia.controllers.dto.CadastrarBolsistaDto;
+import com.codenine.projetotransparencia.entities.Bolsista;
+import com.codenine.projetotransparencia.services.BolsistaService;
 
 @RestController
 @RequestMapping("/bolsista")
@@ -20,6 +23,17 @@ public class BolsistaController {
 
     @Autowired
     private BolsistaService bolsistaService;
+
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<?> cadastrarBolsista(@RequestBody CadastrarBolsistaDto bolsista) {
+        try {
+            var bolsistaId = bolsistaService.cadastrarBolsista(bolsista);
+            return ResponseEntity.created(URI.create("/bolsista/visualizar" + bolsistaId.toString())).body("Bolsista cadastrado com sucesso");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } 
+    }
 
     @GetMapping
     public List<Bolsista> listarBolsista() {
