@@ -21,6 +21,10 @@ public class GastoService {
 
     @Autowired
     private GastoRepository gastoRepository;
+    public Gasto buscarGastoPorId(Long id) {
+        return gastoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Gasto não encontrado para o ID: " + id));
+    }
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -57,4 +61,6 @@ public class GastoService {
 
         gastoRepository.save(gasto);
     }
+
+
 }
