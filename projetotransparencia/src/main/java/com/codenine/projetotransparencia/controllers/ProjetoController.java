@@ -132,12 +132,19 @@ public class ProjetoController {
     }
 
     @GetMapping("/sumario")
-    public ResponseEntity<SumarioProjetoDto> sumarioProjeto(){
-        List<Gasto> gastos = gastoService.listarGastos();
-        List<Receita> receitas = receitaService.listarReceitas();
+    public ResponseEntity<SumarioProjetoDto> sumarioProjeto(@RequestParam(required = false) Integer ano) {
+        List<Gasto> gastos;
+        List<Receita> receitas;
+
+        if (ano != null) {
+            gastos = gastoService.listarGastosPorAno(ano);
+            receitas = receitaService.listarReceitasPorAno(ano);
+        } else {
+            gastos = gastoService.listarGastos();
+            receitas = receitaService.listarReceitas();
+        }
 
         SumarioProjetoDto sumario = new SumarioProjetoDto(gastos, receitas);
         return ResponseEntity.ok(sumario);
-
     }
 }
