@@ -41,6 +41,39 @@ public class MaterialService {
         // Salvar no banco de dados
         return materiaisRepository.save(material);
     }
+    public Material editarMaterial(Long id, MaterialDto materialDTO) {
+        Optional<Material> materialOpt = materiaisRepository.findById(id);
+        if (materialOpt.isPresent()) {
+            Material material = materialOpt.get();
+
+            // Atualizando os dados do material com as informações do DTO
+            material.setNome(materialDTO.getNome());
+            material.setValor(materialDTO.getValor());
+            material.setFornecedor(materialDTO.getFornecedor());
+            material.setFornecedorEmail(materialDTO.getFornecedorEmail());
+            material.setFornecedorTelefone(materialDTO.getFornecedorTelefone());
+            material.setStatusUtilizacao(materialDTO.getStatusUtilizacao());
+
+            // Atualizando o Gasto, se fornecido
+            if (materialDTO.getGastoId() != null) {
+                Gasto gasto = gastoService.buscarGastoPorId(materialDTO.getGastoId());
+                material.setGasto(gasto);
+            }
+
+            return materiaisRepository.save(material); // Salva as alterações
+        }
+        return null; // Retorna null se o material não for encontrado
+    }
+
+    public boolean excluirMaterial(Long id) {
+        Optional<Material> materialOpt = materiaisRepository.findById(id);
+        if (materialOpt.isPresent()) {
+            materiaisRepository.delete(materialOpt.get()); // Exclui o material
+            return true; // Retorna verdadeiro se excluído com sucesso
+        }
+        return false; // Retorna falso se o material não for encontrado
+    }
+
 
     public Optional<Material> buscarMaterialPorId(Long id) {
         return materiaisRepository.findById(id);
