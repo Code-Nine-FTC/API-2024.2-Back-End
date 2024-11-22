@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarBolsistaDto;
 import com.codenine.projetotransparencia.entities.Bolsista;
 import com.codenine.projetotransparencia.services.BolsistaService;
+import org.springframework.web.bind.annotation.PutMapping;
+import com.codenine.projetotransparencia.controllers.dto.AtualizarBolsistaDto;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/bolsista")
@@ -47,6 +50,27 @@ public class BolsistaController {
             return ResponseEntity.ok(bolsista.get());
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @PutMapping("atualizar/{id}")
+    public ResponseEntity<String> atualizarBolsista(@RequestBody AtualizarBolsistaDto bolsista, @PathVariable Long id) {
+        try {
+            var bolsistaId = bolsistaService.atualizarBolsista(bolsista, id);
+            return ResponseEntity.created(URI.create("/bolsista/visualizar" + bolsistaId.toString())).body("Bolsista atualizado com sucesso");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> deletarBolsista(@PathVariable Long id) {
+        try {
+            bolsistaService.deletarBolsista(id);
+            return ResponseEntity.ok("Bolsista deletado com sucesso");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
