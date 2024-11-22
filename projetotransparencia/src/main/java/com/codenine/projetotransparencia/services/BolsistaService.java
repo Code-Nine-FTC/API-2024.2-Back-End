@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.codenine.projetotransparencia.repository.ProjetoRepository;
+
 import com.codenine.projetotransparencia.controllers.dto.CadastrarBolsistaDto;
+import com.codenine.projetotransparencia.controllers.dto.AtualizarBolsistaDto;
 import com.codenine.projetotransparencia.entities.Bolsista;
-import com.codenine.projetotransparencia.repository.BolsistaRepository;
 import com.codenine.projetotransparencia.entities.Projeto;
+import com.codenine.projetotransparencia.repository.BolsistaRepository;
+import com.codenine.projetotransparencia.repository.ProjetoRepository;
 @Service
 public class BolsistaService {
 
@@ -48,4 +50,43 @@ public class BolsistaService {
         return bolsistaRepository.findById(id);
     }
 
+    public Long atualizarBolsista(AtualizarBolsistaDto atualizarBolsistaDto, Long id) throws IllegalArgumentException {
+        Optional<Bolsista> bolsistaOptional = bolsistaRepository.findById(id);
+        if (bolsistaOptional.isEmpty()) {
+            throw new IllegalArgumentException("Bolsista não encontrado");
+        }
+        Bolsista bolsista = bolsistaOptional.get();
+
+        if (atualizarBolsistaDto.nome().isPresent()) {
+            bolsista.setNome(atualizarBolsistaDto.nome().get());
+        }
+       
+        if (atualizarBolsistaDto.documento().isPresent()) {
+            bolsista.setDocumento(atualizarBolsistaDto.documento().get());
+        }
+
+        if (atualizarBolsistaDto.rg().isPresent()) {
+            bolsista.setRg(atualizarBolsistaDto.rg().get());
+        }
+
+        if (atualizarBolsistaDto.tipoBolsa().isPresent()) {
+            bolsista.setTipoBolsa(atualizarBolsistaDto.tipoBolsa().get());
+        }
+
+        if (atualizarBolsistaDto.duracao().isPresent()) {
+            bolsista.setDuracao(atualizarBolsistaDto.duracao().get());
+        }
+
+        if (atualizarBolsistaDto.areaAtuacao().isPresent()) {
+            bolsista.setAreaAtuacao(atualizarBolsistaDto.areaAtuacao().get());
+        }
+
+        bolsistaRepository.save(bolsista);
+
+        return bolsista.getId();
+    }
+
+    public void deletarBolsista(Long id) {
+        bolsistaRepository.deleteById(id);
+    }
 }
