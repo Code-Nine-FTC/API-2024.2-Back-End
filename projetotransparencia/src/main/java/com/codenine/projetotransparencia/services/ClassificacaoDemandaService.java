@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.services;
 
+import com.codenine.projetotransparencia.controllers.dto.CadastrarClassificacaoDemandaDto;
 import com.codenine.projetotransparencia.entities.Auditoria;
 import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
 import com.codenine.projetotransparencia.repository.ClassificacaoDemandaRepository;
@@ -22,5 +23,14 @@ public class ClassificacaoDemandaService {
 
     public Optional<ClassificacaoDemanda> buscarClassificacaoDemandaPorId(Long id) {
         return classificacaoDemandaRepository.findById(id);
+    }
+
+    public Long cadastrarClassificacaoDemanda(CadastrarClassificacaoDemandaDto classificacaoDemanda) {
+        ClassificacaoDemanda classificacaoDemandaSalvar = new ClassificacaoDemanda();
+        classificacaoDemandaSalvar.setDescricao(classificacaoDemanda.descricao());
+        classificacaoDemandaSalvar.setStatusAtendimento(classificacaoDemanda.statusAtendimento());
+        classificacaoDemandaSalvar.setTipo(classificacaoDemanda.tipo());
+        classificacaoDemandaSalvar.setPrioridade(classificacaoDemanda.prioridade());
+        return classificacaoDemandaRepository.save(classificacaoDemandaSalvar).getId();
     }
 }

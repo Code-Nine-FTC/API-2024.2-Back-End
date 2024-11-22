@@ -1,7 +1,11 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,9 +29,12 @@ public class ClassificacaoDemanda {
     @Column(nullable = false)
     private String prioridade; // Prioridade da demanda (ex: "Alta", "Média", "Baixa")
 
-    @ManyToOne
-    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
-    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
+    @OneToMany(mappedBy = "classificacaoDemanda", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Projeto> projetos = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "classificacaoDemandas")
+    private List<Parceiro> parceiros = new ArrayList<>();
 
     // Construtores
     public ClassificacaoDemanda() {
