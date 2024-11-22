@@ -42,4 +42,23 @@ public class MaterialController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Material> editarMaterial(@PathVariable Long id, @RequestBody @Valid MaterialDto materialDTO) {
+        Material material = materialService.editarMaterial(id, materialDTO);
+        if (material != null) {
+            return ResponseEntity.ok(material); // Retorna o material atualizado
+        } else {
+            return ResponseEntity.notFound().build();// Retorna 404 se o material não for encontrado
+        }
+    }
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<Void> excluirMaterial(@PathVariable Long id) {
+        boolean deletado = materialService.excluirMaterial(id);
+        if (deletado) {
+            return ResponseEntity.noContent().build(); // Retorna 204 No Content se excluído com sucesso
+        } else {
+            return ResponseEntity.notFound().build(); // Retorna 404 se o material não for encontrado
+        }
+    }
+
 }
