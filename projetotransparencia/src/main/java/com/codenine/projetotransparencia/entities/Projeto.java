@@ -89,6 +89,14 @@ public class Projeto {
     public Projeto() {
     }
 
+    @ManyToMany
+    @JoinTable(
+            name = "projeto_parceiro",
+            joinColumns = @JoinColumn(name = "projeto_id"),
+            inverseJoinColumns = @JoinColumn(name = "parceiro_id")
+    )
+    private List<Parceiro> parceiros = new ArrayList<>();
+
     // Construtor com parâmetros para criação de projeto
     // Adicionando um construtor com 16 parâmetros (não recomendado)
     public Projeto(String titulo, String referencia, String contratante, String objeto,
