@@ -78,6 +78,14 @@ public class Projeto {
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Gasto> gastos = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "parceiro_id", nullable = true)
+    private Parceiro parceiro;
+
+    @ManyToOne
+    @JoinColumn(name = "classificacao_demanda_id", nullable = true)
+    private ClassificacaoDemanda classificacaoDemanda;
+
     public Projeto() {
     }
 
