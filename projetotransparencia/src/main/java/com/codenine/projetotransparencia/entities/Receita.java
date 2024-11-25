@@ -46,11 +46,15 @@ public class Receita {
     public Receita() {
     }
 
-    public Receita( String nome, String documento, String parceiro, LocalDate data, Double valor) {
+    public Receita(String nome, String documento, String parceiro, LocalDate data, Double valor) {
         this.nome = nome;
         this.documento = documento;
         this.parceiro = parceiro;
         this.data = data;
         this.valor = valor;
+    }
+
+    public String getTipoDocumento() {
+        return "";
     }
 }
