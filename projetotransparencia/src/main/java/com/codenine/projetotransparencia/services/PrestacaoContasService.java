@@ -73,16 +73,21 @@ public class PrestacaoContasService {
             prestacaoContas.setAnexos(anexos);
         }
 
-        // Salvar a prestação de contas para a receita
+
         prestacaoContasRepository.save(prestacaoContas);
     }
 
-    // Função que retorna todas as prestações de contas
+
     public List<PrestacaoContas> listarPrestacaoContas() {
         return prestacaoContasRepository.findAll();
     }
 
-    // Função para visualizar a prestação de contas por id
+
+    public List<PrestacaoContas> listarPrestacaoContasPorTituloProjeto(String tituloProjeto) {
+        return prestacaoContasRepository.findByProjetoTituloContainingIgnoreCase(tituloProjeto);
+    }
+
+
     public PrestacaoContas visualizarPrestacaoContas(Long id) {
         return prestacaoContasRepository.findById(id).orElse(null);
     }
