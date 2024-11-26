@@ -7,18 +7,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.codenine.projetotransparencia.controllers.dto.AtualizarBolsistaDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarBolsistaDto;
 import com.codenine.projetotransparencia.entities.Bolsista;
 import com.codenine.projetotransparencia.services.BolsistaService;
-import org.springframework.web.bind.annotation.PutMapping;
-import com.codenine.projetotransparencia.controllers.dto.AtualizarBolsistaDto;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/bolsista")
@@ -38,12 +39,12 @@ public class BolsistaController {
         } 
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Bolsista> listarBolsista() {
         return bolsistaService.listarBolsista();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/visualizar/{id}")
     public ResponseEntity<Bolsista> buscarBolsistaPorId(@PathVariable Long id) {
         Optional<Bolsista> bolsista = bolsistaService.buscarBolsistaPorId(id);
         if (bolsista.isPresent()) {
@@ -54,7 +55,7 @@ public class BolsistaController {
     }
 
 
-    @PutMapping("atualizar/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<String> atualizarBolsista(@RequestBody AtualizarBolsistaDto bolsista, @PathVariable Long id) {
         try {
             var bolsistaId = bolsistaService.atualizarBolsista(bolsista, id);
