@@ -19,14 +19,16 @@ public class ClassificacaoDemandaController {
     @Autowired
     private ClassificacaoDemandaService classificacaoDemandaService;
 
+    // Listar todas as classificações de demanda
     @GetMapping("/listar")
     public List<ClassificacaoDemanda> listarClassificacaoDemanda() {
         return classificacaoDemandaService.listarClassificacaoDemanda();
     }
 
-   @GetMapping("/visualizar/{id}")
+    // Buscar uma classificação de demanda por ID
+    @GetMapping("/visualizar/{id}")
     public ResponseEntity<ClassificacaoDemanda> buscarClassificacaoDemandaPorId(@PathVariable Long id) {
-       Optional<ClassificacaoDemanda> classificacaoDemanda = classificacaoDemandaService.buscarClassificacaoDemandaPorId(id);
+        Optional<ClassificacaoDemanda> classificacaoDemanda = classificacaoDemandaService.buscarClassificacaoDemandaPorId(id);
         if (classificacaoDemanda.isPresent()) {
             return ResponseEntity.ok(classificacaoDemanda.get());
         } else {
@@ -34,6 +36,7 @@ public class ClassificacaoDemandaController {
         }
     }
 
+    // Cadastrar uma nova classificação de demanda
     @PutMapping("/cadastrar")
     public ResponseEntity<?> cadastrarClassificacaoDemanda(@RequestBody CadastrarClassificacaoDemandaDto classificacaoDemanda) {
         try {
@@ -43,4 +46,25 @@ public class ClassificacaoDemandaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    // Editar uma classificação de demanda existente
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarClassificacaoDemanda(@PathVariable Long id, @RequestBody ClassificacaoDemanda novaClassificacao) {
+        ClassificacaoDemanda classificacaoDemandaEditada = classificacaoDemandaService.editarClassificacaoDemanda(id, novaClassificacao);
+        if (classificacaoDemandaEditada == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classificação de Demanda não encontrada para o ID: " + id);
+        }
+        return ResponseEntity.ok(classificacaoDemandaEditada);
+    }
+
+    // Excluir uma classificação de demanda pelo ID
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<?> excluirClassificacaoDemanda(@PathVariable Long id) {
+        boolean excluido = classificacaoDemandaService.excluirClassificacaoDemanda(id);
+        if (!excluido) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classificação de Demanda não encontrada para o ID: " + id);
+        }
+        return ResponseEntity.ok("Classificação de Demanda excluída com sucesso");
+    }
 }
+
