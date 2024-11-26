@@ -32,6 +32,7 @@ public class SecurityConfigurations {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers("/convenio/**").hasRole("ADMIN")
                     .requestMatchers("/auditorias/**").hasRole("ADMIN")
                     .requestMatchers("/bolsista/**").hasRole("ADMIN")
                     .requestMatchers("/classificacao-demanda/**").hasRole("ADMIN")
