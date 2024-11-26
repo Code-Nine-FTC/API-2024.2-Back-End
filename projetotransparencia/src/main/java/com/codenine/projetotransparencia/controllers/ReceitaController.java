@@ -20,12 +20,12 @@ public class ReceitaController {
     @Autowired
     private ReceitaService receitaService;
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Receita> listarReceita() {
         return receitaService.listarReceitas();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/visualizar/{id}")
     public ResponseEntity<Receita> buscarReceitaPorId(@PathVariable Long id) {
         Optional<Receita> receita = receitaService.buscarReceitaPorId(id);
         if (receita.isPresent()) {
