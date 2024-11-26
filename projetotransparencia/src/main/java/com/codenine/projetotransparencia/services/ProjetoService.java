@@ -69,7 +69,7 @@ public class ProjetoService {
                 null, // objeto
                 null, // descricao
                 cadastrarProjetoDto.nomeCoordenador(),
-                cadastrarProjetoDto.valor().orElse(null),
+                null,
                 cadastrarProjetoDto.dataInicio(),
                 cadastrarProjetoDto.dataTermino().orElse(null),
                 cadastrarProjetoDto.status().orElse(null),
@@ -159,9 +159,6 @@ public class ProjetoService {
             }
             if (projetoAtualizado.getNomeCoordenador() != null) {
                 projeto.setNomeCoordenador(projetoAtualizado.getNomeCoordenador());
-            }
-            if (projetoAtualizado.getValor() != null) {
-                projeto.setValor(projetoAtualizado.getValor());
             }
             if (projetoAtualizado.getDataInicio() != null) {
                 projeto.setDataInicio(projetoAtualizado.getDataInicio());
