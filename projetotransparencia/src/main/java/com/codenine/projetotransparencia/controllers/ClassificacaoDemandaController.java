@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.controllers;
 
+import com.codenine.projetotransparencia.controllers.dto.AtualizarDemandaDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarClassificacaoDemandaDto;
 import com.codenine.projetotransparencia.entities.Auditoria;
 import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
@@ -37,7 +38,7 @@ public class ClassificacaoDemandaController {
     }
 
     // Cadastrar uma nova classificação de demanda
-    @PutMapping("/cadastrar")
+    @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarClassificacaoDemanda(@RequestBody CadastrarClassificacaoDemandaDto classificacaoDemanda) {
         try {
             Long classificacaoDemandaId = classificacaoDemandaService.cadastrarClassificacaoDemanda(classificacaoDemanda);
@@ -49,12 +50,13 @@ public class ClassificacaoDemandaController {
 
     // Editar uma classificação de demanda existente
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarClassificacaoDemanda(@PathVariable Long id, @RequestBody ClassificacaoDemanda novaClassificacao) {
-        ClassificacaoDemanda classificacaoDemandaEditada = classificacaoDemandaService.editarClassificacaoDemanda(id, novaClassificacao);
-        if (classificacaoDemandaEditada == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Classificação de Demanda não encontrada para o ID: " + id);
+    public ResponseEntity<?> editarClassificacaoDemanda(@PathVariable Long id, @RequestBody AtualizarDemandaDto novaClassificacao) {
+        try {
+            classificacaoDemandaService.editarClassificacaoDemanda(id, novaClassificacao);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(classificacaoDemandaEditada);
+        return ResponseEntity.status(HttpStatus.OK).body("Classificação de Demanda editada com sucesso");
     }
 
     // Excluir uma classificação de demanda pelo ID

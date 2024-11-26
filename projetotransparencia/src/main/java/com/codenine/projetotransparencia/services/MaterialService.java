@@ -34,7 +34,7 @@ public class MaterialService {
 
         // Se precisar associar um Gasto
         if (materialDTO.getGastoId() != null) {
-            Gasto gasto = gastoService.buscarGastoPorId(materialDTO.getGastoId()); // Método corrigido
+            Gasto gasto = gastoService.visualizarGasto(materialDTO.getGastoId()); // Método corrigido
             material.setGasto(gasto);
         }
 
@@ -56,7 +56,7 @@ public class MaterialService {
 
             // Atualizando o Gasto, se fornecido
             if (materialDTO.getGastoId() != null) {
-                Gasto gasto = gastoService.buscarGastoPorId(materialDTO.getGastoId());
+                Gasto gasto = gastoService.visualizarGasto(materialDTO.getGastoId());
                 material.setGasto(gasto);
             }
 

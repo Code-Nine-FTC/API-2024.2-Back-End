@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.services;
 
+import com.codenine.projetotransparencia.controllers.dto.AtualizarDemandaDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarClassificacaoDemandaDto;
 import com.codenine.projetotransparencia.entities.Auditoria;
 import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
@@ -38,21 +39,29 @@ public class ClassificacaoDemandaService {
     }
 
     // Editar uma classificação de demanda existente
-    public ClassificacaoDemanda editarClassificacaoDemanda(Long id, ClassificacaoDemanda novaClassificacao) {
+    public void editarClassificacaoDemanda(Long id, AtualizarDemandaDto novaClassificacao) {
         // Verificar se a classificação de demanda existe
         Optional<ClassificacaoDemanda> classificacaoExistente = classificacaoDemandaRepository.findById(id);
         if (!classificacaoExistente.isPresent()) {
-            return null;  // Se não existir, retorna null (ou pode lançar uma exceção)
+            new IllegalArgumentException("Classificação de Demanda não encontrada para o ID: " + id);
         }
 
         // Atualizar os campos com os dados recebidos
         ClassificacaoDemanda classificacaoDemanda = classificacaoExistente.get();
-        classificacaoDemanda.setDescricao(novaClassificacao.getDescricao());
-        classificacaoDemanda.setStatusAtendimento(novaClassificacao.getStatusAtendimento());
-        classificacaoDemanda.setTipo(novaClassificacao.getTipo());
-        classificacaoDemanda.setPrioridade(novaClassificacao.getPrioridade());
+        if (novaClassificacao.descricao().isPresent()) {
+            classificacaoDemanda.setDescricao(novaClassificacao.descricao().get());
+        }
+        if (novaClassificacao.statusAtendimento().isPresent()) {
+            classificacaoDemanda.setStatusAtendimento(novaClassificacao.statusAtendimento().get());
+        }
+        if (novaClassificacao.tipo().isPresent()) {
+            classificacaoDemanda.setTipo(novaClassificacao.tipo().get());
+        }
+        if (novaClassificacao.prioridade().isPresent()) {
+            classificacaoDemanda.setPrioridade(novaClassificacao.prioridade().get());
+        }
 
-        return classificacaoDemandaRepository.save(classificacaoDemanda);
+        classificacaoDemandaRepository.save(classificacaoDemanda);
     }
 
     // Excluir uma classificação de demanda pelo ID
