@@ -23,9 +23,6 @@ public class ParceiroService {
     private ProjetoRepository projetoRepository;
 
     public Long cadastrarParceiro(CadastrarParceiroDto cadastrarParceiroDto) {
-        Long id = cadastrarParceiroDto.idProjeto();
-        Projeto projeto = projetoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-
         Parceiro parceiro = new Parceiro(
 
             cadastrarParceiroDto.nome(),
@@ -33,7 +30,7 @@ public class ParceiroService {
             cadastrarParceiroDto.email(),
             cadastrarParceiroDto.telefone(),
             cadastrarParceiroDto.areaColaboracao(),
-            projeto
+            cadastrarParceiroDto.historicoParceria()
         );
 
         // Salva parceiro
