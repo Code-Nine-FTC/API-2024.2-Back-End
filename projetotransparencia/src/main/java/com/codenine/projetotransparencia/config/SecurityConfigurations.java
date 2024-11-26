@@ -37,6 +37,7 @@ public class SecurityConfigurations {
                     .requestMatchers("/classificacao-demanda/**").hasRole("ADMIN")
                     .requestMatchers("/material/**").hasRole("ADMIN")
                     .requestMatchers("/receita/**").hasRole("ADMIN")
+                    .requestMatchers("/prestacao-contas/**").hasRole("ADMIN")
                 .requestMatchers("/auth/login").permitAll()
                     // Restringe acesso ao dashboard para ADMIN
                     .requestMatchers("/dashboard/**").hasRole("ADMIN")
