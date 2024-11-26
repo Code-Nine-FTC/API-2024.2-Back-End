@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.services;
 
+import com.codenine.projetotransparencia.controllers.dto.AtualizarGastoDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarGastoDto;
 import com.codenine.projetotransparencia.entities.Gasto;
 import com.codenine.projetotransparencia.entities.Projeto;
@@ -35,7 +36,7 @@ public class GastoService {
     @Autowired
     private DocumentoService documentoService;
 
-    public Gasto buscarGastoPorId(Long id) {
+    public Gasto visualizarGasto(Long id) {
         return gastoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Gasto não encontrado para o ID: " + id));
     }
@@ -79,7 +80,7 @@ public class GastoService {
         gastoRepository.save(gasto);
     }
 
-    public void editarGasto(Long id, CadastrarGastoDto cadastrarGastoDto) throws IllegalArgumentException, IOException {
+    public void editarGasto(Long id, AtualizarGastoDto cadastrarGastoDto) throws IllegalArgumentException, IOException {
         Gasto gastoExistente = gastoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Gasto não encontrado para o ID: " + id));
 
@@ -91,16 +92,28 @@ public class GastoService {
         }
 
         // Atualiza os campos necessários
-        gastoExistente.setDocumento(gastoAtualizado.getDocumento());
-        gastoExistente.setTipoDocumento(gastoAtualizado.getTipoDocumento());
-        gastoExistente.setFornecedor(gastoAtualizado.getFornecedor());
-        gastoExistente.setData(gastoAtualizado.getData());
-        gastoExistente.setValor(gastoAtualizado.getValor());
-        gastoExistente.setMaterial(gastoAtualizado.getMaterial());
+        if (gastoAtualizado.getDocumento() != null) {
+            gastoExistente.setDocumento(gastoAtualizado.getDocumento());
+        }
+        if (gastoAtualizado.getTipoDocumento() != null) {
+            gastoExistente.setTipoDocumento(gastoAtualizado.getTipoDocumento());
+        }
+        if (gastoAtualizado.getFornecedor() != null) {
+            gastoExistente.setFornecedor(gastoAtualizado.getFornecedor());
+        }
+        if (gastoAtualizado.getData() != null) {
+            gastoExistente.setData(gastoAtualizado.getData());
+        }
+        if (gastoAtualizado.getValor() != null) {
+            gastoExistente.setValor(gastoAtualizado.getValor());
+        }
+        if (gastoAtualizado.getMaterial() != null) {
+            gastoExistente.setMaterial(gastoAtualizado.getMaterial());
+        }
 
-        Projeto projeto = projetoRepository.findById(cadastrarGastoDto.idProjeto())
-                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-        gastoExistente.setProjeto(projeto);
+//        Projeto projeto = projetoRepository.findById(cadastrarGastoDto.idProjeto())
+//                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+//        gastoExistente.setProjeto(projeto);
 
         gastoRepository.save(gastoExistente);
 
@@ -109,6 +122,8 @@ public class GastoService {
             MultipartFile notaFiscal = cadastrarGastoDto.notaFiscal().get();
             documentoService.uploadDocumento(notaFiscal, gastoExistente, "notaFiscal");
         }
+
+        gastoRepository.save(gastoExistente);
     }
 
     public void excluirGasto(Long id) {

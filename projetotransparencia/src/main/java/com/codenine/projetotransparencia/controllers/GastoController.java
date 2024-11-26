@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.controllers;
 
+import com.codenine.projetotransparencia.controllers.dto.AtualizarGastoDto;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarGastoDto;
 import com.codenine.projetotransparencia.services.GastoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,16 @@ public class GastoController {
 
     @Autowired
     private GastoService gastoService;
+
+    @GetMapping("/listar")
+    public ResponseEntity<?> listarGastos() {
+        return ResponseEntity.ok(gastoService.listarGastos());
+    }
+
+    @GetMapping("/visualizar/{id}")
+    public ResponseEntity<?> visualizarGasto(@PathVariable Long id) {
+        return ResponseEntity.ok(gastoService.visualizarGasto(id));
+    }
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarGasto(
@@ -44,16 +55,14 @@ public class GastoController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarGasto(@PathVariable Long id,
                                          @RequestParam(value = "gasto") String gasto,
-                                         @RequestParam(value = "idProjeto") Long projetoId,
                                          @RequestParam(required = false, value = "notaFiscal") MultipartFile notaFiscal) {
         try {
-            CadastrarGastoDto cadastrarGastoDto = new CadastrarGastoDto(
+            AtualizarGastoDto atualizarGastoDto = new AtualizarGastoDto(
                     gasto,
-                    projetoId,
                     Optional.ofNullable(notaFiscal)
             );
 
-            gastoService.editarGasto(id, cadastrarGastoDto);
+            gastoService.editarGasto(id, atualizarGastoDto);
 
             return ResponseEntity.ok(null);
         } catch (IllegalArgumentException e) {
