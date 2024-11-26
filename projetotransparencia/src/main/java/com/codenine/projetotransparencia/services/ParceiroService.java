@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarParceiroDto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarParceiroDto;
 import com.codenine.projetotransparencia.entities.Parceiro;
-import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.repository.ParceiroRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 

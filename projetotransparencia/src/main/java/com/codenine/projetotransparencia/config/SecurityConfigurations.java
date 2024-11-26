@@ -35,6 +35,7 @@ public class SecurityConfigurations {
                     .requestMatchers("/convenio/**").hasRole("ADMIN")
                     .requestMatchers("/auditorias/**").hasRole("ADMIN")
                     .requestMatchers("/bolsista/**").hasRole("ADMIN")
+                    .requestMatchers("/parceiro/**").hasRole("ADMIN")
                     .requestMatchers("/classificacao-demanda/**").hasRole("ADMIN")
                     .requestMatchers("/material/**").hasRole("ADMIN")
                     .requestMatchers("/receita/**").hasRole("ADMIN")

@@ -1,6 +1,7 @@
 package com.codenine.projetotransparencia.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Entity
@@ -41,8 +42,7 @@ public class Convenio {
 
     }
 
-    public Convenio() {
-
+    public Convenio(@NotEmpty String nome, @NotEmpty String cnpj, @NotEmpty String email, @NotEmpty String telefone, @NotEmpty String s) {
     }
 }
 
