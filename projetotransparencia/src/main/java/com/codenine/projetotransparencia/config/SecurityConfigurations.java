@@ -37,8 +37,8 @@ public class SecurityConfigurations {
                     .requestMatchers("/bolsista/**").hasRole("ADMIN")
                     .requestMatchers("/parceiro/**").hasRole("ADMIN")
                     .requestMatchers("/classificacao-demanda/**").hasRole("ADMIN")
-                    .requestMatchers("/material/**").hasRole("ADMIN")
-                    .requestMatchers("/receita/**").hasRole("ADMIN")
+//                    .requestMatchers("/material/**").hasRole("ADMIN")
+//                    .requestMatchers("/receita/**").hasRole("ADMIN")
                     .requestMatchers("/prestacao-contas/**").hasRole("ADMIN")
                 .requestMatchers("/auth/login").permitAll()
                     // Restringe acesso ao dashboard para ADMIN

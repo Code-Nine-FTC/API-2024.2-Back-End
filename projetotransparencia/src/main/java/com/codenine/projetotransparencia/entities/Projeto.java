@@ -75,9 +75,6 @@ public class Projeto {
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Auditoria> auditorias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Gasto> gastos = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "parceiro_id", nullable = true)
     private Parceiro parceiro;

@@ -36,23 +36,6 @@ public class Documento {
     @JoinColumn(name = "auditoria_id") // Chave estrangeira para Auditoria
     private Auditoria auditoria;
 
-    @ManyToOne
-    @JoinColumn(name = "gasto_id")  // Adicionando o relacionamento ManyToOne com Gasto
-    @JsonIgnore
-    private Gasto gasto;
-
-    // Adicionando a propriedade 'receita' para fazer o relacionamento bidirecional
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "receita_id") // Chave estrangeira para Receita
-    private Receita receita;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "prestacao_id")
-    private PrestacaoContas prestacaoContas;
-
-
     public Documento () {}
 
 //    public Documento (

@@ -2,9 +2,7 @@ package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.dto.BaixarDocumentoDto;
 import com.codenine.projetotransparencia.entities.Documento;
-import com.codenine.projetotransparencia.entities.Gasto;
 import com.codenine.projetotransparencia.entities.Projeto;
-import com.codenine.projetotransparencia.entities.Receita;
 import com.codenine.projetotransparencia.repository.DocumentoRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.SalvarDocumento;
@@ -80,13 +78,14 @@ public class DocumentoService {
             if (entidade instanceof Projeto) {
                 documentoSalvar.setProjeto((Projeto) entidade);
                 ((Projeto) entidade).getDocumentos().add(documentoSalvar);
-            } else if (entidade instanceof Gasto) {
-                documentoSalvar.setGasto((Gasto) entidade);
-                ((Gasto) entidade).getNotaFiscal().add(documentoSalvar);
-            } else if (entidade instanceof Receita) {
-                documentoSalvar.setReceita((Receita) entidade);
-                ((Receita) entidade).getRubrica().add(documentoSalvar);
             }
+//            } else if (entidade instanceof Gasto) {
+//                documentoSalvar.setGasto((Gasto) entidade);
+//                ((Gasto) entidade).getNotaFiscal().add(documentoSalvar);
+//            } else if (entidade instanceof Receita) {
+//                documentoSalvar.setReceita((Receita) entidade);
+//                ((Receita) entidade).getRubrica().add(documentoSalvar);
+//            }
 
             documentoRepository.save(documentoSalvar);
         };
