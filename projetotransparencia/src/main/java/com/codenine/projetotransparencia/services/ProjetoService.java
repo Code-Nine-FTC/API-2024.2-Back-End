@@ -155,9 +155,6 @@ public class ProjetoService {
             if (projetoAtualizado.getTitulo() != null) {
                 projeto.setTitulo(projetoAtualizado.getTitulo());
             }
-//            if (projetoAtualizado.getContratante() != null) {
-//                projeto.setContratante(projetoAtualizado.getContratante());
-//            }
             if (projetoAtualizado.getObjeto() != null) {
                 projeto.setObjeto(projetoAtualizado.getObjeto());
             }

@@ -30,12 +30,15 @@ public class Auditoria {
     @Column(nullable = false)
     private String nomeCoordenador;
 
-
     @Column(nullable = true)
     private String titulo_antigo;
 
-    @Column(nullable = true)
-    private String contratante_antigo;
+//    @Column(nullable = true)
+//    private String contratante_antigo;
+
+    @ManyToOne
+    @JoinColumn(name = "parceiro_antigo_id", nullable = true)
+    private Parceiro parceiro_antigo;
 
     @Column(nullable = true)
     private String descricao_antiga;
@@ -69,8 +72,12 @@ public class Auditoria {
     @Column(nullable = false)
     private String referenciaProjeto;
 
-    @Column(nullable = true)
-    private String contratante_novo;
+//    @Column(nullable = true)
+//    private String contratante_novo;
+
+    @ManyToOne
+    @JoinColumn(name = "parceiro_novo_id", nullable = true)
+    private Parceiro parceiro_novo;
 
     @Column(nullable = true)
     private String descricao_novo;
@@ -113,11 +120,11 @@ public class Auditoria {
 
     public Auditoria() {}
 
-    public Auditoria(Projeto projeto, String tipoAuditoria, String nomeCoordenador, String titulo_antigo, String contratante_antigo, String descricao_antiga,
+    public Auditoria(Projeto projeto, String tipoAuditoria, String nomeCoordenador, String titulo_antigo, Parceiro parceiro, String descricao_antiga,
                      Double valor_antigo, LocalDate dataInicio_antiga, LocalDate dataTermino_antiga,
                      String status_antigo,String integrantes_antigos, String objetivo_antigo,
                      String links_antigos,String titulo_novo,
-                     String referenciaProjeto, String contratante_novo, String descricao_novo,
+                     String referenciaProjeto, Parceiro parceiro_novo, String descricao_novo,
                      Double valor_novo, LocalDate dataInicio_novo, LocalDate dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
                      String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo) {
@@ -125,7 +132,7 @@ public class Auditoria {
         this.tipoAuditoria = tipoAuditoria;
         this.nomeCoordenador = nomeCoordenador;
         this.titulo_antigo = titulo_antigo;
-        this.contratante_antigo = contratante_antigo;
+        this.parceiro_antigo = parceiro_antigo;
         this.descricao_antiga = descricao_antiga;
         this.valor_antigo = valor_antigo;
         this.dataInicio_antiga = dataInicio_antiga;
@@ -135,7 +142,7 @@ public class Auditoria {
         this.objetivo_antigo = objetivo_antigo;
         this.links_antigos = links_antigos;
         this.referenciaProjeto = referenciaProjeto;
-        this.contratante_novo = contratante_novo;
+        this.parceiro_novo = parceiro_novo;
         this.descricao_novo = descricao_novo;
         this.valor_novo = valor_novo;
         this.dataInicio_novo = dataInicio_novo;
