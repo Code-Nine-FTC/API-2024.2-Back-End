@@ -29,8 +29,8 @@ public class Projeto {
     @NotBlank
     private String referencia;
 
-    @Column(nullable = true)
-    private String contratante;
+//    @Column(nullable = true)
+//    private String contratante;
 
     @Column(nullable = true)
     private String objeto;
@@ -86,23 +86,15 @@ public class Projeto {
     public Projeto() {
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "projeto_parceiro",
-            joinColumns = @JoinColumn(name = "projeto_id"),
-            inverseJoinColumns = @JoinColumn(name = "parceiro_id")
-    )
-    private List<Parceiro> parceiros = new ArrayList<>();
-
     // Construtor com parâmetros para criação de projeto
     // Adicionando um construtor com 16 parâmetros (não recomendado)
-    public Projeto(String titulo, String referencia, String contratante, String objeto,
+    public Projeto(String titulo, String referencia, String objeto,
                    String descricao, String nomeCoordenador, Double valor,
                    LocalDate dataInicio, LocalDate dataTermino, String status, String integrantes,
-                   String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4) {
+                   String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4, Parceiro parceiro, ClassificacaoDemanda classificacaoDemanda) {
         this.titulo = titulo;
         this.referencia = referencia;
-        this.contratante = contratante;
+//        this.contratante = contratante;
         this.objeto = objeto;
         this.descricao = descricao;
         this.nomeCoordenador = nomeCoordenador;
@@ -113,7 +105,8 @@ public class Projeto {
         this.integrantes = integrantes;
         this.links = links;
         this.camposOcultos = camposOcultos;
-
+        this.parceiro = parceiro;
+        this.classificacaoDemanda = classificacaoDemanda;
     }
 
 
@@ -121,7 +114,7 @@ public class Projeto {
     public Projeto(Projeto projeto) {
         this.titulo = projeto.titulo;
         this.referencia = projeto.referencia;
-        this.contratante = projeto.contratante;
+//        this.contratante = projeto.contratante;
         this.objeto = projeto.objeto;
         this.descricao = projeto.descricao;
         this.nomeCoordenador = projeto.nomeCoordenador;
@@ -135,6 +128,8 @@ public class Projeto {
         this.documentos = projeto.documentos.stream()
                 .map(Documento::new)
                 .collect(Collectors.toList());
+        this.parceiro = projeto.parceiro;
+        this.classificacaoDemanda = projeto.classificacaoDemanda;
     }
 
     @Override
@@ -143,7 +138,7 @@ public class Projeto {
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
                 ", referencia='" + referencia + '\'' +
-                ", contratante='" + contratante + '\'' +
+//                ", contratante='" + contratante + '\'' +
                 ", objeto='" + objeto + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", nomeCoordenador='" + nomeCoordenador + '\'' +
@@ -154,7 +149,7 @@ public class Projeto {
                 ", integrantes='" + integrantes + '\'' +
                 ", links='" + links + '\'' +
                 ", camposOcultos='" + camposOcultos + '\'' +
-                '}';
+                ", parceiro='" + parceiro + '\'';
     }
 }
 

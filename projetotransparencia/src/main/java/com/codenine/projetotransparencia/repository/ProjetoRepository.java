@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.codenine.projetotransparencia.entities.Projeto;
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Long>, ProjetoRepositoryCustom {
-    @Query("SELECT p FROM Projeto p WHERE " +
+    @Query("SELECT p FROM Projeto p LEFT JOIN p.parceiro parceiro WHERE " +
             "(:referencia IS NULL OR LOWER(p.referencia) LIKE LOWER(CONCAT('%', :referencia, '%'))) AND " +
             "((:keyword IS NOT NULL AND (" +
             "LOWER(p.referencia) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
@@ -20,7 +20,7 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long>, Projeto
             "LOWER(p.integrantes) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.links) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.objeto) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(p.contratante) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(parceiro.nome) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.nomeCoordenador) LIKE LOWER(CONCAT('%', :keyword, '%'))" +
             ")) OR :keyword IS NULL) AND " +
             "(:nomeCoordenador IS NULL OR LOWER(p.nomeCoordenador) LIKE LOWER(CONCAT('%', :nomeCoordenador, '%'))) AND " +

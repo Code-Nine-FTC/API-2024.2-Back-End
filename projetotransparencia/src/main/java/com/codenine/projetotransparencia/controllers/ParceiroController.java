@@ -53,8 +53,6 @@ public class ParceiroController {
         }
     }
 
-
-
     @PutMapping("atualizar/{id}")
     public ResponseEntity<String> atualizarParceiro(@RequestBody AtualizarParceiroDto parceiro, @PathVariable Long id) {
         try {

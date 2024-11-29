@@ -63,7 +63,7 @@ public class AuditoriaService {
 
         // Captura todos os campos antigos
         auditoria.setTitulo_antigo(projetoAntesDaAtualizacao.getTitulo());
-        auditoria.setContratante_antigo(projetoAntesDaAtualizacao.getContratante());
+//        auditoria.setContratante_antigo(projetoAntesDaAtualizacao.getContratante());
         auditoria.setDescricao_antiga(projetoAntesDaAtualizacao.getDescricao());
         auditoria.setValor_antigo(projetoAntesDaAtualizacao.getValor());
         auditoria.setDataInicio_antiga(projetoAntesDaAtualizacao.getDataInicio());
@@ -78,9 +78,9 @@ public class AuditoriaService {
         if (!Objects.equals(projetoAtual.getTitulo(), projetoAntesDaAtualizacao.getTitulo())) {
             auditoria.setTitulo_novo(projetoAtual.getTitulo());
         }
-        if (!Objects.equals(projetoAtual.getContratante(), projetoAntesDaAtualizacao.getContratante())) {
-            auditoria.setContratante_novo(projetoAtual.getContratante());
-        }
+//        if (!Objects.equals(projetoAtual.getContratante(), projetoAntesDaAtualizacao.getContratante())) {
+//            auditoria.setContratante_novo(projetoAtual.getContratante());
+//        }
         if (!Objects.equals(projetoAtual.getDescricao(), projetoAntesDaAtualizacao.getDescricao())) {
             auditoria.setDescricao_novo(projetoAtual.getDescricao());
         }
@@ -189,7 +189,7 @@ public class AuditoriaService {
         auditoria.setNomeCoordenador(projetoAtual.getNomeCoordenador());
         auditoria.setReferenciaProjeto(projetoAtual.getReferencia());
         auditoria.setTitulo_novo(projetoAtual.getTitulo());
-        auditoria.setContratante_novo(projetoAtual.getContratante());
+//        auditoria.setContratante_novo(projetoAtual.getContratante());
         auditoria.setDescricao_novo(projetoAtual.getDescricao());
         auditoria.setValor_novo(projetoAtual.getValor());
         auditoria.setDataInicio_novo(projetoAtual.getDataInicio());
@@ -214,7 +214,7 @@ public class AuditoriaService {
 
         // Guardar os dados antigos (do projeto antes da alteração)
         auditoria.setTitulo_antigo(projetoAntesDaAlteracao.getTitulo());
-        auditoria.setContratante_antigo(projetoAntesDaAlteracao.getContratante());
+//        auditoria.setContratante_antigo(projetoAntesDaAlteracao.getContratante());
         auditoria.setDescricao_antiga(projetoAntesDaAlteracao.getDescricao());
         auditoria.setValor_antigo(projetoAntesDaAlteracao.getValor());
         auditoria.setDataInicio_antiga(projetoAntesDaAlteracao.getDataInicio());

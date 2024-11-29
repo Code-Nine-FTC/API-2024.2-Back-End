@@ -4,8 +4,10 @@ package com.codenine.projetotransparencia.services;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
 import com.codenine.projetotransparencia.entities.Documento;
+import com.codenine.projetotransparencia.entities.Parceiro;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
+import com.codenine.projetotransparencia.repository.ParceiroRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
 import com.codenine.projetotransparencia.utils.documents.VerificarPdf;
@@ -61,11 +63,14 @@ public class ProjetoService {
     @Autowired
     private AuditoriaService auditoriaService;
 
+    @Autowired
+    private ParceiroRepository parceiroRepository;
+
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
         Projeto projeto = new Projeto(
                 cadastrarProjetoDto.titulo(),
                 cadastrarProjetoDto.referencia(),
-                cadastrarProjetoDto.contratante().orElse(null),
+//                cadastrarProjetoDto.contratante().orElse(null),
                 null, // objeto
                 null, // descricao
                 cadastrarProjetoDto.nomeCoordenador(),
@@ -79,7 +84,9 @@ public class ProjetoService {
                 null, // resumoPdf
                 null, // resumoExcel
                 null, // proposta
-                null  // contrato
+                null,  // contrato
+                cadastrarProjetoDto.parceiro().orElse(null),
+                cadastrarProjetoDto.classificacaoDemanda().orElse(null)
         );
 
         // Salvar o projeto
@@ -148,9 +155,9 @@ public class ProjetoService {
             if (projetoAtualizado.getTitulo() != null) {
                 projeto.setTitulo(projetoAtualizado.getTitulo());
             }
-            if (projetoAtualizado.getContratante() != null) {
-                projeto.setContratante(projetoAtualizado.getContratante());
-            }
+//            if (projetoAtualizado.getContratante() != null) {
+//                projeto.setContratante(projetoAtualizado.getContratante());
+//            }
             if (projetoAtualizado.getObjeto() != null) {
                 projeto.setObjeto(projetoAtualizado.getObjeto());
             }
@@ -185,6 +192,12 @@ public class ProjetoService {
                 else {
                     projeto.setCamposOcultos(projetoAtualizado.getCamposOcultos());
                 }
+            }
+            if (projetoAtualizado.getParceiro() != null) {
+                projeto.setParceiro(projetoAtualizado.getParceiro());
+            }
+            if (projetoAtualizado.getClassificacaoDemanda() != null) {
+                projeto.setClassificacaoDemanda(projetoAtualizado.getClassificacaoDemanda());
             }
         }
 
@@ -314,7 +327,10 @@ public class ProjetoService {
                     .filter(val -> !val.isEmpty())
                     .map(Double::parseDouble);
 
+            Parceiro parceiro = new Parceiro();
             Optional<String> contratante = Optional.of(projetoNode.has("Empresa") ? projetoNode.get("Empresa").asText() : "");
+            parceiro.setNome(contratante.get());
+            parceiroRepository.save(parceiro);
 
             Optional<String> camposOcultos = Optional.ofNullable(projetoNode.has("Campos ocultos") ? projetoNode.get("Campos ocultos").asText() : "");
             CadastrarProjetoDto dto = new CadastrarProjetoDto(
@@ -324,12 +340,14 @@ public class ProjetoService {
                     dataInicio,
                     valor,
                     Optional.ofNullable(dataTermino),
-                    contratante,
+//                    contratante,
                     Optional.ofNullable(status),
                     Optional.ofNullable(integrantes),
                     Optional.ofNullable(objetivo),
                     Optional.ofNullable(links),
-                    camposOcultos
+                    camposOcultos,
+                    Optional.of(parceiro),
+                    Optional.empty()
             );
 
             // Verifica se o projeto já existe
@@ -351,7 +369,8 @@ public class ProjetoService {
         projetoExistente.setDataInicio(dto.dataInicio());
         projetoExistente.setDataTermino(dto.dataTermino().orElse(null));
         projetoExistente.setValor(dto.valor().orElse(null));
-        projetoExistente.setContratante(dto.contratante().orElse(null));
+//        projetoExistente.setContratante(dto.contratante().orElse(null));
+        projetoExistente.setParceiro(dto.parceiro().orElse(null));
 
         projetoRepository.save(projetoExistente);
     }

@@ -23,15 +23,14 @@ public class ParceiroService {
 
     public Long cadastrarParceiro(CadastrarParceiroDto cadastrarParceiroDto) {
         Parceiro parceiro = new Parceiro(
-
             cadastrarParceiroDto.nome(),
             cadastrarParceiroDto.cnpj(),
             cadastrarParceiroDto.email(),
-            cadastrarParceiroDto.telefone(),
-            cadastrarParceiroDto.areaColaboracao(),
-            cadastrarParceiroDto.historicoParceria()
+            cadastrarParceiroDto.telefone()
         );
-
+        if (cadastrarParceiroDto.classificacaoDemanda().isPresent()) {
+            parceiro.getClassificacaoDemandas().add(cadastrarParceiroDto.classificacaoDemanda().get());
+        }
         // Salva parceiro
         Parceiro parceiroCadastrado = parceiroRepository.save(parceiro);
 
@@ -65,8 +64,8 @@ public class ParceiroService {
         if (atualizarParceiroDto.telefone().isPresent()) {
             parceiro.setTelefone(atualizarParceiroDto.telefone().get());
         }
-        if (atualizarParceiroDto.areaColaboracao().isPresent()) {
-            parceiro.setAreaColaboracao(atualizarParceiroDto.areaColaboracao().get());
+        if (atualizarParceiroDto.classificacaoDemanda().isPresent()) {
+            parceiro.getClassificacaoDemandas().add(atualizarParceiroDto.classificacaoDemanda().get());
         }
 
         parceiroRepository.save(parceiro);

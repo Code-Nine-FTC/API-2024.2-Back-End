@@ -1,7 +1,7 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,25 +16,20 @@ public class Parceiro {
     @Column(name = "parceiro_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String nome;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String cnpj;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String telefone;
 
-    @Column(nullable = false)
-    private String areaColaboracao;
-
-    @Column(nullable = true)
-    private String historicoParceria;
-
-    @ManyToMany(mappedBy = "parceiros")
+    @OneToMany(mappedBy = "parceiro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Projeto> projetos = new ArrayList<>();
 
     @ManyToMany
@@ -43,23 +38,17 @@ public class Parceiro {
             joinColumns = @JoinColumn(name = "parceiro_id"),
             inverseJoinColumns = @JoinColumn(name = "classificacao_demanda_id")
     )
+    @JsonIgnore
     private List<ClassificacaoDemanda> classificacaoDemandas = new ArrayList<>();
 
     // Construtores
     public Parceiro() {
-
     }
 
-    public Parceiro( String nome, String cnpj, String email, String telefone, String areaColaboracao, String historicoParceria) {
+    public Parceiro(String nome, String cnpj, String email, String telefone) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.email = email;
         this.telefone = telefone;
-        this.areaColaboracao = areaColaboracao;
-        this.historicoParceria = historicoParceria;
-    }
-
-        public Parceiro(@NotEmpty String nome, @NotEmpty String cnpj, @NotEmpty String email, @NotEmpty String telefone, @NotEmpty String areaColaboracao, Projeto projeto) {
     }
 }
-

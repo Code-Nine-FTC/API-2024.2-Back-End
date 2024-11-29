@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.repository;
 
+import com.codenine.projetotransparencia.entities.Parceiro;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import com.codenine.projetotransparencia.entities.Projeto;
@@ -20,7 +21,7 @@ public class ProjetoRepositoryCustomImpl implements ProjetoRepositoryCustom {
 
     public List<Projeto> buscarProjetos(String coordenador, String dataInicio, String dataTermino,
                                         String valorMaximo, String valorMinimo,
-                                        String situacaoProjeto, String tipoBusca, String contratante) {
+                                        String situacaoProjeto, String tipoBusca, String parceiroNome) {
 
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -69,8 +70,9 @@ public class ProjetoRepositoryCustomImpl implements ProjetoRepositoryCustom {
                 predicates.add(cb.equal(root.get("tipoBusca"), tipoBusca));
             }
 
-            if (contratante != null && !contratante.isEmpty()) {
-                predicates.add(cb.equal(root.get("contratante"), contratante));
+            if (parceiroNome != null && !parceiroNome.isEmpty()) {
+                Join<Projeto, Parceiro> parceiroJoin = root.join("parceiro", JoinType.LEFT);
+                predicates.add(cb.like(cb.lower(parceiroJoin.get("nome")), "%" + parceiroNome.toLowerCase() + "%"));
             }
 
             predicates.add(cb.isTrue(root.get("ativo")));
