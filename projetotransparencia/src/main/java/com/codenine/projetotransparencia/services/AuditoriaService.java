@@ -74,6 +74,7 @@ public class AuditoriaService {
         auditoria.setObjetivo_antigo(projetoAntesDaAtualizacao.getObjeto());
         auditoria.setLinks_antigos(projetoAntesDaAtualizacao.getLinks());
         auditoria.setCamposOcultos_antigo(projetoAntesDaAtualizacao.getCamposOcultos());
+        auditoria.setDemanda_antiga(projetoAntesDaAtualizacao.getClassificacaoDemanda());
 
         // Captura todos os campos novos apenas se forem diferentes dos antigos
         if (!Objects.equals(projetoAtual.getTitulo(), projetoAntesDaAtualizacao.getTitulo())) {
@@ -111,6 +112,9 @@ public class AuditoriaService {
         }
         if (!Objects.equals(projetoAtual.getCamposOcultos(), projetoAntesDaAtualizacao.getCamposOcultos())) {
             auditoria.setCamposOcultos_novo(projetoAtual.getCamposOcultos());
+        }
+        if (!Objects.equals(projetoAtual.getClassificacaoDemanda(), projetoAntesDaAtualizacao.getClassificacaoDemanda())) {
+            auditoria.setDemanda_nova(projetoAtual.getClassificacaoDemanda());
         }
 
         List<Documento> documentosAntigos = projetoAntesDaAtualizacao.getDocumentos();
@@ -204,6 +208,7 @@ public class AuditoriaService {
         auditoria.setLinks_novo(projetoAtual.getLinks());
         auditoria.setCamposOcultos_novo(projetoAtual.getCamposOcultos());
         auditoria.setDataAlteracao(LocalDateTime.now());
+        auditoria.setDemanda_nova(projetoAtual.getClassificacaoDemanda());
 
         // Salvar a auditoria no banco de dados
         auditoriaRepository.save(auditoria);
@@ -230,6 +235,7 @@ public class AuditoriaService {
         auditoria.setObjetivo_antigo(projetoAntesDaAlteracao.getObjeto());
         auditoria.setLinks_antigos(projetoAntesDaAlteracao.getLinks());
         auditoria.setCamposOcultos_antigo(projetoAntesDaAlteracao.getCamposOcultos());
+        auditoria.setDemanda_antiga(projetoAntesDaAlteracao.getClassificacaoDemanda());
 
         // Registrar a data de alteração
         auditoria.setDataAlteracao(LocalDateTime.now());

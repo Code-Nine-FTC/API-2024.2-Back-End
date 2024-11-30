@@ -117,17 +117,25 @@ public class Auditoria {
     @Column(nullable = false)
     private LocalDateTime dataAlteracao;
 
+    @ManyToOne
+    @JoinColumn(name = "demanda_antiga_id", nullable = true)
+    private ClassificacaoDemanda demanda_antiga;
+
+    @ManyToOne
+    @JoinColumn(name = "demanda_nova_id", nullable = true)
+    private ClassificacaoDemanda demanda_nova;
+
 
     public Auditoria() {}
 
-    public Auditoria(Projeto projeto, String tipoAuditoria, String nomeCoordenador, String titulo_antigo, Parceiro parceiro, String descricao_antiga,
+    public Auditoria(Projeto projeto, String tipoAuditoria, String nomeCoordenador, String titulo_antigo, Parceiro parceiro_antigo, String descricao_antiga,
                      Double valor_antigo, LocalDate dataInicio_antiga, LocalDate dataTermino_antiga,
                      String status_antigo,String integrantes_antigos, String objetivo_antigo,
                      String links_antigos,String titulo_novo,
                      String referenciaProjeto, Parceiro parceiro_novo, String descricao_novo,
                      Double valor_novo, LocalDate dataInicio_novo, LocalDate dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
-                     String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo) {
+                     String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo, ClassificacaoDemanda demanda_antiga, ClassificacaoDemanda demanda_nova) {
         this.projeto = projeto;
         this.tipoAuditoria = tipoAuditoria;
         this.nomeCoordenador = nomeCoordenador;
@@ -154,7 +162,7 @@ public class Auditoria {
         this.dataAlteracao = dataAlteracao;
         this.camposOcultos_novo = camposOcultos_novo;
         this.camposOcultos_antigo = camposOcultos_antigo;
+        this.demanda_antiga = demanda_antiga;
+        this.demanda_nova = demanda_nova;
     }
-
-
 }
