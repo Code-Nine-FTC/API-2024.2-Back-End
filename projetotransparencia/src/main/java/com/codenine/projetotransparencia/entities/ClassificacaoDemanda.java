@@ -1,6 +1,8 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,10 +32,10 @@ public class ClassificacaoDemanda {
     private String prioridade; // Prioridade da demanda (ex: "Alta", "Média", "Baixa")
 
     @OneToMany(mappedBy = "classificacaoDemanda", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Projeto> projetos = new ArrayList<>();
 
     @ManyToMany(mappedBy = "classificacaoDemandas")
+    @JsonIgnore
     private List<Parceiro> parceiros = new ArrayList<>();
 
     // Construtores

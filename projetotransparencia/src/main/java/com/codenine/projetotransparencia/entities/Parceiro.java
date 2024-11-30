@@ -1,6 +1,8 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -38,7 +40,6 @@ public class Parceiro {
             joinColumns = @JoinColumn(name = "parceiro_id"),
             inverseJoinColumns = @JoinColumn(name = "classificacao_demanda_id")
     )
-    @JsonIgnore
     private List<ClassificacaoDemanda> classificacaoDemandas = new ArrayList<>();
 
     // Construtores
