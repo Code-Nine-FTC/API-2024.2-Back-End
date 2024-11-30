@@ -32,6 +32,7 @@ public class ClassificacaoDemanda {
     private String prioridade; // Prioridade da demanda (ex: "Alta", "Média", "Baixa")
 
     @OneToMany(mappedBy = "classificacaoDemanda", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Projeto> projetos = new ArrayList<>();
 
     @ManyToMany(mappedBy = "classificacaoDemandas")
