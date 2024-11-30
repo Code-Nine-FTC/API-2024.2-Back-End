@@ -216,6 +216,19 @@ public class ProjetoService {
             if (projetoAtualizado.getClassificacaoDemanda() != null) {
                 projeto.setClassificacaoDemanda(projetoAtualizado.getClassificacaoDemanda());
             }
+            if (projetoAtualizado.getBolsistas() != null) {
+                List<Bolsista> novosBolsistas = new ArrayList<>();
+                for (Bolsista bolsistaDto : projetoAtualizado.getBolsistas()) {
+                    if (bolsistaDto.getId() != null) {
+                        novosBolsistas.add(bolsistaDto);
+                    } else {
+                        Bolsista bolsitaCadastrado = bolsistaRepository.save(bolsistaDto);
+                        novosBolsistas.add(bolsitaCadastrado);
+                    }
+                }
+                projeto.getBolsistas().clear();
+                projeto.getBolsistas().addAll(novosBolsistas);
+            }
         }
 
         // Lógica para documentos
