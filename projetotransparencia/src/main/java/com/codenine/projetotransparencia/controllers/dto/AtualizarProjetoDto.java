@@ -1,11 +1,13 @@
 // controllers/AtualizarProjetoDto.java
 package com.codenine.projetotransparencia.controllers.dto;
 
+import com.codenine.projetotransparencia.entities.Bolsista;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public record AtualizarProjetoDto(

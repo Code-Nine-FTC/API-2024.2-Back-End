@@ -87,6 +87,11 @@ public class BolsistaService {
     }
 
     public void deletarBolsista(Long id) {
+        projetoRepository.findAll().forEach(projeto -> {
+            projeto.getBolsistas().removeIf(bolsista -> bolsista.getId().equals(id));
+            projetoRepository.save(projeto);
+        });
+
         bolsistaRepository.deleteById(id);
     }
 }
