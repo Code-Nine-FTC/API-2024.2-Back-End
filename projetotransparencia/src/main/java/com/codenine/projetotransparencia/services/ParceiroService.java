@@ -3,6 +3,7 @@ package com.codenine.projetotransparencia.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,9 @@ public class ParceiroService {
             cadastrarParceiroDto.telefone()
         );
         if (cadastrarParceiroDto.classificacaoDemanda().isPresent()) {
-            parceiro.getClassificacaoDemandas().add(cadastrarParceiroDto.classificacaoDemanda().get());
+            for (ClassificacaoDemanda classificacaoDemanda : cadastrarParceiroDto.classificacaoDemanda().get()) {
+                parceiro.getClassificacaoDemandas().add(classificacaoDemanda);
+            }
         }
         // Salva parceiro
         Parceiro parceiroCadastrado = parceiroRepository.save(parceiro);

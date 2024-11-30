@@ -324,10 +324,13 @@ public class ProjetoService {
                     .filter(val -> !val.isEmpty())
                     .map(Double::parseDouble);
 
-            Parceiro parceiro = new Parceiro();
             Optional<String> contratante = Optional.of(projetoNode.has("Empresa") ? projetoNode.get("Empresa").asText() : "");
-            parceiro.setNome(contratante.get());
-            parceiroRepository.save(parceiro);
+            Parceiro parceiro = parceiroRepository.findByNome(contratante.get())
+                    .orElseGet(() -> {
+                        Parceiro novoParceiro = new Parceiro();
+                        novoParceiro.setNome(contratante.get());
+                        return parceiroRepository.save(novoParceiro);
+                    });
 
             Optional<String> camposOcultos = Optional.ofNullable(projetoNode.has("Campos ocultos") ? projetoNode.get("Campos ocultos").asText() : "");
             CadastrarProjetoDto dto = new CadastrarProjetoDto(
