@@ -3,9 +3,12 @@ package com.codenine.projetotransparencia.controllers.dto;
 import java.time.LocalDate;
 import java.util.Date;
 
+import com.codenine.projetotransparencia.entities.Bolsista;
 import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
 import com.codenine.projetotransparencia.entities.Parceiro;
 import jakarta.validation.constraints.NotEmpty;
+
+import java.util.List;
 import java.util.Optional;
 
 public record CadastrarProjetoDto (
@@ -22,7 +25,8 @@ public record CadastrarProjetoDto (
         Optional<String> links,
         Optional<String> camposOcultos,
         Optional<Parceiro> parceiro,
-        Optional<ClassificacaoDemanda> classificacaoDemanda
+        Optional<ClassificacaoDemanda> classificacaoDemanda,
+        Optional<List<Bolsista>> bolsistas
 ) {
 
 }

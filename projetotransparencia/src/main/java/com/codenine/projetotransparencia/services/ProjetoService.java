@@ -3,10 +3,12 @@ package com.codenine.projetotransparencia.services;
 
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
+import com.codenine.projetotransparencia.entities.Bolsista;
 import com.codenine.projetotransparencia.entities.Documento;
 import com.codenine.projetotransparencia.entities.Parceiro;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
+import com.codenine.projetotransparencia.repository.BolsistaRepository;
 import com.codenine.projetotransparencia.repository.ParceiroRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
@@ -30,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -66,7 +69,23 @@ public class ProjetoService {
     @Autowired
     private ParceiroRepository parceiroRepository;
 
+    @Autowired
+    private BolsistaRepository bolsistaRepository;
+
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
+        List<Bolsista> bolsistas = new ArrayList<>();
+        if (cadastrarProjetoDto.bolsistas().isPresent()) {
+            for (Bolsista bolsistaLista : cadastrarProjetoDto.bolsistas().get()) {
+                if (bolsistaLista.getId() != null) {
+                    bolsistas.add(bolsistaLista);
+                }
+                else {
+                    Bolsista bolsistaSalvo = bolsistaRepository.save(bolsistaLista);
+                    bolsistas.add(bolsistaSalvo);
+                }
+            }
+        }
+
         Projeto projeto = new Projeto(
                 cadastrarProjetoDto.titulo(),
                 cadastrarProjetoDto.referencia(),
@@ -86,7 +105,8 @@ public class ProjetoService {
                 null, // proposta
                 null,  // contrato
                 cadastrarProjetoDto.parceiro().orElse(null),
-                cadastrarProjetoDto.classificacaoDemanda().orElse(null)
+                cadastrarProjetoDto.classificacaoDemanda().orElse(null),
+                bolsistas
         );
 
         // Salvar o projeto
@@ -347,6 +367,7 @@ public class ProjetoService {
                     Optional.ofNullable(links),
                     camposOcultos,
                     Optional.of(parceiro),
+                    Optional.empty(),
                     Optional.empty()
             );
 

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "bolsista")
@@ -15,11 +18,11 @@ public class Bolsista {
     @Column(name = "bolsista_id")
     private Long id;
 
-    // Relacionamento ManyToOne com Projeto
-    @ManyToOne
-    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
-    @JsonIgnore
-    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
+//    // Relacionamento ManyToOne com Projeto
+//    @ManyToOne
+//    @JoinColumn(name = "projeto_id", nullable = false)  // Associa a chave estrangeira para o Projeto
+//    @JsonIgnore
+//    private Projeto projeto;  // Relacionamento ManyToOne com Projeto
 
     // Campos do bolsista
     @Column(nullable = false)
@@ -40,6 +43,10 @@ public class Bolsista {
     @Column(nullable = false)
     private String areaAtuacao;
 
+    @ManyToMany(mappedBy = "bolsistas")
+    @JsonIgnore
+    private List<Projeto> projetos = new ArrayList<>();
+
     // Construtores
     public Bolsista() {
     }
@@ -52,6 +59,5 @@ public class Bolsista {
         this.tipoBolsa = tipoBolsa;
         this.duracao = duracao;
         this.areaAtuacao = areaAtuacao;
-        this.projeto = projeto;
     }
 }

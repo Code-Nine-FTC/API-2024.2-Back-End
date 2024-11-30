@@ -83,6 +83,14 @@ public class Projeto {
     @JoinColumn(name = "classificacao_demanda_id", nullable = true)
     private ClassificacaoDemanda classificacaoDemanda;
 
+    @ManyToMany
+    @JoinTable(
+            name = "projeto_bolsista",
+            joinColumns = @JoinColumn(name = "projeto_id"),
+            inverseJoinColumns = @JoinColumn(name = "bolsista_id")
+    )
+    private List<Bolsista> bolsistas = new ArrayList<>();
+
     public Projeto() {
     }
 
@@ -91,7 +99,7 @@ public class Projeto {
     public Projeto(String titulo, String referencia, String objeto,
                    String descricao, String nomeCoordenador, Double valor,
                    LocalDate dataInicio, LocalDate dataTermino, String status, String integrantes,
-                   String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4, Parceiro parceiro, ClassificacaoDemanda classificacaoDemanda) {
+                   String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4, Parceiro parceiro, ClassificacaoDemanda classificacaoDemanda, List<Bolsista> bolsistas) {
         this.titulo = titulo;
         this.referencia = referencia;
 //        this.contratante = contratante;
@@ -107,6 +115,7 @@ public class Projeto {
         this.camposOcultos = camposOcultos;
         this.parceiro = parceiro;
         this.classificacaoDemanda = classificacaoDemanda;
+        this.bolsistas = bolsistas;
     }
 
 
