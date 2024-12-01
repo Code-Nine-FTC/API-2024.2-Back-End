@@ -33,9 +33,6 @@ public class Auditoria {
     @Column(nullable = true)
     private String titulo_antigo;
 
-//    @Column(nullable = true)
-//    private String contratante_antigo;
-
     @ManyToOne
     @JoinColumn(name = "parceiro_antigo_id", nullable = true)
     private Parceiro parceiro_antigo;
@@ -61,7 +58,7 @@ public class Auditoria {
     private String integrantes_antigos;
 
     @Column(nullable = true)
-    private  String objetivo_antigo;
+    private String objetivo_antigo;
 
     @Column(nullable = true)
     private String links_antigos;
@@ -71,9 +68,6 @@ public class Auditoria {
 
     @Column(nullable = false)
     private String referenciaProjeto;
-
-//    @Column(nullable = true)
-//    private String contratante_novo;
 
     @ManyToOne
     @JoinColumn(name = "parceiro_novo_id", nullable = true)
@@ -106,7 +100,7 @@ public class Auditoria {
     private String integrantes_novo;
 
     @Column(nullable = true)
-    private  String objetivo_novo;
+    private String objetivo_novo;
 
     @Column(nullable = true)
     private String links_novo;
@@ -125,6 +119,44 @@ public class Auditoria {
     @JoinColumn(name = "demanda_nova_id", nullable = true)
     private ClassificacaoDemanda demanda_nova;
 
+    // Campos específicos para Convenio
+    @Column(nullable = true)
+    private String nomeConvenio_antigo;
+
+    @Column(nullable = true)
+    private String cnpjConvenio_antigo;
+
+    @Column(nullable = true)
+    private String emailConvenio_antigo;
+
+    @Column(nullable = true)
+    private String telefoneConvenio_antigo;
+
+    @Column(nullable = true)
+    private String areaColaboracaoConvenio_antigo;
+
+    @Column(nullable = true)
+    private String historicoParceriaConvenio_antigo;
+
+    @Column(nullable = true)
+    private String nomeConvenio_novo;
+
+    @Column(nullable = true)
+    private String cnpjConvenio_novo;
+
+    @Column(nullable = true)
+    private String emailConvenio_novo;
+
+    @Column(nullable = true)
+    private String telefoneConvenio_novo;
+
+    @Column(nullable = true)
+    private String areaColaboracaoConvenio_novo;
+
+    @Column(nullable = true)
+    private String historicoParceriaConvenio_novo;
+
+    // Construtores, Getters e Setters (se necessário)
 
     public Auditoria() {}
 
@@ -135,7 +167,10 @@ public class Auditoria {
                      String referenciaProjeto, Parceiro parceiro_novo, String descricao_novo,
                      Double valor_novo, LocalDate dataInicio_novo, LocalDate dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
-                     String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo, ClassificacaoDemanda demanda_antiga, ClassificacaoDemanda demanda_nova) {
+                     String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo, ClassificacaoDemanda demanda_antiga, ClassificacaoDemanda demanda_nova,
+                     String nomeConvenio_antigo, String cnpjConvenio_antigo, String emailConvenio_antigo, String telefoneConvenio_antigo, String areaColaboracaoConvenio_antigo, String historicoParceriaConvenio_antigo,
+                     String nomeConvenio_novo, String cnpjConvenio_novo, String emailConvenio_novo, String telefoneConvenio_novo, String areaColaboracaoConvenio_novo, String historicoParceriaConvenio_novo) {
+        // Chamar o construtor da classe pai (se necessário)
         this.projeto = projeto;
         this.tipoAuditoria = tipoAuditoria;
         this.nomeCoordenador = nomeCoordenador;
@@ -164,5 +199,20 @@ public class Auditoria {
         this.camposOcultos_antigo = camposOcultos_antigo;
         this.demanda_antiga = demanda_antiga;
         this.demanda_nova = demanda_nova;
+
+        // Campos Convenio
+        this.nomeConvenio_antigo = nomeConvenio_antigo;
+        this.cnpjConvenio_antigo = cnpjConvenio_antigo;
+        this.emailConvenio_antigo = emailConvenio_antigo;
+        this.telefoneConvenio_antigo = telefoneConvenio_antigo;
+        this.areaColaboracaoConvenio_antigo = areaColaboracaoConvenio_antigo;
+        this.historicoParceriaConvenio_antigo = historicoParceriaConvenio_antigo;
+
+        this.nomeConvenio_novo = nomeConvenio_novo;
+        this.cnpjConvenio_novo = cnpjConvenio_novo;
+        this.emailConvenio_novo = emailConvenio_novo;
+        this.telefoneConvenio_novo = telefoneConvenio_novo;
+        this.areaColaboracaoConvenio_novo = areaColaboracaoConvenio_novo;
+        this.historicoParceriaConvenio_novo = historicoParceriaConvenio_novo;
     }
 }
