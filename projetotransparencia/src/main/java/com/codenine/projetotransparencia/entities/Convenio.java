@@ -1,5 +1,6 @@
 package com.codenine.projetotransparencia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +36,7 @@ public class Convenio {
 
     @OneToOne
     @JoinColumn(name = "projeto_id", nullable = false)
+    @JsonIgnore
     private Projeto projeto;
 
     public Convenio() {
