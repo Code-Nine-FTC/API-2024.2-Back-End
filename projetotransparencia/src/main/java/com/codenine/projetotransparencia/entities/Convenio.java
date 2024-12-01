@@ -32,6 +32,10 @@ public class Convenio {
     @Column(nullable = true)
     private String historicoParceria;
 
+    public Convenio() {
+        // Construtor padrão para JPA
+    }
+
     public Convenio(String nome, String cnpj, String email, String telefone, String areaColaboracao, String historicoParceria) {
         this.nome = nome;
         this.cnpj = cnpj;
@@ -39,10 +43,5 @@ public class Convenio {
         this.telefone = telefone;
         this.areaColaboracao = areaColaboracao;
         this.historicoParceria = historicoParceria;
-
-    }
-
-    public Convenio(@NotEmpty String nome, @NotEmpty String cnpj, @NotEmpty String email, @NotEmpty String telefone, @NotEmpty String s) {
     }
 }
-
