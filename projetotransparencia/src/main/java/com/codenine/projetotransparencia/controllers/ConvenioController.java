@@ -25,35 +25,39 @@ public class ConvenioController {
     }
 
     @GetMapping("/visualizar/{id}")
-    public Convenio buscarConvenioPorId(@PathVariable Long id) {
-        return convenioService.buscarConvenioPorId(id).get();
+    public ResponseEntity<Convenio> buscarConvenioPorId(@PathVariable Long id) {
+        return convenioService.buscarConvenioPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<?> cadastrarConvenio(@RequestBody CadastrarConvenioDto convenio) {
+    public ResponseEntity<String> cadastrarConvenio(@RequestBody CadastrarConvenioDto convenio) {
         try {
-            var convenioId = convenioService.cadastrarConvenio(convenio);
-            return ResponseEntity.created(URI.create("/convenio/visualizar" + convenioId.toString())).body("Convenio cadastrado com sucesso");
+            Long convenioId = convenioService.cadastrarConvenio(convenio);
+            URI location = URI.create("/convenio/visualizar/" + convenioId);
+            return ResponseEntity.created(location).body("Convênio cadastrado com sucesso");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PutMapping("atualizar/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<String> atualizarConvenio(@RequestBody AtualizarConvenioDto convenio, @PathVariable Long id) {
         try {
-            var convenioId = convenioService.atualizarConvenio(convenio, id);
-            return ResponseEntity.created(URI.create("/convenio/visualizar" + convenioId.toString())).body("Convenio atualizado com sucesso");
+            Long convenioId = convenioService.atualizarConvenio(convenio, id);
+            URI location = URI.create("/convenio/visualizar/" + convenioId);
+            return ResponseEntity.created(location).body("Convênio atualizado com sucesso");
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("deletar/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deleteConvenio(@PathVariable Long id) {
-        try{
+        try {
             convenioService.deletarConvenio(id);
-            return ResponseEntity.ok("Convenio deletado com sucesso");
+            return ResponseEntity.ok("Convênio deletado com sucesso");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
