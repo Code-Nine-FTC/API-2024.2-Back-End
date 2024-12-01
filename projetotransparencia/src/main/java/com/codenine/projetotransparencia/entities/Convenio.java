@@ -33,6 +33,9 @@ public class Convenio {
     @Column(nullable = true)
     private String documentoClausulas;
 
+    @OneToOne
+    @JoinColumn(name = "projeto_id", nullable = false)
+    private Projeto projeto;
 
     public Convenio() {
         // Construtor padrão para JPA
