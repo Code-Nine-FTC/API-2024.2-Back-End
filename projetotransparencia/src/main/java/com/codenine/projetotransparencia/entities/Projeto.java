@@ -91,6 +91,9 @@ public class Projeto {
     )
     private List<Bolsista> bolsistas = new ArrayList<>();
 
+    @OneToOne(mappedBy = "projeto", cascade = CascadeType.ALL)
+    private Convenio convenio;
+
     public Projeto() {
     }
 

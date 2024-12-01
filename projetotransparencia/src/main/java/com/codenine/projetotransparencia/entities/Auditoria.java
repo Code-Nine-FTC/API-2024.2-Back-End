@@ -121,40 +121,33 @@ public class Auditoria {
 
     // Campos específicos para Convenio
     @Column(nullable = true)
-    private String nomeConvenio_antigo;
+    private String nomeInstituicaoConvenio_antigo;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = true)
+    private LocalDate dataInicialConvenio_antigo;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = true)
+    private LocalDate dataFinalConvenio_antigo;
 
     @Column(nullable = true)
-    private String cnpjConvenio_antigo;
+    private String documentoClausulasConvenio_antigo;
+
 
     @Column(nullable = true)
-    private String emailConvenio_antigo;
+    private String nomeInstituicaoConvenio_novo;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = true)
+    private LocalDate dataInicialConvenio_novo;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = true)
+    private LocalDate dataFinalConvenio_novo;
 
     @Column(nullable = true)
-    private String telefoneConvenio_antigo;
-
-    @Column(nullable = true)
-    private String areaColaboracaoConvenio_antigo;
-
-    @Column(nullable = true)
-    private String historicoParceriaConvenio_antigo;
-
-    @Column(nullable = true)
-    private String nomeConvenio_novo;
-
-    @Column(nullable = true)
-    private String cnpjConvenio_novo;
-
-    @Column(nullable = true)
-    private String emailConvenio_novo;
-
-    @Column(nullable = true)
-    private String telefoneConvenio_novo;
-
-    @Column(nullable = true)
-    private String areaColaboracaoConvenio_novo;
-
-    @Column(nullable = true)
-    private String historicoParceriaConvenio_novo;
+    private String documentoClausulasConvenio_novo;
 
     // Construtores, Getters e Setters (se necessário)
 
@@ -168,8 +161,8 @@ public class Auditoria {
                      Double valor_novo, LocalDate dataInicio_novo, LocalDate dataTermino_novo,
                      String status_novo,String integrantes_novo, String objetivo_novo,
                      String links_novo,LocalDateTime dataAlteracao, String camposOcultos_novo, String camposOcultos_antigo, ClassificacaoDemanda demanda_antiga, ClassificacaoDemanda demanda_nova,
-                     String nomeConvenio_antigo, String cnpjConvenio_antigo, String emailConvenio_antigo, String telefoneConvenio_antigo, String areaColaboracaoConvenio_antigo, String historicoParceriaConvenio_antigo,
-                     String nomeConvenio_novo, String cnpjConvenio_novo, String emailConvenio_novo, String telefoneConvenio_novo, String areaColaboracaoConvenio_novo, String historicoParceriaConvenio_novo) {
+                     String nomeInstituicaoConvenio_antigo, LocalDate dataInicialConvenio_antigo, LocalDate dataFinalConvenio_antigo, String documentoClausulasConvenio_antigo,
+                     String nomeInstituicaoConvenio_novo, LocalDate dataInicialConvenio_novo, LocalDate dataFinalConvenio_novo, String documentoClausulasConvenio_novo) {
         // Chamar o construtor da classe pai (se necessário)
         this.projeto = projeto;
         this.tipoAuditoria = tipoAuditoria;
@@ -201,18 +194,15 @@ public class Auditoria {
         this.demanda_nova = demanda_nova;
 
         // Campos Convenio
-        this.nomeConvenio_antigo = nomeConvenio_antigo;
-        this.cnpjConvenio_antigo = cnpjConvenio_antigo;
-        this.emailConvenio_antigo = emailConvenio_antigo;
-        this.telefoneConvenio_antigo = telefoneConvenio_antigo;
-        this.areaColaboracaoConvenio_antigo = areaColaboracaoConvenio_antigo;
-        this.historicoParceriaConvenio_antigo = historicoParceriaConvenio_antigo;
+        this.nomeInstituicaoConvenio_antigo = nomeInstituicaoConvenio_antigo;
+        this.dataInicialConvenio_antigo = dataInicialConvenio_antigo;
+        this.dataFinalConvenio_antigo = dataFinalConvenio_antigo;
+        this.documentoClausulasConvenio_antigo = documentoClausulasConvenio_antigo;
 
-        this.nomeConvenio_novo = nomeConvenio_novo;
-        this.cnpjConvenio_novo = cnpjConvenio_novo;
-        this.emailConvenio_novo = emailConvenio_novo;
-        this.telefoneConvenio_novo = telefoneConvenio_novo;
-        this.areaColaboracaoConvenio_novo = areaColaboracaoConvenio_novo;
-        this.historicoParceriaConvenio_novo = historicoParceriaConvenio_novo;
+        this.nomeInstituicaoConvenio_novo = nomeInstituicaoConvenio_novo;
+        this.dataInicialConvenio_novo = dataInicialConvenio_novo;
+        this.dataFinalConvenio_novo = dataFinalConvenio_novo;
+        this.documentoClausulasConvenio_novo = documentoClausulasConvenio_novo;
     }
+
 }

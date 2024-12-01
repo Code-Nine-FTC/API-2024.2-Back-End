@@ -2,7 +2,10 @@ package com.codenine.projetotransparencia.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -15,33 +18,30 @@ public class Convenio {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String nomeInstituicao;
 
-    @Column(nullable = false, unique = true)
-    private String cnpj;
-
+    @Temporal(TemporalType.DATE)
+    @NotNull
     @Column(nullable = false)
-    private String email;
+    private LocalDate dataInicial;
 
-    @Column(nullable = false)
-    private String telefone;
-
-    @Column(nullable = false)
-    private String areaColaboracao;
-
+    @Temporal(TemporalType.DATE)
     @Column(nullable = true)
-    private String historicoParceria;
+    private LocalDate dataFinal;
+
+    @Lob
+    @Column(nullable = true)
+    private String documentoClausulas;
+
 
     public Convenio() {
         // Construtor padrão para JPA
     }
 
-    public Convenio(String nome, String cnpj, String email, String telefone, String areaColaboracao, String historicoParceria) {
-        this.nome = nome;
-        this.cnpj = cnpj;
-        this.email = email;
-        this.telefone = telefone;
-        this.areaColaboracao = areaColaboracao;
-        this.historicoParceria = historicoParceria;
+    public Convenio(String nomeInstituicao, LocalDate dataInicial, LocalDate dataFinal, String documentoClausulas) {
+        this.nomeInstituicao = nomeInstituicao;
+        this.dataInicial = dataInicial;
+        this.dataFinal = dataFinal;
+        this.documentoClausulas = documentoClausulas;
     }
 }

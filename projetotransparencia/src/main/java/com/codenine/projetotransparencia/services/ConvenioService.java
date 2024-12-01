@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarConvenioDto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarConvenioDto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,12 +36,10 @@ public class ConvenioService {
     // Método para cadastrar um novo convenio
     public Long cadastrarConvenio(CadastrarConvenioDto cadastrarConvenioDto) {
         Convenio convenio = new Convenio(
-                cadastrarConvenioDto.nome(),
-                cadastrarConvenioDto.cnpj(),
-                cadastrarConvenioDto.email(),
-                cadastrarConvenioDto.telefone(),
-                cadastrarConvenioDto.areaColaboracao(),
-                cadastrarConvenioDto.historicoParceria()
+                cadastrarConvenioDto.nomeInstituicao(),
+                cadastrarConvenioDto.dataInicial(),
+                cadastrarConvenioDto.dataFinal(),
+                cadastrarConvenioDto.documentoClausulas()
         );
 
         // Salva o convênio
@@ -49,12 +48,10 @@ public class ConvenioService {
         // Criação do registro na auditoria
         Auditoria auditoria = new Auditoria();
         auditoria.setTipoAuditoria("CRIAÇÃO CONVÊNIO");
-        auditoria.setNomeConvenio_novo(convenioCadastrado.getNome());
-        auditoria.setCnpjConvenio_novo(convenioCadastrado.getCnpj());
-        auditoria.setEmailConvenio_novo(convenioCadastrado.getEmail());
-        auditoria.setTelefoneConvenio_novo(convenioCadastrado.getTelefone());
-        auditoria.setAreaColaboracaoConvenio_novo(convenioCadastrado.getAreaColaboracao());
-        auditoria.setHistoricoParceriaConvenio_novo(convenioCadastrado.getHistoricoParceria());
+        auditoria.setNomeInstituicaoConvenio_novo(convenioCadastrado.getNomeInstituicao());
+        auditoria.setDataInicialConvenio_novo(convenioCadastrado.getDataInicial());
+        auditoria.setDataFinalConvenio_novo(convenioCadastrado.getDataFinal());
+        auditoria.setDocumentoClausulasConvenio_novo(convenioCadastrado.getDocumentoClausulas());
         auditoria.setDataAlteracao(LocalDateTime.now());
 
         // Salvando auditoria
@@ -72,28 +69,23 @@ public class ConvenioService {
         Convenio convenio = convenioOptional.get();
 
         // Armazenando os dados antigos para auditoria
-        String nomeAntigo = convenio.getNome();
-        String cnpjAntigo = convenio.getCnpj();
-        String emailAntigo = convenio.getEmail();
-        String telefoneAntigo = convenio.getTelefone();
-        String areaColaboracaoAntigo = convenio.getAreaColaboracao();
-        String historicoAntigo = convenio.getHistoricoParceria();
+        String nomeInstituicaoAntigo = convenio.getNomeInstituicao();
+        LocalDate dataInicialAntigo = convenio.getDataInicial();
+        LocalDate dataFinalAntigo = convenio.getDataFinal();
+        String documentoClausulasAntigo = convenio.getDocumentoClausulas();
 
         // Atualizando os campos do convenio
-        if (atualizarConvenioDto.nome().isPresent()) {
-            convenio.setNome(atualizarConvenioDto.nome().get());
+        if (atualizarConvenioDto.nomeInstituicao().isPresent()) {
+            convenio.setNomeInstituicao(atualizarConvenioDto.nomeInstituicao().get());
         }
-        if (atualizarConvenioDto.cnpj().isPresent()) {
-            convenio.setCnpj(atualizarConvenioDto.cnpj().get());
+        if (atualizarConvenioDto.dataInicial().isPresent()) {
+            convenio.setDataInicial(atualizarConvenioDto.dataInicial().get());
         }
-        if (atualizarConvenioDto.email().isPresent()) {
-            convenio.setEmail(atualizarConvenioDto.email().get());
+        if (atualizarConvenioDto.dataFinal().isPresent()) {
+            convenio.setDataFinal(atualizarConvenioDto.dataFinal().get());
         }
-        if (atualizarConvenioDto.telefone().isPresent()) {
-            convenio.setTelefone(atualizarConvenioDto.telefone().get());
-        }
-        if (atualizarConvenioDto.areaColaboracao().isPresent()) {
-            convenio.setAreaColaboracao(atualizarConvenioDto.areaColaboracao().get());
+        if (atualizarConvenioDto.documentoClausulas().isPresent()) {
+            convenio.setDocumentoClausulas(atualizarConvenioDto.documentoClausulas().get());
         }
 
         convenioRepository.save(convenio);
@@ -101,19 +93,16 @@ public class ConvenioService {
         // Criação do registro de auditoria
         Auditoria auditoria = new Auditoria();
         auditoria.setTipoAuditoria("ATUALIZAÇÃO CONVÊNIO");
-        auditoria.setNomeConvenio_antigo(nomeAntigo);
-        auditoria.setCnpjConvenio_antigo(cnpjAntigo);
-        auditoria.setEmailConvenio_antigo(emailAntigo);
-        auditoria.setTelefoneConvenio_antigo(telefoneAntigo);
-        auditoria.setAreaColaboracaoConvenio_antigo(areaColaboracaoAntigo);
-        auditoria.setHistoricoParceriaConvenio_antigo(historicoAntigo);
+        auditoria.setNomeInstituicaoConvenio_antigo(nomeInstituicaoAntigo);
+        auditoria.setDataInicialConvenio_antigo(dataInicialAntigo);
+        auditoria.setDataFinalConvenio_antigo(dataFinalAntigo);
+        auditoria.setDocumentoClausulasConvenio_antigo(documentoClausulasAntigo);
 
-        auditoria.setNomeConvenio_novo(convenio.getNome());
-        auditoria.setCnpjConvenio_novo(convenio.getCnpj());
-        auditoria.setEmailConvenio_novo(convenio.getEmail());
-        auditoria.setTelefoneConvenio_novo(convenio.getTelefone());
-        auditoria.setAreaColaboracaoConvenio_novo(convenio.getAreaColaboracao());
-        auditoria.setHistoricoParceriaConvenio_novo(convenio.getHistoricoParceria());
+
+        auditoria.setNomeInstituicaoConvenio_novo(convenio.getNomeInstituicao());
+        auditoria.setDataInicialConvenio_novo(convenio.getDataInicial());
+        auditoria.setDataFinalConvenio_novo(convenio.getDataFinal());
+        auditoria.setDocumentoClausulasConvenio_novo(convenio.getDocumentoClausulas());
         auditoria.setDataAlteracao(LocalDateTime.now());
 
         // Salvando auditoria
@@ -133,12 +122,10 @@ public class ConvenioService {
         // Armazenando os dados do convênio antes de excluir para auditoria
         Auditoria auditoria = new Auditoria();
         auditoria.setTipoAuditoria("EXCLUSÃO CONVÊNIO");
-        auditoria.setNomeConvenio_antigo(convenio.getNome());
-        auditoria.setCnpjConvenio_antigo(convenio.getCnpj());
-        auditoria.setEmailConvenio_antigo(convenio.getEmail());
-        auditoria.setTelefoneConvenio_antigo(convenio.getTelefone());
-        auditoria.setAreaColaboracaoConvenio_antigo(convenio.getAreaColaboracao());
-        auditoria.setHistoricoParceriaConvenio_antigo(convenio.getHistoricoParceria());
+        auditoria.setNomeInstituicaoConvenio_antigo(convenio.getNomeInstituicao());
+        auditoria.setDataInicialConvenio_antigo(convenio.getDataInicial());
+        auditoria.setDataFinalConvenio_antigo(convenio.getDataFinal());
+        auditoria.setDocumentoClausulasConvenio_antigo(convenio.getDocumentoClausulas());
         auditoria.setDataAlteracao(LocalDateTime.now());
 
         // Salvando auditoria antes da exclusão

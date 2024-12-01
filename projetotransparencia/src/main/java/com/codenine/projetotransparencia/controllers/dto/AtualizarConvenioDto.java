@@ -1,12 +1,11 @@
 package com.codenine.projetotransparencia.controllers.dto;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public record AtualizarConvenioDto(
-        Optional<String> nome,
-        Optional<String> cnpj,
-        Optional<String> email,
-        Optional<String> telefone,
-        Optional<String> areaColaboracao,
-        Optional<String> historicoParceria
+        Optional<String> nomeInstituicao,
+        Optional<LocalDate> dataInicial,
+        Optional<LocalDate> dataFinal,
+        Optional<String> documentoClausulas
 ) {}
