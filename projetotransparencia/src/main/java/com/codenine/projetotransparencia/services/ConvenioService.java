@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarConvenioDto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarConvenioDto;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,29 +28,24 @@ public class ConvenioService {
         return convenioRepository.findAll();
     }
 
-    // Método para buscar convenio por id
+    // Método para buscar convenio por ID
     public Optional<Convenio> buscarConvenioPorId(Long id) {
         return convenioRepository.findById(id);
     }
 
     // Método para cadastrar um novo convenio
-    public Long cadastrarConvenio(CadastrarConvenioDto cadastrarConvenioDto) {
-        Convenio convenio = new Convenio(
-                cadastrarConvenioDto.nomeInstituicao(),
-                cadastrarConvenioDto.dataInicial(),
-                cadastrarConvenioDto.dataFinal(),
-                cadastrarConvenioDto.documentoClausulas()
-        );
+    public Long cadastrarConvenio(CadastrarConvenioDto cadastrarConvenioDto, MultipartFile documentoClausulas) throws IllegalArgumentException {
+        Convenio convenio = new Convenio();
+
+        // Atualizando campos a partir do DTO
+        cadastrarConvenioDto.documentoClausulas().ifPresent(convenio::setDocumentoClausulas);
 
         // Salva o convênio
         Convenio convenioCadastrado = convenioRepository.save(convenio);
 
-        // Criação do registro na auditoria
+        // Criação do registro de auditoria
         Auditoria auditoria = new Auditoria();
         auditoria.setTipoAuditoria("CRIAÇÃO CONVÊNIO");
-        auditoria.setNomeInstituicaoConvenio_novo(convenioCadastrado.getNomeInstituicao());
-        auditoria.setDataInicialConvenio_novo(convenioCadastrado.getDataInicial());
-        auditoria.setDataFinalConvenio_novo(convenioCadastrado.getDataFinal());
         auditoria.setDocumentoClausulasConvenio_novo(convenioCadastrado.getDocumentoClausulas());
         auditoria.setDataAlteracao(LocalDateTime.now());
 
@@ -61,7 +56,7 @@ public class ConvenioService {
     }
 
     // Método para atualizar um convenio
-    public Long atualizarConvenio(AtualizarConvenioDto atualizarConvenioDto, Long id) throws IllegalArgumentException {
+    public Long atualizarConvenio(AtualizarConvenioDto atualizarConvenioDto, MultipartFile documentoClausulas, Long id) throws IllegalArgumentException {
         Optional<Convenio> convenioOptional = convenioRepository.findById(id);
         if (convenioOptional.isEmpty()) {
             throw new IllegalArgumentException("Convenio não encontrado");
@@ -69,39 +64,17 @@ public class ConvenioService {
         Convenio convenio = convenioOptional.get();
 
         // Armazenando os dados antigos para auditoria
-        String nomeInstituicaoAntigo = convenio.getNomeInstituicao();
-        LocalDate dataInicialAntigo = convenio.getDataInicial();
-        LocalDate dataFinalAntigo = convenio.getDataFinal();
         String documentoClausulasAntigo = convenio.getDocumentoClausulas();
 
         // Atualizando os campos do convenio
-        if (atualizarConvenioDto.nomeInstituicao().isPresent()) {
-            convenio.setNomeInstituicao(atualizarConvenioDto.nomeInstituicao().get());
-        }
-        if (atualizarConvenioDto.dataInicial().isPresent()) {
-            convenio.setDataInicial(atualizarConvenioDto.dataInicial().get());
-        }
-        if (atualizarConvenioDto.dataFinal().isPresent()) {
-            convenio.setDataFinal(atualizarConvenioDto.dataFinal().get());
-        }
-        if (atualizarConvenioDto.documentoClausulas().isPresent()) {
-            convenio.setDocumentoClausulas(atualizarConvenioDto.documentoClausulas().get());
-        }
+        atualizarConvenioDto.documentoClausulas().ifPresent(convenio::setDocumentoClausulas);
 
         convenioRepository.save(convenio);
 
         // Criação do registro de auditoria
         Auditoria auditoria = new Auditoria();
         auditoria.setTipoAuditoria("ATUALIZAÇÃO CONVÊNIO");
-        auditoria.setNomeInstituicaoConvenio_antigo(nomeInstituicaoAntigo);
-        auditoria.setDataInicialConvenio_antigo(dataInicialAntigo);
-        auditoria.setDataFinalConvenio_antigo(dataFinalAntigo);
         auditoria.setDocumentoClausulasConvenio_antigo(documentoClausulasAntigo);
-
-
-        auditoria.setNomeInstituicaoConvenio_novo(convenio.getNomeInstituicao());
-        auditoria.setDataInicialConvenio_novo(convenio.getDataInicial());
-        auditoria.setDataFinalConvenio_novo(convenio.getDataFinal());
         auditoria.setDocumentoClausulasConvenio_novo(convenio.getDocumentoClausulas());
         auditoria.setDataAlteracao(LocalDateTime.now());
 
@@ -122,9 +95,6 @@ public class ConvenioService {
         // Armazenando os dados do convênio antes de excluir para auditoria
         Auditoria auditoria = new Auditoria();
         auditoria.setTipoAuditoria("EXCLUSÃO CONVÊNIO");
-        auditoria.setNomeInstituicaoConvenio_antigo(convenio.getNomeInstituicao());
-        auditoria.setDataInicialConvenio_antigo(convenio.getDataInicial());
-        auditoria.setDataFinalConvenio_antigo(convenio.getDataFinal());
         auditoria.setDocumentoClausulasConvenio_antigo(convenio.getDocumentoClausulas());
         auditoria.setDataAlteracao(LocalDateTime.now());
 
@@ -133,5 +103,13 @@ public class ConvenioService {
 
         // Deletando o convênio
         convenioRepository.deleteById(id);
+    }
+
+    public Long cadastrarConvenio(CadastrarConvenioDto cadastrarConvenioDto) {
+        return 0L;
+    }
+
+    public Long atualizarConvenio(AtualizarConvenioDto atualizarConvenioDto, Long id) {
+        return id;
     }
 }
