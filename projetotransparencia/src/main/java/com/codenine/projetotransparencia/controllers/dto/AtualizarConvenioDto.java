@@ -1,11 +1,10 @@
 package com.codenine.projetotransparencia.controllers.dto;
 
-import java.time.LocalDate;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Optional;
 
 public record AtualizarConvenioDto(
-        Optional<String> nomeInstituicao,
-        Optional<LocalDate> dataInicial,
-        Optional<LocalDate> dataFinal,
-        Optional<String> documentoClausulas
+        Optional<String> documentoClausulas, // Campo para o JSON ou texto
+        Optional<MultipartFile> arquivoDocumento // Campo para o arquivo
 ) {}
