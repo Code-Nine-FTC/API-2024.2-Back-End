@@ -17,7 +17,6 @@ import com.codenine.projetotransparencia.utils.documents.VerificarTamanho;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -152,6 +150,7 @@ public class ProjetoService {
         }
         return projetoOptional.get();
     }
+
 
     @Transactional
     public Long atualizarProjeto(AtualizarProjetoDto atualizarProjetoDto) throws IOException {

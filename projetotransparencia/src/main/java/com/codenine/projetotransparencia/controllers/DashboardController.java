@@ -4,6 +4,7 @@ import com.codenine.projetotransparencia.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,6 +55,32 @@ public class DashboardController {
             System.err.println("Erro inesperado: " + e.getMessage());
             Map<String, Long> errorResponse = new HashMap<>();
             errorResponse.put("error", 0L);
+            return ResponseEntity.status(500).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/dashboard/demandas")
+    public ResponseEntity<Map<String, Long>> buscarDemandas(){
+        try {
+            Map<String, Long> demandas = dashboardService.buscarDemandas();
+            return ResponseEntity.ok(demandas);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar demandas: " + e.getMessage());
+            Map<String, Long> errorResponse = new HashMap<>();
+            errorResponse.put("error", 0L);
+            return ResponseEntity.status(500).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/dashboard/valorano/{coordenador}")
+    public ResponseEntity<Map<String, Double>> buscarValorAno(@PathVariable String coordenador){
+        try {
+            Map<String, Double> valorAno = dashboardService.buscarValorAno(coordenador);
+            return ResponseEntity.ok(valorAno);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar valor por ano: " + e.getMessage());
+            Map<String, Double> errorResponse = new HashMap<>();
+            errorResponse.put("error", 0.0);
             return ResponseEntity.status(500).body(errorResponse);
         }
     }

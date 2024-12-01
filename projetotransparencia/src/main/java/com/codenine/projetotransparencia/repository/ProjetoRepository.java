@@ -3,6 +3,7 @@ package com.codenine.projetotransparencia.repository;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -37,7 +38,7 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long>, Projeto
                                 @Param("valor") Double valor,
                                 @Param("status") String status,
                                 @Param("keyword") String keyword);
-    
+
     List<Projeto> findByReferencia(String referencia);
 
     long countByNomeCoordenador(String nomeCoordenador);

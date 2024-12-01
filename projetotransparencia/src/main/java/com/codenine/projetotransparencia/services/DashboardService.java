@@ -1,6 +1,8 @@
 package com.codenine.projetotransparencia.services;
 
+import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
 import com.codenine.projetotransparencia.entities.Projeto;
+import com.codenine.projetotransparencia.repository.ClassificacaoDemandaRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepositoryCustomImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,39 @@ public class DashboardService {
 
     @Autowired
     private ProjetoRepositoryCustomImpl projetoRepositoryCustomImpl;
+
+    @Autowired
+    private ClassificacaoDemandaRepository demandaRepository;
+
+    public Map<String, Long> buscarDemandas(){
+        Map<String, Long> demandas = new HashMap<>();
+        for (ClassificacaoDemanda classificacaoDemanda : demandaRepository.findAll()) {
+            demandas.put(classificacaoDemanda.getTipo(), classificacaoDemanda.getProjetos().stream().count());
+        }
+        return demandas;
+    }
+
+    public Map<String, Double> buscarValorAno(String coordenador){
+        Map<String, Double> valorAno = new TreeMap<>();
+        List<Projeto> projetos = projetoRepositoryCustomImpl.buscarProjetos(coordenador, null, null, null, null, null, null, null);
+
+        for (Projeto projeto : projetos) {
+            LocalDate dataInicioProjeto = projeto.getDataInicio();
+            LocalDate dataTerminoProjeto = projeto.getDataTermino() != null
+                    ? projeto.getDataTermino()
+                    : dataInicioProjeto;
+
+            int anoInicio = dataInicioProjeto.getYear();
+            int anoTermino = dataTerminoProjeto.getYear();
+
+            for (int ano = anoInicio; ano <= anoTermino; ano++) {
+                String chaveAno = String.valueOf(ano);
+                valorAno.put(chaveAno, valorAno.getOrDefault(chaveAno, 0.0) + projeto.getValor());
+            }
+        }
+        return valorAno;
+    }
+
 
     public Map<String, Long> contarProjetosDinamicos(String dataInicio, String dataTermino, String coordenador,
                                                      String valorMaximo, String valorMinimo,
