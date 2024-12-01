@@ -1,11 +1,10 @@
 package com.codenine.projetotransparencia.controllers.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import java.time.LocalDate;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 public record CadastrarConvenioDto(
-        @NotEmpty String nomeInstituicao,
-        @NotEmpty LocalDate dataInicial,
-        LocalDate dataFinal,
-        String documentoClausulas
+        Optional<String> documentoClausulas, // Campo para o JSON ou texto
+        Optional<MultipartFile> arquivoDocumento // Campo para o arquivo
 ) {}
