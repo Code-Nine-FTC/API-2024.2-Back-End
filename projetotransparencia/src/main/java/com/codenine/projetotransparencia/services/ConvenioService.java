@@ -40,7 +40,7 @@ public class ConvenioService {
                 cadastrarConvenioDto.email(),
                 cadastrarConvenioDto.telefone(),
                 cadastrarConvenioDto.areaColaboracao(),
-                cadastrarConvenioDto.historicoParceria() // Assumindo que o DTO tenha esse campo
+                cadastrarConvenioDto.historicoParceria()
         );
 
         // Salva o convênio
