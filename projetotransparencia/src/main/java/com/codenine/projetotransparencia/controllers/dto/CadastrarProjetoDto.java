@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.codenine.projetotransparencia.entities.Bolsista;
 import com.codenine.projetotransparencia.entities.ClassificacaoDemanda;
+import com.codenine.projetotransparencia.entities.Convenio;
 import com.codenine.projetotransparencia.entities.Parceiro;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -26,7 +27,8 @@ public record CadastrarProjetoDto (
         Optional<String> camposOcultos,
         Optional<Parceiro> parceiro,
         Optional<ClassificacaoDemanda> classificacaoDemanda,
-        Optional<List<Bolsista>> bolsistas
+        Optional<List<Bolsista>> bolsistas,
+        Optional<Convenio> convenio
 ) {
 
 }

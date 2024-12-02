@@ -7,7 +7,6 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,7 +102,7 @@ public class Projeto {
     public Projeto(String titulo, String referencia, String objeto,
                    String descricao, String nomeCoordenador, Double valor,
                    LocalDate dataInicio, LocalDate dataTermino, String status, String integrantes,
-                   String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4, Parceiro parceiro, ClassificacaoDemanda classificacaoDemanda, List<Bolsista> bolsistas) {
+                   String links, String camposOcultos, Object o1, Object o2, Object o3, Object o4, Parceiro parceiro, ClassificacaoDemanda classificacaoDemanda, List<Bolsista> bolsistas, Convenio convenio) {
         this.titulo = titulo;
         this.referencia = referencia;
 //        this.contratante = contratante;
@@ -120,6 +119,7 @@ public class Projeto {
         this.parceiro = parceiro;
         this.classificacaoDemanda = classificacaoDemanda;
         this.bolsistas = bolsistas;
+        this.convenio = convenio;
     }
 
 
@@ -143,6 +143,7 @@ public class Projeto {
                 .collect(Collectors.toList());
         this.parceiro = projeto.parceiro;
         this.classificacaoDemanda = projeto.classificacaoDemanda;
+        this.convenio = projeto.convenio;
     }
 
     @Override

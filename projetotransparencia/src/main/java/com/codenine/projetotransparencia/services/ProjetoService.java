@@ -4,11 +4,12 @@ package com.codenine.projetotransparencia.services;
 import com.codenine.projetotransparencia.controllers.dto.CadastrarProjetoDto;
 import com.codenine.projetotransparencia.controllers.dto.BuscarProjetoDto;
 import com.codenine.projetotransparencia.entities.Bolsista;
-import com.codenine.projetotransparencia.entities.Documento;
+import com.codenine.projetotransparencia.entities.Convenio;
 import com.codenine.projetotransparencia.entities.Parceiro;
 import com.codenine.projetotransparencia.entities.Projeto;
 import com.codenine.projetotransparencia.controllers.dto.AtualizarProjetoDto;
 import com.codenine.projetotransparencia.repository.BolsistaRepository;
+import com.codenine.projetotransparencia.repository.ConvenioRepository;
 import com.codenine.projetotransparencia.repository.ParceiroRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.VerificarExcel;
@@ -69,6 +70,8 @@ public class ProjetoService {
 
     @Autowired
     private BolsistaRepository bolsistaRepository;
+    @Autowired
+    private ConvenioRepository convenioRepository;
 
     public Long cadastrarProjeto(CadastrarProjetoDto cadastrarProjetoDto) throws IOException {
         List<Bolsista> bolsistas = new ArrayList<>();
@@ -104,7 +107,8 @@ public class ProjetoService {
                 null,  // contrato
                 cadastrarProjetoDto.parceiro().orElse(null),
                 cadastrarProjetoDto.classificacaoDemanda().orElse(null),
-                bolsistas
+                bolsistas,
+                cadastrarProjetoDto.convenio().orElse(null)
         );
 
         // Salvar o projeto
@@ -364,6 +368,7 @@ public class ProjetoService {
                         return parceiroRepository.save(novoParceiro);
                     });
 
+
             Optional<String> camposOcultos = Optional.ofNullable(projetoNode.has("Campos ocultos") ? projetoNode.get("Campos ocultos").asText() : "");
             CadastrarProjetoDto dto = new CadastrarProjetoDto(
                     titulo,
@@ -379,6 +384,7 @@ public class ProjetoService {
                     Optional.ofNullable(links),
                     camposOcultos,
                     Optional.of(parceiro),
+                    Optional.empty(),
                     Optional.empty(),
                     Optional.empty()
             );
