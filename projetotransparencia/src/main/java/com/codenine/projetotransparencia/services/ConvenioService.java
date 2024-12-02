@@ -106,16 +106,15 @@ public class ConvenioService {
             if (convenioAtualizado.getDataFinal() != null) {
                 convenio.setDataFinal(convenioAtualizado.getDataFinal());
             }
+        }
 
-            convenioRepository.save(convenio);
+        if (atualizarConvenioDto.arquivoDocumento().isPresent()) {
+            MultipartFile documentoConvenio = atualizarConvenioDto.arquivoDocumento().get();
+            System.out.println("Documento convenio: " + documentoConvenio);
+            documentoService.uploadDocumento(documentoConvenio, convenio, "documentoClausulas");
+        }
 
-            if (atualizarConvenioDto.arquivoDocumento().isPresent()) {
-                MultipartFile documentoConvenio = atualizarConvenioDto.arquivoDocumento().get();
-                System.out.println("Documento convenio: " + documentoConvenio);
-                documentoService.uploadDocumento(documentoConvenio, convenio, "documentoClausulas");
-            }
-
-            convenioRepository.save(convenio);
+        convenioRepository.save(convenio);
 
 
 
@@ -138,7 +137,6 @@ public class ConvenioService {
 //        auditoriaRepository.save(auditoria);
 
 //        return convenio.getId();
-        }
         return convenio.getId();
     }
 
