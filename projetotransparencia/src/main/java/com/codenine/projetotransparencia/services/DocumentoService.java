@@ -4,6 +4,7 @@ import com.codenine.projetotransparencia.controllers.dto.BaixarDocumentoDto;
 import com.codenine.projetotransparencia.entities.Convenio;
 import com.codenine.projetotransparencia.entities.Documento;
 import com.codenine.projetotransparencia.entities.Projeto;
+import com.codenine.projetotransparencia.repository.ConvenioRepository;
 import com.codenine.projetotransparencia.repository.DocumentoRepository;
 import com.codenine.projetotransparencia.repository.ProjetoRepository;
 import com.codenine.projetotransparencia.utils.documents.SalvarDocumento;
@@ -49,6 +50,8 @@ public class DocumentoService {
     @Autowired
     private AuditoriaService auditoriaService;
 
+    @Autowired
+    private ConvenioRepository convenioRepository;
     private final String relativePath = "projetotransparencia/src/main/java/com/codenine/projetotransparencia/uploads";
 
     public void uploadDocumento(MultipartFile documento, Object entidade, String tipoDocumento) throws IOException {
@@ -119,17 +122,27 @@ public class DocumentoService {
     public void excluirDocumento(Long documentoId) {
         try {
             Optional<Documento> documentoOptional = documentoRepository.findById(documentoId);
+            System.out.println("Documento ID: " + documentoId);
             if (documentoOptional.isPresent()) {
                 Documento documento = documentoOptional.get();
-                Projeto projeto = projetoRepository.findById(documento.getProjeto().getId()).orElse(null);
-                if (projeto != null) {
-                    //                projeto.getDocumentos().remove(documento);
-                    //                projetoRepository.save(projeto);
-                    documento.setProjeto(null); // Remove the relation with the projeto
-                    documentoRepository.save(documento); // Save the updated documento
-                    auditoriaService.registrarExclusaoArquivo(projeto.getId(), documento.getId());
-                } else {
-                    throw new IllegalArgumentException("Projeto não encontrado para o documento com ID " + documentoId);
+                if (documento.getProjeto() != null) {
+                    Projeto projeto = projetoRepository.findById(documento.getProjeto().getId()).orElse(null);
+                    if (projeto != null) {
+                        //                projeto.getDocumentos().remove(documento);
+                        //                projetoRepository.save(projeto);
+                        documento.setProjeto(null); // Remove the relation with the projeto
+                        documentoRepository.save(documento); // Save the updated documento
+                        auditoriaService.registrarExclusaoArquivo(projeto.getId(), documento.getId());
+                    }
+                }
+                if (documento.getConvenio() != null) {
+                    Convenio convenio = convenioRepository.findById(documento.getConvenio().getId()).orElse(null);
+
+                    if (convenio != null) {
+                        documento.setConvenio(null); // Remove the relation with the projeto
+                        documentoRepository.save(documento); // Save the updated documento
+//                    auditoriaService.registrarExclusaoArquivo(convenio.getId(), documento.getId());
+                    }
                 }
             } else {
                 throw new IllegalArgumentException("Documento com ID " + documentoId + " não encontrado!");
