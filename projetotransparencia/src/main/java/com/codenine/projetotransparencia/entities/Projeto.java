@@ -91,7 +91,8 @@ public class Projeto {
     )
     private List<Bolsista> bolsistas = new ArrayList<>();
 
-    @OneToOne(mappedBy = "projeto", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "convenio_id", nullable = true)
     private Convenio convenio;
 
     public Projeto() {

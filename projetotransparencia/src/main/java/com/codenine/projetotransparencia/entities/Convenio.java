@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,23 +23,18 @@ public class Convenio {
     @Column(nullable = false)
     private String nomeInstituicao;
 
-    @Temporal(TemporalType.DATE)
-    @NotNull
     @Column(nullable = false)
     private LocalDate dataInicial;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = true)
     private LocalDate dataFinal;
 
-    @Lob
-    @Column(nullable = true)
-    private String documentoClausulas;
+    @OneToMany(mappedBy = "convenio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Documento> documentoClausulas = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "projeto_id", nullable = false)
+    @OneToMany(mappedBy = "convenio", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Projeto projeto;
+    private List<Projeto> projeto = new ArrayList<>();
 
     public Convenio() {
         // Construtor padrão para JPA
@@ -47,6 +44,11 @@ public class Convenio {
         this.nomeInstituicao = nomeInstituicao;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
-        this.documentoClausulas = documentoClausulas;
+    }
+
+    public Convenio(Convenio convenio) {
+        this.nomeInstituicao = convenio.getNomeInstituicao();
+        this.dataInicial = convenio.getDataInicial();
+        this.dataFinal = convenio.getDataFinal();
     }
 }

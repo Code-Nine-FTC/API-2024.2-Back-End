@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 public record CadastrarConvenioDto(
-        Optional<String> documentoClausulas, // Campo para o JSON ou texto
+        String convenio, // Campo para o JSON ou texto
         Optional<MultipartFile> arquivoDocumento // Campo para o arquivo
 ) {}

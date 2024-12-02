@@ -33,6 +33,11 @@ public class Documento {
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name = "convenio_id")  // Chave estrangeira para Projeto
+    private Convenio convenio;
+
+    @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "auditoria_id") // Chave estrangeira para Auditoria
     private Auditoria auditoria;
 
@@ -60,6 +65,7 @@ public class Documento {
         this.tamanho = documento.getTamanho();
         this.projeto = documento.getProjeto();
         this.auditoria = documento.getAuditoria();
+        this.convenio = documento.getConvenio();
     }
 
     @Override

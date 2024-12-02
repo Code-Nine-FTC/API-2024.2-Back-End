@@ -32,17 +32,18 @@ public class ConvenioController {
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrarConvenio(
             @RequestParam(value = "convenio") String convenio,
-            @RequestParam(value = "idProjeto") Long projetoId,
+            @RequestParam(required = false, value = "idProjeto") Long projetoId,
             @RequestParam(required = false, value = "documentoClausulas") MultipartFile documentoClausulas) {
 
         try {
             // Ajuste para Optional
             CadastrarConvenioDto cadastrarConvenioDto = new CadastrarConvenioDto(
-                    Optional.ofNullable(convenio),  // Passando como Optional
+                    convenio,  // Passando como Optional
                     Optional.ofNullable(documentoClausulas)  // Passando como Optional
             );
 
             // Chamada do serviço com o DTO
+            System.out.println("testando:" + cadastrarConvenioDto);
             Long convenioId = convenioService.cadastrarConvenio(cadastrarConvenioDto);
             URI location = URI.create("/convenio/visualizar/" + convenioId);
 
@@ -50,12 +51,14 @@ public class ConvenioController {
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizarConvenio(@PathVariable Long id,
-                                               @RequestParam(value = "convenio") String convenio,
+                                               @RequestParam(required = false, value = "convenio") String convenio,
                                                @RequestParam(required = false, value = "documentoClausulas") MultipartFile documentoClausulas) {
 
         try {
@@ -73,6 +76,8 @@ public class ConvenioController {
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
